@@ -20,40 +20,27 @@
                 </v-col>
             </v-row>
             <v-row class="hr-title"/>
-            <v-row :class="filter2?'mb24':''">
+            <v-row :class="showFilter?'mb24':''">
                 <v-col>
                     Filter 
                     <v-btn 
                         depressed
                         x-small
-                        @click="filter2 = !filter2"
-                        v-if="filter2"
+                        @click="showFilter = !showFilter"
+                        v-if="showFilter"
                         class="no-caps fs12"
-                    >
-                        Hide
-                        <v-icon
-                            right
-                        >
-                            chevron-up
-                        </v-icon>
-                    </v-btn>
+                    >Hide<v-icon right>expand_less</v-icon></v-btn>
                     <v-btn 
                         depressed
                         x-small
-                        @click="filter2 = !filter2"
+                        @click="showFilter = !showFilter"
                         v-else
                         class="no-caps fs12"
-                    >
-                        Show
-                        <v-icon
-                            right
-                        >
-                            chevron-down
-                        </v-icon>
-                    </v-btn>
+                    >Show<v-icon right>expand_more</v-icon></v-btn>
                 </v-col>
             </v-row>
-            <v-row :class="filter2? '-mb38':'hidden'">
+
+            <v-row v-if="showFilter">
                 <v-col cols="12" md="3" class="-mt24">
                     <v-select
                         v-model="statuses"
@@ -178,7 +165,7 @@
                                             icon
                                             v-on="{ ...menu }"
                                         >  
-                                            <v-icon dark>mdi-dots-vertical</v-icon>
+                                            <v-icon dark>more_vert</v-icon>
                                         </v-btn>
                                     </template>
                                 </template>
@@ -188,7 +175,7 @@
                                             <v-list-item-title>Detail</v-list-item-title>
                                         </v-list-item-content>
                                         <v-list-item-icon>
-                                            <v-icon>mdi-open-in-new</v-icon>
+                                            <v-icon>open_in_new</v-icon>
                                         </v-list-item-icon>
                                     </v-list-item>
                                     <v-list-item v-privilege="'usr_upd'" :to="{ name: 'UserUpdate', params: { id: props.item.id } }" v-if="props.item.status == 1">
@@ -196,7 +183,7 @@
                                             <v-list-item-title>Update</v-list-item-title>
                                         </v-list-item-content>
                                         <v-list-item-icon>
-                                            <v-icon>mdi-open-in-new</v-icon>
+                                            <v-icon>open_in_new</v-icon>
                                         </v-list-item-icon>
                                     </v-list-item>
                                     <div>
@@ -224,10 +211,7 @@
     </v-container>
 </template>
 <script>
-    import { SelectArea, SelectDivision, SelectRole, SelectWarehouse } from "@vue-mf/global";
-
     export default {
-        components: { SelectArea, SelectDivision, SelectRole, SelectWarehouse },
         name: "User",
         data() {
             return {
@@ -244,6 +228,7 @@
                     role_id:'',
                     warehouse_id:'',
                 },
+                showFilter : false,
                 disabled_warehouse:true,
                 clearWarehouse:false,
                 disabled_role:true,

@@ -10,6 +10,16 @@ import vuetify from "./plugins/vuetify";
 import VueToast from 'vue-toast-notification';
 import 'vue-toast-notification/dist/theme-sugar.css';
 
+import { 
+  SelectArea, 
+  SelectDivision, 
+  SelectRole, 
+  SelectWarehouse,
+  ConfirmationDialogNew,
+  DetailRowNew,
+  LoadingBar
+} from "@vue-mf/global";
+
 Vue.config.productionTip = false;
 Vue.use(require("vue-moment"));
 Vue.use(VueToast);
@@ -35,6 +45,15 @@ Vue.directive("privilege", {
 });
 
 Vue.mixin({
+  components: { 
+    SelectArea, 
+    SelectDivision, 
+    SelectRole, 
+    SelectWarehouse,
+    ConfirmationDialogNew,
+    DetailRowNew,
+    LoadingBar
+  },
   data: function() {
     return {
       status: [
