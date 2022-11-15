@@ -21,28 +21,42 @@ import {
 } from "@vue-mf/global";
 
 Vue.config.productionTip = false;
-Vue.use(require("vue-moment"));
 Vue.use(VueToast);
 
-// ini untuk privilege
-Vue.directive("privilege", {
-  inserted: function(el, binding, vnode) {
-    let priv = localStorage.getItem("priv");
-    if (store.getters.getStaff) {
-      let superAdmin = store.getters.getStaff;
-      superAdmin.user.email = store.getters.getStaff.user.email;
-      if (superAdmin.user.email !== "superadmin") {
-        if (typeof binding.value !== "undefined") {
-          priv = "," + priv + ",";
-          binding.value = "," + binding.value + ",";
-          if (priv.indexOf(binding.value) < 0) {
-            vnode.elm.parentElement.removeChild(vnode.elm);
-          }
-        }
-      }
-    }
+const vueLifecycles = singleSpaVue({
+  Vue,
+  appOptions: {
+    created: () => Http.init(),
+    render: h => h(App),
+    vuetify,
+    router,
+    store
   }
 });
+
+export const bootstrap = vueLifecycles.bootstrap;
+export const mount = vueLifecycles.mount;
+export const unmount = vueLifecycles.unmount;
+
+// ini untuk privilege
+Vue.directive('privilege', {
+  inserted: function (el, binding, vnode) {
+      let priv = localStorage.getItem('priv')
+      if (store.getters.getStaff) {
+          let superAdmin = store.getters.getStaff
+          superAdmin.user.email = store.getters.getStaff.user.email
+          if (superAdmin.user.email !== 'superadmin') {
+              if (typeof binding.value !== 'undefined') {
+                  priv = "," + priv + ","
+                  binding.value = "," + binding.value + ","
+                  if (priv.indexOf(binding.value) < 0) {
+                      vnode.elm.parentElement.removeChild(vnode.elm)
+                  }
+              }
+          }
+      }
+  }
+})
 
 Vue.mixin({
   components: { 
@@ -431,40 +445,6 @@ Vue.mixin({
       let val = (value / 1).toFixed(0).replace(".", ",");
       return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     },
-    formatDate(val) {
-      if (val) {
-        return this.$moment(val).format("YYYY-MM-DD");
-      }
-    },
-    formatDateRange(val) {
-      if (val.length > 0) {
-        let ret = "";
-        if (val.length == 1) {
-          let date = val[0];
-          ret = this.$moment(date).format("YYYY-MM-DD");
-        } else {
-          let date = val[0];
-          let date2 = val[1];
-          if (date > date2) {
-            ret =
-              this.$moment(date2).format("YYYY-MM-DD") +
-              " to " +
-              this.$moment(date).format("YYYY-MM-DD");
-          } else {
-            ret =
-              this.$moment(date).format("YYYY-MM-DD") +
-              " to " +
-              this.$moment(date2).format("YYYY-MM-DD");
-          }
-        }
-        return ret;
-      }
-    },
-    formatTime(val) {
-      if (val) {
-        return this.$moment(val).format("HH:mm");
-      }
-    },
     toUpperCase(val) {
       return val.toUpperCase();
     },
@@ -489,18 +469,3 @@ Vue.mixin({
     }
   }
 });
-
-const vueLifecycles = singleSpaVue({
-  Vue,
-  appOptions: {
-    created: () => Http.init(),
-    render: h => h(App),
-    vuetify,
-    router,
-    store
-  }
-});
-
-export const bootstrap = vueLifecycles.bootstrap;
-export const mount = vueLifecycles.mount;
-export const unmount = vueLifecycles.unmount;
