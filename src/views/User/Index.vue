@@ -7,7 +7,7 @@
                         <template v-slot:activator="{ on: tooltip }">
                             <v-text-field
                                 dense
-                                v-model="search"
+                                v-model="userList.filter.search"
                                 outlined
                                 filled
                                 placeholder="Search..."
@@ -43,7 +43,7 @@
             <v-row v-if="showFilter">
                 <v-col cols="12" md="3" class="-mt24">
                     <v-select
-                        v-model="statuses"
+                        v-model="userList.filter.status"
                         :items="status"
                         item-text="text"
                         item-value="value"
@@ -53,7 +53,7 @@
                 </v-col>
                 <v-col cols="12" md="3" class="-mt24">
                    <SelectArea
-                        v-model="area"
+                        v-model="userList.filter.area"
                         :norequired="true"
                         @selected="areaSelected"
                         :aux_data="2"
@@ -62,10 +62,10 @@
                 </v-col>
                 <v-col cols="12" md="3" class="-mt24">
                     <SelectWarehouse
-                        v-model="warehouse"
+                        v-model="userList.filter.warehouse"
                         :norequired="true"
                         @selected="warehouseSelected"
-                        :area_id="filter.area_id"
+                        :area_id="userList.filter.area ? userList.filter.area.id : ''"
                         :disabled="disabled_warehouse"
                         :clear="clearWarehouse"
                         :dense="true"
@@ -74,7 +74,7 @@
                 <v-col cols="12" md="3" class="-mt24">
                     <SelectDivision
                         :norequired="true"
-                        v-model="division"
+                        v-model="userList.filter.division"
                         @selected="divisionSelected"
                         :dense="true"
                     ></SelectDivision>
@@ -82,9 +82,9 @@
                 <v-col cols="12" md="3" class="-mt24">
                     <SelectRole
                         :norequired="true"
-                        v-model="role"
+                        v-model="userList.filter.role"
                         @selected="roleSelected"
-                        :division_id="filter.division_id"
+                        :division_id="userList.filter.division ? userList.filter.division.id : ''"
                         :disabled="disabled_role"
                         :clear="clearRole"
                         :dense="true"
@@ -111,9 +111,9 @@
         </div>
         <div class="box-body-table">
             <v-data-table
-                :headers="table.fields"
-                :items="items"
-                :loading="loading"
+                :headers="userList.tableHeaders"
+                :items="userList.data"
+                :loading="userList.isLoading"
                 :items-per-page="10"
                 :mobile-breakpoint="0"
             >
@@ -211,87 +211,46 @@
     </v-container>
 </template>
 <script>
+    import { mapState, mapActions, mapMutations } from "vuex";
+
     export default {
         name: "User",
         data() {
             return {
-                search: '',
-                loading: false,
-                area:null,
-                division:null,
-                filter2 : false,
-                role:null,
-                warehouse:null,
-                filter:{
-                    area_id:'',
-                    division_id:'',
-                    role_id:'',
-                    warehouse_id:'',
-                },
                 showFilter : false,
                 disabled_warehouse:true,
                 clearWarehouse:false,
                 disabled_role:true,
                 clearRole:false,
-                statuses:1,
-                table: {
-                    fields: [
-                        {
-                            text:'Code',
-                            class: 'grey--text text--darken-4',
-                            width: '12%',
-                            sortable: false,
-                        },
-                        {
-                            class: 'grey--text text--darken-4',
-                            text:'Display Name',
-                            sortable: false,
-                        },
-                        {
-                            text:'Role',
-                            class: 'grey--text text--darken-4',
-                            sortable: false,
-                        },
-                        {
-                            text:'Area',
-                            class: 'grey--text text--darken-4',
-                            sortable: false,
-                        },
-                        {
-                            text:'Status',
-                            width: '5%',
-                            class: 'grey--text text--darken-4',
-                            sortable: false,
-                        },
-                        {
-                            width: '3%',
-                            class: 'grey--text text--darken-4',
-                            sortable: false
-                        },
-                    ],
-                },
-                items:[{
-                    role : {
-                        division : {
-                            code : '',
-                        }
-                    }
-                }],
                 ConfirmData : {},
             }
         },
         created() {
-            this.renderData('',this.statuses)
+            this.fetchUserList()
         },
         mounted() {
             let self = this
             this.$root.$on('event_success', function(res){
                 if (res) {
-                    self.renderData(self.search,self.statuses)
+                    self.fetchUserList()
                 }
             });
         },
+        computed: {
+            ...mapState({
+                userList: state => state.user.userList,
+            }),
+        },
         methods: {
+            ...mapActions([
+                "fetchUserList"
+            ]),
+            ...mapMutations([
+                "setAreaFilterUserList",
+                "setWarehouseFilterUserList",
+                "setDivisionFilterUserList",
+                "setRoleFilterUserList",
+            ]),
             changeStatus(val,id,next) {
                 if (val=='1') {
                     this.ConfirmData = {
@@ -318,113 +277,58 @@
                     }
                 }
             },
-            renderData(search, statuses){
-                this.loading = true;
-                this.items = []
-                if(statuses === 999){
-                  statuses = ''
-                }else{
-                  statuses= "|user_id.status:"+statuses
-                }
-
-                let area_ID = ''
-                if(this.filter.area_id){
-                    area_ID = "|area_id.e:"+ this.filter.area_id
-                }
-
-                let division_ID = ''
-                if(this.filter.division_id){
-                    division_ID = "|role_id.division_id.id.e:"+ this.filter.division_id
-                }
-
-                let role_ID = ''
-                if(this.filter.role_id){
-                    role_ID = "|role_id.e:"+ this.filter.role_id
-                }
-
-                let warehouse_ID =''
-                if(this.filter.warehouse_id){
-                    warehouse_ID = "|warehouse_id.e:"+ this.filter.warehouse_id
-                }
-                this.$http.get("/user/staff",{params:{
-                      perpage:10000,
-                      embeds:'role_id__division_id,warehouse_id,area_id,user_id',
-                      conditions:'Or.name.icontains:'+search+'%2COr.code.icontains:'
-                        +search + statuses + area_ID + division_ID + role_ID + warehouse_ID +'|AndNot.user_id.status:3',
-                      orderby:'-id',
-                  }}).then(response => {
-                  this.loading = false;
-                  this.items = response.data.data
-                  if(this.items === null){
-                      this.items = []
-                  }
-                })
-                .catch(e => {
-                    this.items = []
-                });
-            },
             areaSelected(d){
-                this.area = null;
-                this.filter.area_id = '';
+                this.$store.commit('setAreaFilterUserList', null)
                 this.disabled_warehouse = true;
                 this.clearWarehouse = true
-                if(d){
-                    this.area = d;
-                    this.filter.area_id = d.id;
+                if(d) {
+                    this.$store.commit('setAreaFilterUserList', d)
                     this.warehouse = null;
-                    this.filter.warehouse_id = '';
+                    this.$store.commit('setWarehouseFilterUserList', null)
                     this.disabled_warehouse = false;
                     this.clearWarehouse = false;
                 }
-                this.renderData(this.search,this.statuses)
-            },
-            divisionSelected(d) {
-                this.division = '';
-                this.filter.division_id = '';
-                this.disabled_role = true;
-                if (d) {
-                    this.division = d;
-                    this.filter.division_id = d.id;
-                    this.role = null;
-                    this.filter.role_id = '';
-                    this.disabled_role = false;
-                }
-                this.renderData(this.search,this.statuses)
-            },
-            roleSelected(d) {
-                this.role = null;
-                this.filter.role_id = '';
-                if (d) {
-                    this.role = d;
-                    this.filter.role_id = d.id
-                }
-                this.renderData(this.search,this.statuses)
+                this.fetchUserList()
             },
             warehouseSelected(d) {
-                this.warehouse = null;
-                this.filter.warehouse_id = '';
-                if (d) {
-                    this.warehouse = d;
-                    this.filter.warehouse_id = d.id
-                }
-                this.renderData(this.search,this.statuses)
+                this.$store.commit('setWarehouseFilterUserList', null)
+                if (d) this.$store.commit('setWarehouseFilterUserList', d)
+                this.fetchUserList()
             },
-
+            divisionSelected(d) {
+                this.$store.commit('setDivisionFilterUserList', null)
+                this.disabled_role = true;
+                if (d) {
+                    this.$store.commit('setDivisionFilterUserList', d)
+                    this.$store.commit('setRoleFilterUserList', null)
+                    this.disabled_role = false;
+                }
+                this.fetchUserList()
+            },
+            roleSelected(d) {
+                this.$store.commit('setRoleFilterUserList', null)
+                if (d) {
+                    this.$store.commit('setRoleFilterUserList', d)
+                }
+                this.fetchUserList()
+            },
         },
         watch: {
-            'search': {
+            'userList.filter.search': {
                 handler: function (val) {
                     let that = this
                     clearTimeout(this._timerId)
                     this._timerId = setTimeout(function(){
-                        that.renderData(val, that.statuses)
+                        that.fetchUserList()
                     }, 1000);
                 },
                 deep: true
             },
-            'statuses': {
-                handler: function (statuses) {
-                    this.renderData(this.search,statuses)
+            'userList.filter.status': {
+                handler: function (val) {
+                    if (val) {
+                        this.fetchUserList()
+                    }
                 },
                 deep: true
             },
