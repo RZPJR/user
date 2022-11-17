@@ -83,6 +83,31 @@ const state = {
             (value) => !!value || 'Confirm password is required',
             (value) => value === state.createUser.form.password || 'The password confirmation does not match.',
         ],
+    },
+
+    // Update User
+    updateUser: {
+        isLoading: false,
+        form: {
+            idUser:'',
+            name: '',
+            email:'',
+            display_name: '',
+            employee_code: '',
+            division_id: '',
+            supervisor_id: '',
+            role_id: '',
+            sales_group_id: '',
+            area_id: '',
+            warehouse_id: '',
+            phone_number: '',
+            note: '',
+        },
+        division: null,
+        role: null,
+        supervisor: null,
+        area: null,
+        warehouse: null,
     }
 };
 

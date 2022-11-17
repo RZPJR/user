@@ -57,6 +57,45 @@ const mutations = {
         state.createUser.form.warehouse_id = payload ? payload.id : ''
         return state;
     },
+
+    // Update User
+    setUpdateUserForm: function(state, payload) {
+        state.updateUser.form = payload;
+        return state;
+    },
+    setPreloadUpdateUserForm: function(state, payload) {
+        state.updateUser.isLoading = payload;
+        return state;
+    },
+    setDivisionUpdateUser: function(state, payload) {
+        state.updateUser.division = payload;
+        state.updateUser.form.division_id = payload ? payload.id : ''
+        return state;
+    },
+    setRoleUpdateUser: function(state, payload) {
+        state.updateUser.role = payload;
+        state.updateUser.form.role_id = payload ? payload.id : ''
+        return state;
+    },
+    setSalesGroupUpdateUser: function(state, payload) {
+        state.UpdateUser.form.sales_group_id = payload
+        return state;
+    },
+    setSupervisorUpdateUser: function(state, payload) {
+        state.updateUser.supervisor = payload;
+        state.updateUser.form.supervisor_id = payload ? payload.id : ''
+        return state;
+    },
+    setAreaUpdateUser: function(state, payload) {
+        state.updateUser.area = payload;
+        state.updateUser.form.area_id = payload ? payload.id : ''
+        return state;
+    },
+    setWarehouseUpdateUser: function(state, payload) {
+        state.updateUser.warehouse = payload;
+        state.updateUser.form.warehouse_id = payload ? payload.id : ''
+        return state;
+    },
 };
 
 export default mutations;

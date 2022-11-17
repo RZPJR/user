@@ -2,7 +2,7 @@
     <v-container fill-height class="main-container">
         <div class="box">
             <v-row class="mt24">
-                <v-col cols="12" md="6" class="-mt24">
+                <v-col cols="12" md="6">
                     <v-tooltip top>
                         <template v-slot:activator="{ on }">
                             <div v-on="on">
@@ -24,7 +24,7 @@
                        <span>Employee ID in HR System (Talenta)</span>
                     </v-tooltip>
                 </v-col>
-                <v-col cols="12" md="6" class="-mt24">
+                <v-col cols="12" md="6">
                     <v-tooltip top>
                         <template v-slot:activator="{ on }">
                             <v-text-field
@@ -68,10 +68,10 @@
                 <v-col cols="12" md="6" class="-mt24">
                     <SelectDivision
                         name="division"
-                        v-model="division"
+                        v-model="updateUser.division"
                         @selected="divisionSelected"
                         :error="error.division_id"
-                        :division="division"
+                        :division="updateUser.division"
                         disabled
                         required
                         :dense="true"
@@ -81,13 +81,12 @@
                     <SelectRole
                         name="role"
                         :dense="true"
-                        v-model="role"
+                        v-model="updateUser.role"
                         @selected="roleSelected"
                         :division_id="form.division_id"
-                        :disabled="disabled_role"
                         :error="error.role_id"
                         :clear="clearRole"
-                        :role="role"
+                        :role="updateUser.role"
                         required
                     > </SelectRole>
                 </v-col>
@@ -104,8 +103,8 @@
                 <v-col cols="12" md="6" class="-mt24">
                     <SelectUser
                         name="user"
-                        v-model="supervisor"
-                        :user="supervisor"
+                        v-model="updateUser.supervisor"
+                        :user="updateUser.supervisor"
                         :clear="clearUser"
                         :norequired="true"
                         :dense="true"
@@ -117,9 +116,9 @@
                         name="area"
                         required
                         :error="error.area_id"
-                        v-model="area"
+                        v-model="updateUser.area"
                         :clear="clearArea"
-                        :area="area"
+                        :area="updateUser.area"
                         @selected="areaSelected"
                         :dense="true"
                     ></SelectArea>
@@ -129,10 +128,10 @@
                         name="warehouse"
                         required
                         :error="error.warehouse_id"
-                        v-model="warehouse"
-                        :warehouse="warehouse"
+                        v-model="updateUser.warehouse"
+                        :warehouse="updateUser.warehouse"
                         :area_id="form.area_id"
-                        :disabled="disabled_warehouse"
+                        :disabled="!updateUser.area"
                         @selected="warehouseSelected"
                         :clear="clearWarehouse"
                         :dense="true"
@@ -223,37 +222,18 @@
 
 <script>
     import Vue from 'vue'
+    import { mapState, mapActions, mapMutations } from "vuex";
+
     export default {
         name: "UserUpdate",
         data () {
             return {
                 ConfirmData:[],
-                division:null,
-                disabled_role:true,
-                supervisor:null,
-                role:null,
-                area:null,
-                warehouse:null,
                 clearWarehouse:false,
                 clearRole:false,
                 clearSalesGroup:false,
                 clearArea:false,
                 clearUser:false,
-                form:{
-                    idUser:'',
-                    name: '',
-                    email:'',
-                    display_name: '',
-                    employee_code: '',
-                    division_id: '',
-                    supervisor_id: '',
-                    role_id: '',
-                    sales_group_id: '',
-                    area_id: '',
-                    warehouse_id: '',
-                    phone_number: '',
-                    note: '',
-                },
                 passwordRules: [
                     v => !!v || 'Password is required',
                     v => (v && v.length >= 8) || 'Password at least 8 characters',
@@ -267,7 +247,25 @@
                 error:{}
             }
         },
+        computed: {
+            ...mapState({
+                updateUser: state => state.user.updateUser,
+                form: state => state.user.updateUser.form,
+            }),
+        },
         methods:{
+            ...mapActions([
+                "fetchUpdateUserDetail",
+                "setRoleUpdateUser",
+                "setAreaUpdateUser",
+                "setSupervisorUpdateUser",
+                "setSalesGroupUpdateUser",
+                "setWarehouseUpdateUser",
+            ]),
+            ...mapMutations([
+                "setDivisionUpdateUser",
+                "setRoleUpdateUser",
+            ]),
             confirmButton() {
                 this.putData.name = this.form.name
                 this.putData.display_name = this.form.display_name
@@ -295,51 +293,41 @@
                 }
             },
             divisionSelected(d) {
-                this.division = null;
-                this.form.division_id = '';
-                this.role = null;
-                this.form.role_id = '';
+                this.$store.commit('setDivisionUpdateUser', null)
+                this.$store.commit('setRoleUpdateUser', null)
                 this.clearRole = true;
                 if (d !== '' && d !== undefined) {
-                    this.division = d;
-                    this.form.division_id = d.id;
-                    this.disabled_role = false
-                    this.clearRole = false;
+                    this.$store.commit('setDivisionUpdateUser', d)
+                    this.clearRole = false
                 }
             },
             roleSelected(d) {
-                this.role = null;
-                this.area = null;
-                this.form.role_id = '';
-                this.form.sales_group_id = '';
-                this.form.area_id = '';
+                this.$store.commit('setRoleUpdateUser', null)
+                this.$store.commit('setAreaUpdateUser', null)
+                this.$store.commit('setSupervisorUpdateUser', null)
+                this.$store.commit('setSalesGroupUpdateUser', '')
                 this.form.warehouse_id = '';
                 this.clearUser = true
                 this.clearArea = true
                 this.clearWarehouse = true
-                this.supervisor = null;
-                this.form.supervisor_id = '';
                 if (d !== ''  && d !== undefined) {
+                    this.$store.commit('setRoleUpdateUser', d)
                     this.clearUser = false
                     this.clearArea = false
                     this.clearWarehouse = false
-                    this.role = d;
-                    this.form.role_id = d.id
                 }
             },
             salesGroupSelected(d, setval) {
-                this.form.sales_group_id = '';
-                this.form.area_id = '';
-                this.form.warehouse_id = '';
+                this.$store.commit('setSalesGroupUpdateUser', '')
+                this.$store.commit('setAreaUpdateUser', null)
+                this.$store.commit('setSupervisorUpdateUser', null)
+                this.$store.commit('setWarehouseUpdateUser', null)
                 this.clearUser = true
                 this.clearArea = true
-                this.area = null;
-                this.supervisor = null;
-                this.form.supervisor_id = '';
                 if(d){
                     this.clearUser = false
                     this.clearArea = false
-                    this.form.sales_group_id = d.id
+                    this.$store.commit('setSalesGroupUpdateUser', d.id)
                     if(setval == 1){
                         setval == 2
                     }else{
@@ -352,67 +340,40 @@
                 }
             },
             supervisorSelected(d) {
-                this.supervisor = null;
-                this.form.supervisor_id = '';
+                this.$store.commit('setSupervisorUpdateUser', null)
                 if (d !== ''  && d !== undefined) {
-                    this.supervisor = d;
-                    this.form.supervisor_id = d.id
+                    this.$store.commit('setSupervisorUpdateUser', d)
                 }
             },
             areaSelected(d) {
-                this.area = null;
-                this.form.area_id = '';
-                this.warehouse = null;
-                this.form.warehouse_id = '';
+                this.$store.commit('setAreaUpdateUser', null)
+                this.$store.commit('setWarehouseUpdateUser', null)
                 this.clearWarehouse = true
                 if (d) {
-                    this.area = d;
-                    this.form.area_id = d.id
+                    this.$store.commit('setAreaUpdateUser', d)
                     this.clearWarehouse = false
                 }
             },
             warehouseSelected(d) {
-                this.warehouse = null;
-                this.form.warehouse_id = '';
+                this.$store.commit('setWarehouseUpdateUser', null)
                 if (d !== ''  && d !== undefined) {
-                    this.warehouse = d;
-                    this.form.warehouse_id = d.id
+                    this.$store.commit('setWarehouseUpdateUser', d)
                 }
             },
-            renderData(){
-                this.$http.get("/user/staff/"+ this.$route.params.id).then(response => {
-                    this.form = response.data.data
-                    if(this.form.sales_group_id == 0){
-                        var sales_group_id = {id: ''}
-                    }else{
-                        var sales_group_id = {id: this.form.sales_group_id}
-                    }
-                    this.form.email = response.data.data.user.email
-                    this.form.idUser = response.data.data.user.id
-                    this.form.note = response.data.data.user.note
-                    this.divisionSelected(response.data.data.role.division)
-                    this.roleSelected(response.data.data.role)
-                    this.salesGroupSelected(sales_group_id,1)
-                    this.supervisorSelected(response.data.data.parent)
-                    this.areaSelected(response.data.data.area)
-                    this.warehouseSelected(response.data.data.warehouse)
-                });
-            },
         },
-        created(){
-            this.renderData()
+        async created(){
+            await this.fetchUpdateUserDetail({id: this.$route.params.id})
         },
         mounted () {
             let self = this
+            this.$root.$on('event_success', function(res){
+                if (res) {
+                    self.fetchUpdateUserDetail({id: this.$route.params.id})
+                }
+            });
             this.$root.$on('event_error', function(err){
                 self.error = err
             });
-        },
-        computed: {
-            disabled_warehouse() {
-                if (this.area) return false
-                else return true
-            },
         },
         watch: {
             'form.phone_number':{

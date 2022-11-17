@@ -26,6 +26,38 @@ const actions = {
             commit("setPreloadUserList", false);
         }
     },
+    fetchUpdateUserDetail: async ({ commit, dispatch }, payload) => {
+        commit("setPreloadUpdateUserForm", true);
+        try {
+            const response = await http.get("/user/staff/"+payload.id);
+            let res = response.data.data
+            if (response.data.data) {
+                commit("setUpdateUserForm", {                
+                    idUser: res.user.id,
+                    name: res.name,
+                    email: res.user.email,
+                    display_name: res.display_name,
+                    employee_code: res.employee_code,
+                    division_id: res.role.division.id,
+                    supervisor_id: '',
+                    role_id: res.role.id,
+                    sales_group_id: res.sales_group_id == 0 ? '' : res.sales_group_id,
+                    area_id: res.area.id,
+                    warehouse_id: res.warehouse.id,
+                    phone_number: res.phone_number,
+                    note: res.user.note,
+                })
+                commit("setDivisionUpdateUser", res.role.division)
+                commit("setRoleUpdateUser", res.role)
+                commit("setAreaUpdateUser", res.area)
+                commit("setWarehouseUpdateUser", res.warehouse)
+            }
+            commit("setPreloadUpdateUserForm", false);            
+        } catch (error) {
+            console.log(error)
+            commit("setPreloadUpdateUserForm", false);
+        }
+    },
 };
 
 export default actions;
