@@ -18,7 +18,8 @@ sonarqube-check:
     key: "${CI_JOB_NAME}"
     paths:
       - .sonar/cache
-  script: 
+  script:
+    - sed -i "s/<CI_COMMIT_BRANCH>/${CI_COMMIT_BRANCH}/g" sonar-project.properties
     - sonar-scanner
   allow_failure: false
   only:
