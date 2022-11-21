@@ -15,6 +15,8 @@ import {
   SelectDivision, 
   SelectRole, 
   SelectWarehouse,
+  SelectUser,
+  SelectSalesGroup,
   ConfirmationDialogNew,
   DetailRowNew,
   LoadingBar
@@ -64,6 +66,8 @@ Vue.mixin({
     SelectDivision, 
     SelectRole, 
     SelectWarehouse,
+    SelectUser,
+    SelectSalesGroup,
     ConfirmationDialogNew,
     DetailRowNew,
     LoadingBar
