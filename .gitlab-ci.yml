@@ -1,5 +1,5 @@
 stages:
-  - test
+  - scan
   - build
   - deploy
   - reconfig
@@ -8,6 +8,7 @@ before_script:
   - cp .env.example .env
 
 sonarqube-check:
+  stage: scan
   image: 
     name: sonarsource/sonar-scanner-cli:latest
     entrypoint: [""]
