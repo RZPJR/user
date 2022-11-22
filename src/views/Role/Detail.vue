@@ -57,9 +57,6 @@
                 <v-col cols="12" md="6" class="-mt24">
                     <DetailRowNew :name="'Division'" :value="item.division.name"/>
                 </v-col>
-                <v-col cols="12" md="12" class="-mt24">
-                    <DetailRowNew :name="'Notes'" :value="item.note" :left="true"/>
-                </v-col>
             </v-row>
         </div>
         <div class="box-title fs16 bold">
@@ -157,9 +154,8 @@
             async renderData(){
                 await this.$http.get("/role/" + this.$route.params.id).then(response => {
                     this.item = response.data.data
-                    this.item.convert_status = this.item.status_convert.toUpperCase()
-                    this.permission=[]
-                    this.permissionData()
+                    // this.permission=[]
+                    // this.permissionData()
                 });
             },
             changeStatus(val,id) {

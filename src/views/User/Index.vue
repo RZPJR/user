@@ -120,10 +120,7 @@
                 <template v-slot:item="props">
                     <tr style="height:48px">
                         <td>
-                            {{ props.item.code }}<br>
-                            <label class="text-black60">
-                                {{ props.item.name }}
-                            </label>
+                            {{ props.item.name }}
                         </td>
                         <td>{{ props.item.display_name }}<br>
                             <label class="text-black60">
