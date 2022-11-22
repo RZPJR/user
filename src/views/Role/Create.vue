@@ -2,7 +2,7 @@
     <v-container fill-height class="main-container">
         <div class="box">
             <v-row class="mt24">
-                <v-col cols="12" md="6" class="-mt24">
+                <v-col cols="12" md="6" class="mt24">
                     <v-text-field
                         name="name"
                         v-model="form.name"
@@ -18,7 +18,7 @@
                         </template>
                     </v-text-field>
                 </v-col>
-                <v-col cols="12" md="6" class="-mt24">
+                <v-col cols="12" md="6" class="mt24">
                     <SelectDivision
                         name="division"
                         v-model="division"
@@ -29,19 +29,6 @@
                         required
                     > </SelectDivision>
                 </v-col>
-                <v-col cols="12" md="12" class="-mt24">
-                    <v-textarea
-                        name="note"
-                        v-model="form.note"
-                        :counter="250"
-                        outlined
-                        rows="3"
-                    >
-                        <template v-slot:label>
-                            Note
-                        </template>
-                    </v-textarea>
-                </v-col>
             </v-row>
         </div>
         <div class="box-title fs16 bold">
@@ -51,7 +38,7 @@
             <div class="-ma16">
                 <PermissionCreate
                     name="permission"
-                    v-model="form.permission"
+                    v-model="form.permissions"
                     @checked="permissionChecked"
                     :idPermission="permission" >
                 </PermissionCreate>
@@ -97,8 +84,7 @@
                 form:{
                     name: '',
                     division_id: '',
-                    note: '',
-                    permission_id:[],
+                    permissions:[],
                 },
                 error:{},
                 putData:{},
@@ -125,11 +111,11 @@
                 }
             },
             permissionChecked(d) {
-                this.form.permission_id = []
+                this.form.permissions = []
                 if (d !== '') {
                     var i;
                     for (i = 0; i < d.length; i++) {
-                        this.form.permission_id.push(d[i].id)
+                        this.form.permissions.push(d[i].id)
                     }
                 }
             },

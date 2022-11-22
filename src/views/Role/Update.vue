@@ -2,7 +2,7 @@
     <v-container fill-height class="main-container">
         <div class="box">
             <v-row class="mt24">
-                <v-col cols="12" md="6" class="-mt24">
+                <v-col cols="12" md="6" class="mt24">
                     <v-text-field
                         name="code"
                         v-model="form.code"
@@ -15,7 +15,7 @@
                         :error-messages="error.code"
                     ></v-text-field>
                 </v-col>
-                <v-col cols="12" md="6" class="-mt24">
+                <v-col cols="12" md="6" class="mt24">
                     <v-text-field
                         name="name"
                         v-model="form.name"
@@ -31,7 +31,7 @@
                         </template>
                     </v-text-field>
                 </v-col>
-                <v-col cols="12" md="6" class="-mt24">
+                <v-col cols="12" md="6" class="mt24">
                     <SelectDivision
                         name="division"
                         v-model="division"
@@ -43,7 +43,7 @@
                         :dense="true"
                     > </SelectDivision>
                 </v-col>
-                <v-col cols="12" md="12" class="-mt24">
+                <v-col cols="12" md="12" class="mt24">
                     <v-textarea
                         name="note"
                         v-model="form.note"
@@ -112,10 +112,8 @@
                 division:null,
                 form:{
                     permission_id:[],
-                    code:'',
                     name:'',
                     division_id: '',
-                    note: '',
                 },
                 error:{},
                 putData:{},

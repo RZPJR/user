@@ -15,9 +15,12 @@ import {
   SelectDivision, 
   SelectRole, 
   SelectWarehouse,
+  SelectStatus,
   SelectUser,
   SelectSalesGroup,
   ConfirmationDialogNew,
+  PermissionCreate,
+  PermissionUpdate,
   DetailRowNew,
   LoadingBar
 } from "@vue-mf/global";
@@ -66,9 +69,12 @@ Vue.mixin({
     SelectDivision, 
     SelectRole, 
     SelectWarehouse,
+    SelectStatus,
     SelectUser,
     SelectSalesGroup,
     ConfirmationDialogNew,
+    PermissionCreate,
+    PermissionUpdate,
     DetailRowNew,
     LoadingBar
   },

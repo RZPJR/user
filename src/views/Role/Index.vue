@@ -50,14 +50,6 @@
                         dense
                     ></v-select>
                 </v-col>
-                <v-col cols="12" md="3" class="-mt24">
-                    <SelectDivision
-                        :dense="true"
-                        :norequired="true"
-                        v-model="division"
-                        @selected="divisionSelected"
-                    ></SelectDivision>
-                </v-col>
             </v-row>
         </div>
         <div class="box-title">
@@ -88,24 +80,19 @@
                 <template v-slot:item="props">
                     <tr style="height:48px">
                         <td>
-                            {{ props.item.code }}<br>
-                            <div class="text-black60">
-                                {{ props.item.name }}
-                            </div>
+                            {{ props.item.name }}
                         </td>
-                        <td>{{ props.item.division.name }}</td>
-                        <td>{{ props.item.note }}</td>
                         <td>
-                            <v-btn
-                                elevation="0"
-                                rounded
-                                depressed
-                                small
-                                class="no-caps mb4"
-                                :color="statusMaster(props.item.status_convert)"
-                            >
-                                {{capitalizeFirstLetter(props.item.status_convert)}}
-                            </v-btn>
+                            <div v-if="props.item.status == 1">
+                                <v-chip
+                                    :color="statusMaster('active')"
+                                ><span class="pa-md-2">Active</span></v-chip>
+                            </div>
+                            <div v-if="props.item.status == 2">
+                                <v-chip
+                                    :color="statusMaster('archived')"
+                                >Archived</v-chip>
+                            </div>
                         </td>
                         <td>
                             <v-menu>
@@ -187,27 +174,13 @@
                 table: {
                     fields: [
                         {
-                            text:'Code',
+                            text:'Name',
                             class: 'grey--text text--darken-4',
-                            width: "15%",
                             sortable: false,
-                        },
-                        {
-                            text:'Division',
-                            class: 'grey--text text--darken-4',
-                            width: "15%",
-                            sortable: false
-                        },
-                        {
-                            text:'Note',
-                            class: 'grey--text text--darken-4',
-                            width: "25%",
-                            sortable: false
                         },
                         {
                             text:'Status',
                             class: 'grey--text text--darken-4',
-                            width: "10%",
                             sortable: false
                         },
                         {
@@ -222,13 +195,13 @@
             }
         },
         created() {
-            this.renderData('',this.statuses,this.filter.division_id)
+            this.renderData('',this.statuses)
         },
         mounted() {
             let self = this
             this.$root.$on('event_success', function(res){
                 if (res) {
-                    self.renderData(self.search,self.statuses,self.filter.division_id)
+                    self.renderData(self.search,self.statuses)
                 }
             });
         },
@@ -258,7 +231,7 @@
                     }
                 }
             },
-            renderData(search, statuses, divisionID){
+            renderData(search, statuses){
                 this.loading = true;
                 this.items = []
                 if(statuses === 999){
@@ -266,15 +239,10 @@
                 }else{
                   statuses= "|status:"+statuses
                 }
-                if(divisionID === ''){
-                    divisionID = ''
-                }else{
-                    divisionID = "|division_id.e:"+ divisionID
-                }
                 this.$http.get("/role",{params:{
-                      perpage:10000,
+                      per_page:100,
                       embeds:'division_id',
-                      conditions:'Or.name.icontains:'+search+'%2COr.code.icontains:'+search+statuses+divisionID,
+                      conditions:'Or.name.icontains:'+search+'%2COr.code.icontains:'+search+statuses,
                       orderby:'-id',
                   }}).then(response => {
                   this.loading = false;
@@ -287,18 +255,6 @@
                     this.items = []
                 });
             },
-            divisionSelected(d) {
-                this.division = '';
-                this.filter.division_id = '';
-                this.disabled_role = true;
-                if (d) {
-                    this.division = d;
-                    this.filter.division_id = d.id;
-                    this.role = null;
-                    this.filter.role_id = '';
-                    this.disabled_role = false;
-                }
-            },
         },
         watch: {
             'search': {
@@ -306,7 +262,7 @@
                     let that = this
                     clearTimeout(this._timerId)
                     this._timerId = setTimeout(function(){
-                        that.renderData(search,that.statuses,that.filter.division_id)
+                        that.renderData(search,that.statuses)
                     }, 1000);
                 },
                 deep: true
@@ -314,17 +270,10 @@
             'statuses': {
                 handler: function (statuses) {
                     let that = this;
-                    that.renderData(this.search,statuses,this.filter.division_id)
+                    that.renderData(this.search,statuses)
                 },
                 deep: true
             },
-            'filter.division_id': {
-                handler: function (division_id) {
-                    let that = this;
-                    that.renderData(this.search,this.statuses,division_id)
-                },
-                deep: true
-            }
         },
     }
 </script>
