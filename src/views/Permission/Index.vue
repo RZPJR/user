@@ -131,8 +131,7 @@
                 }
                 this.$http.get("/permission",{params:{
                         per_page:100,
-                        conditions:'Or.name.icontains:'+search+'%2COr.code.icontains:'
-                        +search+statuses,
+                        conditions:'Or.name.icontains:'+search+statuses,
                     }}).then(response => {
                     this.loading = false
                     this.items = response.data.data

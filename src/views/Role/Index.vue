@@ -215,7 +215,6 @@
                         statusMsg : "Success to Archive this Role",
                         text : "Are you sure want to Archive this Role?",
                         urlApi : '/role/archive/'+id,
-                        nextPage : "/user/role/detail/"+id,
                         data : {}
                     }
                 } else {
@@ -226,7 +225,6 @@
                         statusMsg : "Success to Unarchive this Role",
                         text : "Are you sure want to Unarchive this Role?",
                         urlApi : '/role/unarchive/'+id,
-                        nextPage : "/user/role/detail/"+id,
                         data : {}
                     }
                 }
@@ -241,8 +239,7 @@
                 }
                 this.$http.get("/role",{params:{
                       per_page:100,
-                      embeds:'division_id',
-                      conditions:'Or.name.icontains:'+search+'%2COr.code.icontains:'+search+statuses,
+                      conditions:'Or.name.icontains:'+search+statuses,
                       orderby:'-id',
                   }}).then(response => {
                   this.loading = false;

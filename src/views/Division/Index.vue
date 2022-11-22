@@ -113,6 +113,15 @@
                                             <v-icon>open_in_new</v-icon>
                                         </v-list-item-icon>
                                     </v-list-item>
+                                    <div>
+                                        <hr/>
+                                    </div>
+                                    <v-list-item @click="changeStatus(props.item.status,props.item.id)" v-if="props.item.status=='1'">
+                                        <v-list-item-content>
+                                            <v-list-item-title>Archive</v-list-item-title>
+                                        </v-list-item-content>
+                                    </v-list-item>
+                                    <router-view></router-view>
                                 </v-list>
                             </v-menu>
                         </td>
@@ -120,6 +129,7 @@
                 </template>
             </v-data-table>
         </div>
+        <ConfirmationDialogNew :sendData="ConfirmData"/>
     </v-container>
 </template>
 
@@ -153,12 +163,32 @@
                     ],
                 },
                 items:[],
+                ConfirmData : {},
             }
         },
         mounted() {
             this.renderData('')
+            let self = this
+            this.$root.$on('event_success', function(res){
+                if (res) {
+                    self.renderData(self.search,self.statuses)
+                }
+            });
         },
         methods: {
+            changeStatus(val,id) {
+                if (val=='1') {
+                    this.ConfirmData = {
+                        model : true,
+                        status : true,
+                        title : "Archive",
+                        statusMsg : "Success to Archive this Division",
+                        text : "Are you sure want to Archive this Division?",
+                        urlApi : '/division/archive/'+id,
+                        data : {}
+                    }
+                }
+            },
             renderData(search){
                 this.loading = true;
                 this.items = []
@@ -170,8 +200,7 @@
                 }
                 this.$http.get("/division",{params:{
                         per_page:100,
-                        conditions:'Or.name.icontains:'+search+'%2COr.code.icontains:'
-                        +search+statuses,
+                        conditions:'Or.name.icontains:'+search+statuses,
                     }}).then(response => {
                     this.loading = false
                     this.items = response.data.data
