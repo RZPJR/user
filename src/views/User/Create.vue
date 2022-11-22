@@ -2,7 +2,7 @@
     <v-container fill-height class="main-container">
         <div class="box">
             <v-row class="mt24">
-                <v-col cols="12" md="6" class="-mt24">
+                <v-col cols="12" md="6">
                     <v-tooltip top>
                         <template v-slot:activator="{ on }">
                             <v-text-field
@@ -24,7 +24,7 @@
                         <span>Name according to Resident Identity Card (KTP)</span>
                     </v-tooltip>
                 </v-col>
-                <v-col cols="12" md="6" class="-mt24">
+                <v-col cols="12" md="6">
                     <v-tooltip top>
                         <template v-slot:activator="{ on }">
                             <v-text-field
@@ -67,7 +67,7 @@
                 <v-col cols="12" md="6" class="-mt24">
                     <SelectDivision
                         name="division"
-                        v-model="division"
+                        v-model="createUser.division"
                         @selected="divisionSelected"
                         :error="error.division_id"
                         required
@@ -77,7 +77,7 @@
                 <v-col cols="12" md="6" class="-mt24">
                     <SelectRole
                         name="role"
-                        v-model="role"
+                        v-model="createUser.role"
                         @selected="roleSelected"
                         :division_id="form.division_id"
                         :disabled="disabled_role"
@@ -100,9 +100,9 @@
                 <v-col cols="12" md="6" class="-mt24">
                     <SelectUser
                         name="user"
-                        v-model="supervisor"
+                        v-model="createUser.supervisor"
                         :dense="true"
-                        :user="supervisor"
+                        :user="createUser.supervisor"
                         :clear="clearUser"
                         :norequired="true"
                         @selected="supervisorSelected"
@@ -111,6 +111,7 @@
                 <v-col cols="12" md="6" class="-mt24">
                     <SelectArea
                         name="area"
+                        v-model="createUser.area"
                         :error="error.area_id"
                         :clear="clearArea"
                         :dense="true"
@@ -122,7 +123,7 @@
                         name="warehouse"
                         required
                         :error="error.warehouse_id"
-                        v-model="warehouse"
+                        v-model="createUser.warehouse"
                         :area_id="form.area_id"
                         :disabled="disabled_warehouse"
                         @selected="warehouseSelected"
@@ -166,7 +167,7 @@
                                 required
                                 outlined
                                 dense
-                                :rules="emailRules"
+                                :rules="createUser.emailRules"
                                 :error-messages="error.email"
                                 v-on="on"
                             >
@@ -180,7 +181,7 @@
                 </v-col>
                 <v-col cols="12" md="6" class="-mt24">
                     <v-text-field
-                        :append-icon="show_password ? 'mdi-eye' : 'mdi-eye-off'"
+                        :append-icon="show_password ? 'visibility' : 'visibility_off'"
                         :type="show_password ? 'text' : 'password'"
                         @click:append="show_password = !show_password"
                         name="password"
@@ -188,7 +189,7 @@
                         outlined
                         dense
                         :error-messages="error.password"
-                        :rules="passwordRules"
+                        :rules="createUser.passwordRules"
                         maxlength="32"
                     >
                         <template v-slot:label>
@@ -198,7 +199,7 @@
                 </v-col>
                 <v-col cols="12" md="6" class="-mt24">
                     <v-text-field
-                        :append-icon="show_confirm ? 'mdi-eye' : 'mdi-eye-off'"
+                        :append-icon="show_confirm ? 'visibility' : 'visibility_off'"
                         :type="show_confirm ? 'text' : 'password'"
                         @click:append="show_confirm = !show_confirm"
                         name="confirm_password"
@@ -206,7 +207,7 @@
                         outlined
                         dense
                         :error-messages="error.confirm_password"
-                        :rules="confirmPasswordRules"
+                        :rules="createUser.confirmPasswordRules"
                         maxlength="32"
                     >
                         <template v-slot:label>
@@ -215,19 +216,6 @@
                     </v-text-field>
                 </v-col>
             </v-row>
-        </div>
-        <div class="box-title fs16 bold">
-            Permissions
-        </div>
-        <div class="box-body">
-            <div class="-ma16">
-                <PermissionUpdate
-                    name="permission"
-                    v-model="form.permission_id"
-                    @selected="permissionChecked"
-                    :idPermission="permission"
-                ></PermissionUpdate>
-            </div>
         </div>
         <div class="box-end">
             <v-row class="-ma16">
@@ -260,6 +248,8 @@
 </template>
 <script>
     import Vue from 'vue'
+    import { mapState, mapMutations } from "vuex";
+
     export default {
         name: "UserCreate",
         data () {
@@ -267,73 +257,32 @@
                 ConfirmData:{},
                 show_password:false,
                 show_confirm:false,
-                permission:[],
-                division:{},
                 disabled_role:true,
                 disabled_warehouse:true,
-                supervisor:'',
-                role:'',
-                sales_group:'',
-                area:{},
-                warehouse:{},
                 clearArea:false,
                 clearWarehouse:false,
                 clearRole:false,
                 clearSalesGroup:false,
                 clearUser:false,
-                form:{
-                    name: '',
-                    display_name: '',
-                    employee_code: '',
-                    password:'',
-                    confirm_password:'',
-                    division_id: '',
-                    supervisor_id: '',
-                    role_id: '',
-                    sales_group_id: '',
-                    area_id: '',
-                    warehouse_id: '',
-                    phone_number: '',
-                    email: '',
-                    note: '',
-                    permission_id:[],
-                },
-                emailRules: [
-                    v => !!v || 'Please Enter email',
-                    v => /.+@.+/.test(v) || 'E-mail must be valid',
-                ],
-                passwordRules: [
-                    v => !!v || 'Password is required',
-                    v => (v && v.length >= 8) || 'Password at least 8 characters',
-                ],
-                confirmPasswordRules: [
-                    (value) => !!value || 'Confirm password is required',
-                    (value) =>
-                        value === this.form.password || 'The password confirmation does not match.',
-                ],
                 error:{}
             }
         },
+        computed: {
+            ...mapState({
+                createUser: state => state.user.createUser,
+                form: state => state.user.createUser.form,
+            }),
+        },
         methods:{
+            ...mapMutations([
+                "setDivisionCreateUser",
+                "setRoleCreateUser",
+                "setSalesGroupCreateUser",
+                "setSupervisorCreateUser",
+                "setAreaCreateUser",
+                "setWarehouseCreateUser",
+            ]),
             confirmButton() {
-                this.form.permission_id.push("65536")
-                let data = {
-                    name :this.form.name,
-                    display_name :this.form.display_name,
-                    employee_code :this.form.employee_code,
-                    password: this.form.password,
-                    confirm_password: this.form.confirm_password,
-                    division_id: this.form.division_id,
-                    supervisor_id: this.form.supervisor_id,
-                    role_id: this.form.role_id,
-                    sales_group_id: this.form.sales_group_id,
-                    area_id: this.form.area_id,
-                    note: this.form.note,
-                    email: this.form.email,
-                    warehouse_id:this.form.warehouse_id,
-                    phone_number: this.form.phone_number,
-                    permission_id: this.form.permission_id,
-                }
                 this.ConfirmData = {
                     model : true,
                     title : "Create User",
@@ -341,87 +290,44 @@
                     urlApi : '/user',
                     nextPage : '/user/user',
                     post : true,
-                    data : data
+                    data : this.form
                 }
             },
-            // submit () {
-            //     this.form.permission_id.push("65536")
-            //     this.$http.post('/user',
-            //     {
-            //         name :this.form.name,
-            //         display_name :this.form.display_name,
-            //         employee_code :this.form.employee_code,
-            //         password: this.form.password,
-            //         confirm_password: this.form.confirm_password,
-            //         division_id: this.form.division_id,
-            //         supervisor_id: this.form.supervisor_id,
-            //         role_id: this.form.role_id,
-            //         sales_group_id: this.form.sales_group_id,
-            //         area_id: this.form.area_id,
-            //         note: this.form.note,
-            //         email: this.form.email,
-            //         warehouse_id:this.form.warehouse_id,
-            //         phone_number: this.form.phone_number,
-            //         permission_id: this.form.permission_id,
-            //     }).then(response => {
-            //         this.$router.push('/user/user');
-            //     })
-            //     .catch(e => {
-            //         this.error = e.errors
-            //     });
-            // },
             divisionSelected(d) {
-                this.division = null;
-                this.form.division_id = '';
-                this.form.permission_id = [];
-                this.permission = [];
-                this.form.role_id = '';
-                this.form.sales_group_id = '';
-                this.form.supervisor_id = '';
-                this.form.area_id = '';
-                this.role = null;
+                this.$store.commit('setDivisionCreateUser', null)
+                this.$store.commit('setRoleCreateUser', null)
+                this.$store.commit('setSalesGroupCreateUser', '')
+                this.$store.commit('setSupervisorCreateUser', null)
+                this.$store.commit('setAreaCreateUser', null)
                 this.disabled_role = true
                 this.clearRole = true;
                 this.clearUser = true
                 this.clearArea = true
                 if (d !== '' && d !== undefined) {
-                    this.division = d;
-                    this.form.division_id = d.id;
+                    this.$store.commit('setDivisionCreateUser', d)
                     this.disabled_role = false
                     this.clearRole = false;
                 }
             },
             roleSelected(d) {
-                this.role = null;
-                this.form.role_id = '';
-                this.form.permission_id = [];
-                this.permission = [];
-                this.form.sales_group_id = '';
-                this.form.supervisor_id = '';
-                this.form.area_id = '';
+                this.$store.commit('setRoleCreateUser', null)
+                this.$store.commit('setSalesGroupCreateUser', '')
+                this.$store.commit('setSupervisorCreateUser', null)
+                this.$store.commit('setAreaCreateUser', null)
                 if (d !== ''  && d !== undefined) {
-                    this.role = d;
-                    this.form.role_id = d.id
-                    this.$http.get("/role/permission",{params:{
-                            conditions:'role_id.e:'+d.id,
-                            orderby:'-id',
-                        }}).then(response => {
-                        response.data.data.forEach((value, index) =>{
-                            this.permission.push(value.permission.id)
-                        })
-                    });
+                    this.$store.commit('setRoleCreateUser', d)
                 }
             },
             salesGroupSelected(d) {
-                this.form.sales_group_id = '';
-                this.form.supervisor_id = '';
-                this.form.area_id = '';
+                this.$store.commit('setSalesGroupCreateUser', '')
+                this.$store.commit('setSupervisorCreateUser', null)
+                this.$store.commit('setAreaCreateUser', null)
                 this.clearUser = true
                 this.clearArea = true
                 if(d){
                     this.clearUser = false
                     this.clearArea = false
-                    this.form.sales_group_id = d.id
+                    this.$store.commit('setSalesGroupCreateUser', d.id)
                     Vue.nextTick(() => {
                         this.supervisorSelected(d.sls_man)
                         this.areaSelected(d.area)
@@ -429,38 +335,26 @@
                 }
             },
             supervisorSelected(d) {
-                this.supervisor = null;
-                this.form.supervisor_id = '';
+                this.$store.commit('setSupervisorCreateUser', null)
                 if (d !== ''  && d !== undefined) {
-                    this.supervisor = d;
-                    this.form.supervisor_id = d.id
+                    this.$store.commit('setSupervisorCreateUser', d)
                 }
             },
             areaSelected(d) {
-                this.area = null;
-                this.form.area_id = '';
-                this.warehouse = null;
-                this.form.warehouse_id = '';
+                this.$store.commit('setAreaCreateUser', null)
+                this.$store.commit('setWarehouseCreateUser', null)
                 this.clearWarehouse = true
                 this.disabled_warehouse = true
                 if (d !== ''  && d !== undefined) {
-                    this.area = d;
-                    this.form.area_id = d.id
+                    this.$store.commit('setAreaCreateUser', d)
                     this.disabled_warehouse = false
                     this.clearWarehouse = false
                 }
             },
             warehouseSelected(d) {
-                this.warehouse = null;
-                this.form.warehouse_id = '';
+                this.$store.commit('setWarehouseCreateUser', null)
                 if (d !== ''  && d !== undefined) {
-                    this.warehouse = d;
-                    this.form.warehouse_id = d.id
-                }
-            },
-            permissionChecked(d) {
-                if (d.length >0 ) {
-                    this.form.permission_id = d
+                    this.$store.commit('setWarehouseCreateUser', d)
                 }
             },
         },
