@@ -120,39 +120,45 @@
                 <template v-slot:item="props">
                     <tr style="height:48px">
                         <td>
-                            {{ props.item.name }}
-                        </td>
-                        <td>{{ props.item.display_name }}<br>
+                            {{ props.item.employee_code }}
                             <label class="text-black60">
-                                {{ props.item.sales_group_name == undefined ? " " : props.item.sales_group_name }}
+                                {{ props.item.name }}
                             </label>
                         </td>
                         <td>
-                            {{ props.item.role.code }}-{{ props.item.role.name }}<br>
-                            <label class="text-black60">
-                                {{ props.item.role.division.code }}-{{ props.item.role.division.name }}
-                            </label>
+                            {{ props.item.nickname }}
                         </td>
                         <td>
-                            <span v-if="props.item.area">
-                                {{ props.item.area.code }}-{{ props.item.area.name }}
-                            </span>
-                            <span v-else>-</span><br>
-                            <label class="text-black60">
-                                {{ props.item.warehouse.code }}-{{ props.item.warehouse.name }}
-                            </label>
+                            <div v-if="props.item.roles.length > 1">
+                                <v-tooltip color="black" top>
+                                    <template v-slot:activator="{ on: tooltip }">
+                                        <span v-on="{ ...tooltip }"> {{ props.item.roles[0].name }}... </span>
+                                    </template>
+                                    <div v-for="(item, idx) in props.item.roles" :key="idx">
+                                        <span> 
+                                            {{ item.name }} 
+                                        </span>
+                                    </div>
+                                </v-tooltip>
+                            </div>
+                            <div v-else>
+                                {{ props.item.roles[0].name }}
+                            </div>
                         </td>
                         <td>
-                            <v-btn
-                                elevation="0"
-                                rounded
-                                depressed
-                                small
-                                class="no-caps mb4"
-                                :color="statusMaster(props.item.user.status_convert)"
-                            >
-                                {{capitalizeFirstLetter(props.item.user.status_convert)}}
-                            </v-btn>
+                            -
+                        </td>
+                        <td>
+                            <div v-if="props.item.status == 1">
+                                <v-chip
+                                    :color="statusMaster('active')"
+                                ><span class="pa-md-2">Active</span></v-chip>
+                            </div>
+                            <div v-if="props.item.status == 2">
+                                <v-chip
+                                    :color="statusMaster('archived')"
+                                >Archived</v-chip>
+                            </div>
                         </td>
                         <td>
                             <v-menu>
