@@ -75,7 +75,7 @@
                     > </SelectDivision>
                 </v-col>
                 <v-col cols="12" md="6" class="-mt24">
-                    <SelectRole
+                    <MultiSelectRole
                         name="role"
                         v-model="createUser.role"
                         @selected="roleSelected"
@@ -85,51 +85,7 @@
                         :clear="clearRole"
                         :dense="true"
                         required
-                    > </SelectRole>
-                </v-col>
-                <v-col cols="12" md="6" class="-mt24" v-if="form.role_id == 524288">
-                    <SelectSalesGroup
-                        v-if="form.role_id == 524288"
-                        :norequired="true"
-                        :clear="clearSalesGroup"
-                        @selected="salesGroupSelected"
-                        :dense="true"
-                        :error="error.sales_group_id"
-                    ></SelectSalesGroup>
-                </v-col>
-                <v-col cols="12" md="6" class="-mt24">
-                    <SelectUser
-                        name="user"
-                        v-model="createUser.supervisor"
-                        :dense="true"
-                        :user="createUser.supervisor"
-                        :clear="clearUser"
-                        :norequired="true"
-                        @selected="supervisorSelected"
-                    > </SelectUser>
-                </v-col>
-                <v-col cols="12" md="6" class="-mt24">
-                    <SelectArea
-                        name="area"
-                        v-model="createUser.area"
-                        :error="error.area_id"
-                        :clear="clearArea"
-                        :dense="true"
-                        @selected="areaSelected"
-                    ></SelectArea>
-                </v-col>
-                <v-col cols="12" md="6" class="-mt24">
-                    <SelectWarehouse
-                        name="warehouse"
-                        required
-                        :error="error.warehouse_id"
-                        v-model="createUser.warehouse"
-                        :area_id="form.area_id"
-                        :disabled="disabled_warehouse"
-                        @selected="warehouseSelected"
-                        :clear="clearWarehouse"
-                        :dense="true"
-                    ></SelectWarehouse>
+                    > </MultiSelectRole>
                 </v-col>
                 <v-col cols="12" md="12" class="-mt24">
                     <v-textarea
@@ -316,28 +272,6 @@
                 this.$store.commit('setAreaCreateUser', null)
                 if (d !== ''  && d !== undefined) {
                     this.$store.commit('setRoleCreateUser', d)
-                }
-            },
-            salesGroupSelected(d) {
-                this.$store.commit('setSalesGroupCreateUser', '')
-                this.$store.commit('setSupervisorCreateUser', null)
-                this.$store.commit('setAreaCreateUser', null)
-                this.clearUser = true
-                this.clearArea = true
-                if(d){
-                    this.clearUser = false
-                    this.clearArea = false
-                    this.$store.commit('setSalesGroupCreateUser', d.id)
-                    Vue.nextTick(() => {
-                        this.supervisorSelected(d.sls_man)
-                        this.areaSelected(d.area)
-                    });
-                }
-            },
-            supervisorSelected(d) {
-                this.$store.commit('setSupervisorCreateUser', null)
-                if (d !== ''  && d !== undefined) {
-                    this.$store.commit('setSupervisorCreateUser', d)
                 }
             },
             areaSelected(d) {

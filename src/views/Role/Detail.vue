@@ -52,7 +52,7 @@
             </v-row>
             <v-row>
                 <v-col cols="12" md="6" class="-mt24">
-                    <DetailRowNew :name="'Code'" :value="item.code"/>
+                    <DetailRowNew :name="'Name'" :value="item.name"/>
                 </v-col>
                 <v-col cols="12" md="6" class="-mt24">
                     <DetailRowNew :name="'Division'" :value="item.division.name"/>
@@ -98,9 +98,7 @@
         },
         methods: {
             async permissionData(){
-                await this.$http.get("/role/permission",{params:{
-                        embeds:'permission_id.parent_id',
-                        conditions:'role_id.e:'+this.$route.params.id,
+                await this.$http.get("/role/" + this.$route.params.id,{params:{
                     }}).then(response => {
                         if(response.data.data){
                             let c = [];
@@ -154,8 +152,8 @@
             async renderData(){
                 await this.$http.get("/role/" + this.$route.params.id).then(response => {
                     this.item = response.data.data
-                    // this.permission=[]
-                    // this.permissionData()
+                    this.permission=[]
+                    this.permissionData()
                 });
             },
             changeStatus(val,id) {

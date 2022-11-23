@@ -21,6 +21,7 @@ import {
   ConfirmationDialogNew,
   PermissionCreate,
   PermissionUpdate,
+  MultiSelectRole,
   DetailRowNew,
   LoadingBar
 } from "@vue-mf/global";
@@ -76,6 +77,7 @@ Vue.mixin({
     PermissionCreate,
     PermissionUpdate,
     DetailRowNew,
+    MultiSelectRole,
     LoadingBar
   },
   data: function() {
