@@ -28,28 +28,29 @@ const actions = {
     fetchUpdateUserDetail: async ({ commit, dispatch }, payload) => {
         commit("setPreloadUpdateUserForm", true);
         try {
-            const response = await http.get("/user/staff/"+payload.id);
+            const response = await http.get("/user/"+payload.id);
             let res = response.data.data
             if (response.data.data) {
+                let items = response.data.data
+                let selected_sub_roles = []
+                if (items.sub_roles.length > 0) {
+                    selected_sub_roles = items.sub_roles.map((e)=>{return e.id})
+                }
                 commit("setUpdateUserForm", {                
-                    idUser: res.user.id,
-                    name: res.name,
-                    email: res.user.email,
-                    display_name: res.display_name,
-                    employee_code: res.employee_code,
-                    division_id: res.role.division.id,
-                    supervisor_id: '',
-                    role_id: res.role.id,
-                    sales_group_id: res.sales_group_id == 0 ? '' : res.sales_group_id,
-                    area_id: res.area.id,
-                    warehouse_id: res.warehouse.id,
-                    phone_number: res.phone_number,
-                    note: res.user.note,
+                    idUser: items.id,
+                    employee_code: items.employee_code,
+                    name: items.name,
+                    nickname: items.nickname,
+                    main_role: items.main_role.id,
+                    sub_roles: selected_sub_roles,
+                    phone_number: items.phone_number,
+                    email: items.email,
+                    region_id: 1,
+                    site_id: 1,
                 })
-                commit("setDivisionUpdateUser", res.role.division)
-                commit("setRoleUpdateUser", res.role)
-                commit("setAreaUpdateUser", res.area)
-                commit("setWarehouseUpdateUser", res.warehouse)
+                commit("setDivisionUpdateUser", res.main_role.division)
+                commit("setMainRoleUpdateUser", res.main_role)
+                commit("setRoleUpdateUser", res.sub_roles)
             }
             commit("setPreloadUpdateUserForm", false);            
         } catch (error) {

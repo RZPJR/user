@@ -44,44 +44,35 @@ const mutations = {
         return state;
     },
 
-    // Update User
+    // #region Update User
     setUpdateUserForm: function(state, payload) {
-        state.updateUser.form = payload;
+        state.update_user.form = payload;
         return state;
     },
     setPreloadUpdateUserForm: function(state, payload) {
-        state.updateUser.isLoading = payload;
+        state.update_user.is_loading = payload;
         return state;
     },
     setDivisionUpdateUser: function(state, payload) {
-        state.updateUser.division = payload;
-        state.updateUser.form.division_id = payload ? payload.id : ''
+        state.update_user.division = payload;
+        state.update_user.division_id = payload ? payload.id : ''
+        return state;
+    },
+    setMainRoleUpdateUser: function(state, payload) {
+        state.update_user.main_role = payload;
+        state.update_user.form.main_role = payload ? payload.id : ''
+        return state;
+    },    
+    setFormRoleUpdateUser: function(state, payload) {
+        state.update_user.form.sub_roles = payload;
         return state;
     },
     setRoleUpdateUser: function(state, payload) {
-        state.updateUser.role = payload;
-        state.updateUser.form.role_id = payload ? payload.id : ''
+        state.update_user.role = payload;
         return state;
     },
-    setSalesGroupUpdateUser: function(state, payload) {
-        state.UpdateUser.form.sales_group_id = payload
-        return state;
-    },
-    setSupervisorUpdateUser: function(state, payload) {
-        state.updateUser.supervisor = payload;
-        state.updateUser.form.supervisor_id = payload ? payload.id : ''
-        return state;
-    },
-    setAreaUpdateUser: function(state, payload) {
-        state.updateUser.area = payload;
-        state.updateUser.form.area_id = payload ? payload.id : ''
-        return state;
-    },
-    setWarehouseUpdateUser: function(state, payload) {
-        state.updateUser.warehouse = payload;
-        state.updateUser.form.warehouse_id = payload ? payload.id : ''
-        return state;
-    },
+    // #endregion Update User
+
 };
 
 export default mutations;
