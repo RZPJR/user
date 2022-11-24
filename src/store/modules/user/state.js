@@ -1,8 +1,8 @@
 const state = {
     // Readlist User
-    userList: {
+    user_list: {
         data: [],
-        isLoading: [],
+        is_loading: [],
         filter:{
             area: null,
             division: null,
@@ -11,26 +11,29 @@ const state = {
             status: 1,
             warehouse: null,
         },
-        tableHeaders: [
+        table_headers: [
             {
                 text:'Code',
                 class: 'grey--text text--darken-4',
-                width: '12%',
+                width: '10%',
                 sortable: false,
             },
             {
                 class: 'grey--text text--darken-4',
                 text:'Display Name',
+                width: '30%',
                 sortable: false,
             },
             {
                 text:'Role',
                 class: 'grey--text text--darken-4',
+                width: '40%',
                 sortable: false,
             },
             {
                 text:'Area',
                 class: 'grey--text text--darken-4',
+                width: '20%',
                 sortable: false,
             },
             {
@@ -48,38 +51,41 @@ const state = {
     },
 
     // Create User
-    createUser: {
+    create_user: {
         form: {
+            employee_code: '',
             name: '',
             nickname: '',
+            region_id: 1, // area - sementara
+            site_id: 1, // warehouse - sementara
+            main_role: null,
+            sub_roles: [],
+            phone_number: '',
             email: '',
             password:'',
             password_confirm:'',
-            region_id: null,
-            parent_id: null,
-            site_id: null,
-            territory_id: null,
-            employee_code: '',
-            phone_number: '',
-            roles: [],
+            parent_id: null, // supervisor
+            territory_id: null, // salesperson id
         },
+        division_id: null,
         division: null,
+        main_role: [],
         role: [],
-        region_id: null,
-        parent_id: null,
-        site_id: null,
-        territory_id: null,
-        emailRules: [
+        // region_id: null,
+        // parent_id: null,
+        // site_id: null,
+        // territory_id: null,
+        email_rules: [
             v => !!v || 'Please Enter email',
             v => /.+@.+/.test(v) || 'E-mail must be valid',
         ],
-        passwordRules: [
+        password_rules: [
             v => !!v || 'Password is required',
             v => (v && v.length >= 8) || 'Password at least 8 characters',
         ],
-        confirmPasswordRules: [
+        confirm_password_rules: [
             (value) => !!value || 'Confirm password is required',
-            (value) => value === state.createUser.form.password || 'The password confirmation does not match.',
+            (value) => value === state.create_user.form.password || 'The password confirmation does not match.',
         ],
     },
 

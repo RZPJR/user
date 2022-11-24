@@ -5,12 +5,12 @@ const actions = {
         commit("setPreloadUserList", true);
         commit("setUserList", []);
         try {
-            let search = state.userList.filter.search
-            let status = state.userList.filter.status === 999 ? '' : "|status:"+state.userList.filter.status
-            let area = !state.userList.filter.area ? '' : "|area_id.e:"+state.userList.filter.area.id
-            let division = !state.userList.filter.division ? '' : "|role_id.division_id.id.e:"+state.userList.filter.division.id
-            let role = !state.userList.filter.role ? '' : "|role_id.e:"+state.userList.filter.role.id
-            let warehouse = !state.userList.filter.warehouse ? '' : "|warehouse_id.e:"+state.userList.filter.warehouse.id            
+            let search = state.user_list.filter.search
+            let status = state.user_list.filter.status === 999 ? '' : "|status:"+state.user_list.filter.status
+            let area = !state.user_list.filter.area ? '' : "|area_id.e:"+state.user_list.filter.area.id
+            let division = !state.user_list.filter.division ? '' : "|role_id.division_id.id.e:"+state.user_list.filter.division.id
+            let role = !state.user_list.filter.role ? '' : "|role_id.e:"+state.user_list.filter.role.id
+            let warehouse = !state.user_list.filter.warehouse ? '' : "|warehouse_id.e:"+state.user_list.filter.warehouse.id            
             const response = await http.get("/user", {
                 params: {
                     per_page:10000,

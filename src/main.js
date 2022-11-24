@@ -25,9 +25,15 @@ import {
   DetailRowNew,
   LoadingBar
 } from "@vue-mf/global";
+import Vuetify from "vuetify/lib";
 
 Vue.config.productionTip = false;
 Vue.use(VueToast);
+Vue.use(Vuetify, {
+  components: {
+    ConfirmationDialogNew,
+  }
+})
 
 const vueLifecycles = singleSpaVue({
   Vue,
