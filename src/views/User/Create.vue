@@ -6,6 +6,26 @@
                     <v-tooltip top>
                         <template v-slot:activator="{ on }">
                             <v-text-field
+                                name="employee_code"
+                                v-model="form.employee_code"
+                                required
+                                outlined
+                                dense
+                                :error-messages="error.employee_code"
+                                v-on="on"
+                            >
+                            <template v-slot:label>
+                                Employee Code<span style="color:red">*</span>
+                            </template>
+                            </v-text-field>
+                        </template>
+                        <span>Employee ID in HR System</span>
+                    </v-tooltip>
+                </v-col>
+                <v-col cols="12" md="6">
+                    <v-tooltip top>
+                        <template v-slot:activator="{ on }">
+                            <v-text-field
                                 name="name"
                                 v-model="form.name"
                                 required
@@ -24,16 +44,16 @@
                         <span>Name according to Resident Identity Card (KTP)</span>
                     </v-tooltip>
                 </v-col>
-                <v-col cols="12" md="6">
+                <v-col cols="12" md="6" class="-mt24">
                     <v-tooltip top>
                         <template v-slot:activator="{ on }">
                             <v-text-field
                                 name="display_name"
-                                v-model="form.display_name"
+                                v-model="form.nickname"
                                 required
                                 outlined
                                 dense
-                                :error-messages="error.display_name"
+                                :error-messages="error.nickname"
                                 v-on="on"
                             >
                             <template v-slot:label>
@@ -45,29 +65,9 @@
                     </v-tooltip>
                 </v-col>
                 <v-col cols="12" md="6" class="-mt24">
-                    <v-tooltip top>
-                        <template v-slot:activator="{ on }">
-                            <v-text-field
-                                name="employee_code"
-                                v-model="form.employee_code"
-                                required
-                                outlined
-                                dense
-                                :error-messages="error.employee_code"
-                                v-on="on"
-                            >
-                            <template v-slot:label>
-                                Employee Code<span style="color:red">*</span>
-                            </template>
-                            </v-text-field>
-                        </template>
-                        <span>Employee ID in HR System</span>
-                    </v-tooltip>
-                </v-col>
-                <v-col cols="12" md="6" class="-mt24">
                     <SelectDivision
                         name="division"
-                        v-model="createUser.division"
+                        v-model="create_user.division"
                         @selected="divisionSelected"
                         :error="error.division_id"
                         required
@@ -75,29 +75,32 @@
                     > </SelectDivision>
                 </v-col>
                 <v-col cols="12" md="6" class="-mt24">
+                    <SelectRole
+                        name="role"
+                        label="Main Role"
+                        v-model="create_user.main_role"
+                        @selected="mainRoleSelected"
+                        :division_id="create_user.division_id"
+                        :disabled="disabled_main_role"
+                        :error="error.role_id"
+                        :clear="clear_main_role"
+                        :dense="true"
+                        required
+                    > </SelectRole>
+                </v-col>
+                <v-col cols="12" class="-mt24">
                     <MultiSelectRole
                         name="role"
-                        v-model="createUser.role"
+                        v-model="create_user.role"
                         @selected="roleSelected"
-                        :division_id="form.division_id"
+                        :division_id="create_user.division_id"
+                        :main_role="form.main_role"
                         :disabled="disabled_role"
                         :error="error.role_id"
-                        :clear="clearRole"
+                        :clear="clear_role"
                         :dense="true"
                         required
                     > </MultiSelectRole>
-                </v-col>
-                <v-col cols="12" md="12" class="-mt24">
-                    <v-textarea
-                        name="note"
-                        v-model="form.note"
-                        :counter="100"
-                        maxlength="100"
-                        outlined
-                        rows="3"
-                    >
-                        <template v-slot:label>Note</template>
-                    </v-textarea>
                 </v-col>
                 <v-col cols="12" md="6" class="-mt24">
                     <v-text-field
@@ -123,7 +126,7 @@
                                 required
                                 outlined
                                 dense
-                                :rules="createUser.emailRules"
+                                :rules="create_user.email_rules"
                                 :error-messages="error.email"
                                 v-on="on"
                             >
@@ -145,7 +148,7 @@
                         outlined
                         dense
                         :error-messages="error.password"
-                        :rules="createUser.passwordRules"
+                        :rules="create_user.password_rules"
                         maxlength="32"
                     >
                         <template v-slot:label>
@@ -159,11 +162,11 @@
                         :type="show_confirm ? 'text' : 'password'"
                         @click:append="show_confirm = !show_confirm"
                         name="confirm_password"
-                        v-model="form.confirm_password"
+                        v-model="form.password_confirm"
                         outlined
                         dense
-                        :error-messages="error.confirm_password"
-                        :rules="createUser.confirmPasswordRules"
+                        :error-messages="error.password_confirm"
+                        :rules="create_user.confirm_password_rules"
                         maxlength="32"
                     >
                         <template v-slot:label>
@@ -199,47 +202,39 @@
                 </v-col>
             </v-row>
         </div>
-        <ConfirmationDialogNew :sendData="ConfirmData"/>
+        <ConfirmationDialogNew :sendData="confirm_data"/>
     </v-container>
 </template>
 <script>
-    import Vue from 'vue'
     import { mapState, mapMutations } from "vuex";
 
     export default {
         name: "UserCreate",
         data () {
             return {
-                ConfirmData:{},
+                confirm_data:{},
                 show_password:false,
                 show_confirm:false,
+                disabled_main_role: true,
                 disabled_role:true,
-                disabled_warehouse:true,
-                clearArea:false,
-                clearWarehouse:false,
-                clearRole:false,
-                clearSalesGroup:false,
-                clearUser:false,
+                clear_main_role: false,
+                clear_role:false,
                 error:{}
             }
         },
         computed: {
             ...mapState({
-                createUser: state => state.user.createUser,
-                form: state => state.user.createUser.form,
+                create_user: state => state.user.create_user,
+                form: state => state.user.create_user.form,
             }),
         },
         methods:{
             ...mapMutations([
                 "setDivisionCreateUser",
                 "setRoleCreateUser",
-                "setSalesGroupCreateUser",
-                "setSupervisorCreateUser",
-                "setAreaCreateUser",
-                "setWarehouseCreateUser",
             ]),
             confirmButton() {
-                this.ConfirmData = {
+                this.confirm_data = {
                     model : true,
                     title : "Create User",
                     text : "Are you sure want to create this user?",
@@ -251,44 +246,34 @@
             },
             divisionSelected(d) {
                 this.$store.commit('setDivisionCreateUser', null)
+                this.$store.commit('setMainRoleCreateUser', null)
                 this.$store.commit('setRoleCreateUser', null)
-                this.$store.commit('setSalesGroupCreateUser', '')
-                this.$store.commit('setSupervisorCreateUser', null)
-                this.$store.commit('setAreaCreateUser', null)
-                this.disabled_role = true
-                this.clearRole = true;
-                this.clearUser = true
-                this.clearArea = true
+                this.disabled_main_role = true
+                this.clear_role = true
+                this.clear_main_role = true
                 if (d !== '' && d !== undefined) {
                     this.$store.commit('setDivisionCreateUser', d)
-                    this.disabled_role = false
-                    this.clearRole = false;
+                    this.disabled_main_role = false
+                    this.clear_main_role = false
+                    this.clear_role = false
                 }
             },
-            roleSelected(d) {
+            mainRoleSelected(d) {
+                this.$store.commit('setMainRoleCreateUser', null)
                 this.$store.commit('setRoleCreateUser', null)
-                this.$store.commit('setSalesGroupCreateUser', '')
-                this.$store.commit('setSupervisorCreateUser', null)
-                this.$store.commit('setAreaCreateUser', null)
+                this.disabled_role = true
                 if (d !== ''  && d !== undefined) {
-                    this.$store.commit('setRoleCreateUser', d)
+                    this.$store.commit('setMainRoleCreateUser', d)
+                    this.disabled_role = false
                 }
             },
-            areaSelected(d) {
-                this.$store.commit('setAreaCreateUser', null)
-                this.$store.commit('setWarehouseCreateUser', null)
-                this.clearWarehouse = true
-                this.disabled_warehouse = true
+            async roleSelected(d) {
+                this.$store.commit('setRoleCreateUser', null)
                 if (d !== ''  && d !== undefined) {
-                    this.$store.commit('setAreaCreateUser', d)
-                    this.disabled_warehouse = false
-                    this.clearWarehouse = false
-                }
-            },
-            warehouseSelected(d) {
-                this.$store.commit('setWarehouseCreateUser', null)
-                if (d !== ''  && d !== undefined) {
-                    this.$store.commit('setWarehouseCreateUser', d)
+                    let selected_sub_roles = await d.map((e) => {
+                        return e.id
+                    })
+                    this.$store.commit('setRoleCreateUser', selected_sub_roles)
                 }
             },
         },
@@ -301,23 +286,10 @@
         watch: {
             'form.phone_number': {
                 handler: function (val) {
-                    let that = this
-                    that.form.phone_number = val.replace(/^0+/, '')
+                    this.form.phone_number = val.replace(/^0+/, '')
                 },
                 deep: true
             },
-            'form.sales_group_id':{
-                handler: function (val) {
-                    if(val == ''){
-                        this.clearUser = true
-                        this.clearArea = true
-                    }else{
-                        this.clearUser = false
-                        this.clearArea = false
-                    }
-                },
-                deep: true
-            }
         },
     }
 </script>
