@@ -2,20 +2,7 @@
     <v-container fill-height class="main-container">
         <div class="box">
             <v-row class="mt24">
-                <v-col cols="12" md="6" class="mt24">
-                    <v-text-field
-                        name="code"
-                        v-model="form.code"
-                        :counter="15"
-                        label="Code"
-                        required
-                        outlined
-                        disabled
-                        dense
-                        :error-messages="error.code"
-                    ></v-text-field>
-                </v-col>
-                <v-col cols="12" md="6" class="mt24">
+                <v-col cols="12" md="6" class="mt18">
                     <v-text-field
                         name="name"
                         v-model="form.name"
@@ -31,7 +18,7 @@
                         </template>
                     </v-text-field>
                 </v-col>
-                <v-col cols="12" md="6" class="mt24">
+                <v-col cols="12" md="6" class="mt18">
                     <SelectDivision
                         name="division"
                         v-model="division"
@@ -42,21 +29,6 @@
                         required
                         :dense="true"
                     > </SelectDivision>
-                </v-col>
-                <v-col cols="12" md="12" class="mt24">
-                    <v-textarea
-                        name="note"
-                        v-model="form.note"
-                        :counter="250"
-                        outlined
-                        rows="3"
-                    >
-                        <template v-slot:label>
-                            <div>
-                                Note
-                            </div>
-                        </template>
-                    </v-textarea>
                 </v-col>
             </v-row>
         </div>
@@ -111,7 +83,7 @@
                 permission:[],
                 division:null,
                 form:{
-                    permission_id:[],
+                    permission:[],
                     name:'',
                     division_id: '',
                 },
@@ -142,7 +114,10 @@
                 await this.$http.get("/role/" + this.$route.params.id).then(response => {
                     this.form = response.data.data
                     this.divisionSelected(this.form.division);
-                    this.permissionData(this.form.id)
+                    this.permission=[]
+                    response.data.data.permissions.forEach((value, index) => {
+                        this.permission.push(value[index])
+                    })
                 });
             },
             async permissionData(id){
