@@ -1,27 +1,27 @@
 const mutations = {
     // Readlist User
     setUserList: function(state, payload) {
-        state.userList.data = payload;
+        state.user_list.data = payload;
         return state;
     },
     setPreloadUserList: function(state, payload) {
-        state.userList.isLoading = payload;
+        state.user_list.is_loading = payload;
         return state;
     },
     setAreaFilterUserList: function(state, payload) {
-        state.userList.filter.area = payload;
+        state.user_list.filter.area = payload;
         return state;
     },
     setDivisionFilterUserList: function(state, payload) {
-        state.userList.filter.division = payload;
+        state.user_list.filter.division = payload;
         return state;
     },
     setRoleFilterUserList: function(state, payload) {
-        state.userList.filter.role = payload;
+        state.user_list.filter.role = payload;
         return state;
     },
     setWarehouseFilterUserList: function(state, payload) {
-        state.userList.filter.warehouse = payload;
+        state.user_list.filter.warehouse = payload;
         return state;
     },
 

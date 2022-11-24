@@ -1,8 +1,8 @@
 const state = {
     // Readlist User
-    userList: {
+    user_list: {
         data: [],
-        isLoading: [],
+        is_loading: [],
         filter:{
             area: null,
             division: null,
@@ -11,26 +11,29 @@ const state = {
             status: 1,
             warehouse: null,
         },
-        tableHeaders: [
+        table_headers: [
             {
                 text:'Code',
                 class: 'grey--text text--darken-4',
-                width: '12%',
+                width: '10%',
                 sortable: false,
             },
             {
                 class: 'grey--text text--darken-4',
                 text:'Display Name',
+                width: '30%',
                 sortable: false,
             },
             {
                 text:'Role',
                 class: 'grey--text text--darken-4',
+                width: '40%',
                 sortable: false,
             },
             {
                 text:'Area',
                 class: 'grey--text text--darken-4',
+                width: '20%',
                 sortable: false,
             },
             {

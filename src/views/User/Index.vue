@@ -7,7 +7,7 @@
                         <template v-slot:activator="{ on: tooltip }">
                             <v-text-field
                                 dense
-                                v-model="userList.filter.search"
+                                v-model="user_list.filter.search"
                                 outlined
                                 filled
                                 placeholder="Search..."
@@ -20,30 +20,30 @@
                 </v-col>
             </v-row>
             <v-row class="hr-title"/>
-            <v-row :class="showFilter?'mb24':''">
+            <v-row :class="show_filter?'mb24':''">
                 <v-col>
                     Filter 
                     <v-btn 
                         depressed
                         x-small
-                        @click="showFilter = !showFilter"
-                        v-if="showFilter"
+                        @click="show_filter = !show_filter"
+                        v-if="show_filter"
                         class="no-caps fs12"
                     >Hide<v-icon right>expand_less</v-icon></v-btn>
                     <v-btn 
                         depressed
                         x-small
-                        @click="showFilter = !showFilter"
+                        @click="show_filter = !show_filter"
                         v-else
                         class="no-caps fs12"
                     >Show<v-icon right>expand_more</v-icon></v-btn>
                 </v-col>
             </v-row>
 
-            <v-row v-if="showFilter">
+            <v-row v-if="show_filter">
                 <v-col cols="12" md="3" class="-mt24">
                     <v-select
-                        v-model="userList.filter.status"
+                        v-model="user_list.filter.status"
                         :items="status"
                         item-text="text"
                         item-value="value"
@@ -53,7 +53,7 @@
                 </v-col>
                 <v-col cols="12" md="3" class="-mt24">
                    <SelectArea
-                        v-model="userList.filter.area"
+                        v-model="user_list.filter.area"
                         :norequired="true"
                         @selected="areaSelected"
                         :aux_data="2"
@@ -62,19 +62,19 @@
                 </v-col>
                 <v-col cols="12" md="3" class="-mt24">
                     <SelectWarehouse
-                        v-model="userList.filter.warehouse"
+                        v-model="user_list.filter.warehouse"
                         :norequired="true"
                         @selected="warehouseSelected"
-                        :area_id="userList.filter.area ? userList.filter.area.id : ''"
+                        :area_id="user_list.filter.area ? user_list.filter.area.id : ''"
                         :disabled="disabled_warehouse"
-                        :clear="clearWarehouse"
+                        :clear="clear_warehouse"
                         :dense="true"
                     ></SelectWarehouse>
                 </v-col>
                 <v-col cols="12" md="3" class="-mt24">
                     <SelectDivision
                         :norequired="true"
-                        v-model="userList.filter.division"
+                        v-model="user_list.filter.division"
                         @selected="divisionSelected"
                         :dense="true"
                     ></SelectDivision>
@@ -82,11 +82,11 @@
                 <v-col cols="12" md="3" class="-mt24">
                     <SelectRole
                         :norequired="true"
-                        v-model="userList.filter.role"
+                        v-model="user_list.filter.role"
                         @selected="roleSelected"
-                        :division_id="userList.filter.division ? userList.filter.division.id : ''"
+                        :division_id="user_list.filter.division ? user_list.filter.division.id : ''"
                         :disabled="disabled_role"
-                        :clear="clearRole"
+                        :clear="clear_role"
                         :dense="true"
                     > </SelectRole>
                 </v-col>
@@ -111,9 +111,9 @@
         </div>
         <div class="box-body-table">
             <v-data-table
-                :headers="userList.tableHeaders"
-                :items="userList.data"
-                :loading="userList.isLoading"
+                :headers="user_list.table_headers"
+                :items="user_list.data"
+                :loading="user_list.is_loading"
                 :items-per-page="10"
                 :mobile-breakpoint="0"
             >
@@ -121,29 +121,18 @@
                     <tr style="height:48px">
                         <td>
                             {{ props.item.employee_code }}
-                            <label class="text-black60">
-                                {{ props.item.name }}
+                            <br>
+                            <label class="text-black40">
+                                {{ props.item.nickname }}
                             </label>
                         </td>
                         <td>
-                            {{ props.item.nickname }}
+                            {{ props.item.name }}
                         </td>
                         <td>
-                            <div v-if="props.item.roles.length > 1">
-                                <v-tooltip color="black" top>
-                                    <template v-slot:activator="{ on: tooltip }">
-                                        <span v-on="{ ...tooltip }"> {{ props.item.roles[0].name }}... </span>
-                                    </template>
-                                    <div v-for="(item, idx) in props.item.roles" :key="idx">
-                                        <span> 
-                                            {{ item.name }} 
-                                        </span>
-                                    </div>
-                                </v-tooltip>
-                            </div>
-                            <div v-else>
-                                {{ props.item.roles[0].name }}
-                            </div>
+                            {{ props.item.main_role.name }}
+                            <br>
+                            <label class="text-black40">{{ showSubRoles(props.item.sub_roles) }}</label>
                         </td>
                         <td>
                             -
@@ -210,7 +199,7 @@
                 </template>
             </v-data-table>
         </div>
-        <ConfirmationDialogNew :sendData="ConfirmData"/>
+        <ConfirmationDialogNew :sendData="confirm_data"/>
     </v-container>
 </template>
 <script>
@@ -220,12 +209,12 @@
         name: "User",
         data() {
             return {
-                showFilter : false,
+                show_filter : false,
                 disabled_warehouse:true,
-                clearWarehouse:false,
+                clear_warehouse:false,
                 disabled_role:true,
-                clearRole:false,
-                ConfirmData : {},
+                clear_role:false,
+                confirm_data : {},
             }
         },
         created() {
@@ -241,7 +230,7 @@
         },
         computed: {
             ...mapState({
-                userList: state => state.user.userList,
+                user_list: state => state.user.user_list,
             }),
         },
         methods: {
@@ -256,7 +245,7 @@
             ]),
             changeStatus(val,id,next) {
                 if (val=='1') {
-                    this.ConfirmData = {
+                    this.confirm_data = {
                         model : true,
                         status : true,
                         title : "Archive",
@@ -268,7 +257,7 @@
                     }
 
                 } else {
-                    this.ConfirmData = {
+                    this.confirm_data = {
                         model : true,
                         status : true,
                         title : "Unarchive",
@@ -280,16 +269,25 @@
                     }
                 }
             },
+            showSubRoles(items) {
+                let sub_roles = ''
+                if (items !== undefined) {
+                    if (items.length > 0){
+                        items.map((item, idx) => {sub_roles += (item.name + (idx !== 0 && idx !== (items.length-1) ? ', ' : ''))})
+                    }
+                }
+                return sub_roles
+            },
             areaSelected(d){
                 this.$store.commit('setAreaFilterUserList', null)
                 this.disabled_warehouse = true;
-                this.clearWarehouse = true
+                this.clear_warehouse = true
                 if(d) {
                     this.$store.commit('setAreaFilterUserList', d)
                     this.warehouse = null;
                     this.$store.commit('setWarehouseFilterUserList', null)
                     this.disabled_warehouse = false;
-                    this.clearWarehouse = false;
+                    this.clear_warehouse = false;
                 }
                 this.fetchUserList()
             },
@@ -317,7 +315,7 @@
             },
         },
         watch: {
-            'userList.filter.search': {
+            'user_list.filter.search': {
                 handler: function (val) {
                     let that = this
                     clearTimeout(this._timerId)
@@ -327,7 +325,7 @@
                 },
                 deep: true
             },
-            'userList.filter.status': {
+            'user_list.filter.status': {
                 handler: function (val) {
                     if (val) {
                         this.fetchUserList()
