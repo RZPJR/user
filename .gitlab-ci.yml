@@ -40,7 +40,7 @@ Build Image:
       --dockerfile docker/Dockerfile
       --destination $CI_REGISTRY_IMAGE/$CI_COMMIT_BRANCH:$CI_COMMIT_SHORT_SHA
   only:
-    - dev
+    - sigi-dev
 
 Deploy Dev:
   stage: deploy
@@ -53,7 +53,7 @@ Deploy Dev:
     - sed -i "s/<VERSION>/${CI_COMMIT_SHORT_SHA}/g" kubernetes/deploy-dev.yaml
     - kubectl apply -f kubernetes/deploy-dev.yaml
   only:
-    - dev
+    - sigi-dev
   tags:
     - deploy_to_dev
 
@@ -80,4 +80,4 @@ Importmap Shared-deps:
         echo "$CI_PROJECT_NAME already added to importmap.json"
       fi
   only:
-    - dev
+    - sigi-dev
