@@ -1,5 +1,5 @@
 const mutations = {
-    // #region Readlist User
+    // Readlist User
     setUserList: function(state, payload) {
         state.user_list.data = payload;
         return state;
@@ -24,9 +24,8 @@ const mutations = {
         state.user_list.filter.warehouse = payload;
         return state;
     },
-    // #endregion
 
-    // #region Create User
+    // Create User
     setDivisionCreateUser: function(state, payload) {
         state.create_user.division = payload;
         if (payload) {
@@ -44,40 +43,43 @@ const mutations = {
         state.create_user.form.sub_roles = payload
         return state;
     },
-    // #endregion
 
-    // #region Update User
+    // Update User
     setUpdateUserForm: function(state, payload) {
-        state.update_user.form = payload;
+        state.updateUser.form = payload;
         return state;
     },
     setPreloadUpdateUserForm: function(state, payload) {
-        state.update_user.is_loading = payload;
+        state.updateUser.isLoading = payload;
         return state;
     },
     setDivisionUpdateUser: function(state, payload) {
-        state.update_user.division = payload;
-        state.update_user.division_id = payload ? payload.id : ''
-        return state;
-    },
-    setMainRoleUpdateUser: function(state, payload) {
-        state.update_user.main_role = payload;
-        state.update_user.form.main_role = payload ? payload.id : ''
-        return state;
-    },    
-    setFormRoleUpdateUser: function(state, payload) {
-        state.update_user.form.sub_roles = payload;
+        state.updateUser.division = payload;
+        state.updateUser.form.division_id = payload ? payload.id : ''
         return state;
     },
     setRoleUpdateUser: function(state, payload) {
-        state.update_user.role = payload;
+        state.updateUser.role = payload;
+        state.updateUser.form.role_id = payload ? payload.id : ''
         return state;
     },
-    // #endregion Update User
-
-    // #region Detail User    
-    setUserDetail: function(state, payload) {
-        state.user_detail.user = payload;
+    setSalesGroupUpdateUser: function(state, payload) {
+        state.UpdateUser.form.sales_group_id = payload
+        return state;
+    },
+    setSupervisorUpdateUser: function(state, payload) {
+        state.updateUser.supervisor = payload;
+        state.updateUser.form.supervisor_id = payload ? payload.id : ''
+        return state;
+    },
+    setAreaUpdateUser: function(state, payload) {
+        state.updateUser.area = payload;
+        state.updateUser.form.area_id = payload ? payload.id : ''
+        return state;
+    },
+    setWarehouseUpdateUser: function(state, payload) {
+        state.updateUser.warehouse = payload;
+        state.updateUser.form.warehouse_id = payload ? payload.id : ''
         return state;
     },
 };
