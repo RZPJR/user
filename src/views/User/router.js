@@ -24,27 +24,4 @@ export default [
         name:'UserUpdate',
         component: () => import("./Update.vue"),
     },
-    // {
-    //     path: '/user/user/update/permission/:id',
-    //     name:'UserUpdatePermission',
-    //     component: () => import("./UpdatePermission"),
-    //     meta: {
-    //         auth: true,
-    //         title: 'User Update Permission',
-    //         breadcrumbs : [
-    //             {
-    //                 text: 'User',
-    //                 to : '/user/user'
-    //             },
-    //             {
-    //                 text: 'Detail User',
-    //                 to : '/user/user/detail/:id'
-    //             },
-    //             {
-    //                 text: 'Update Permission'
-    //             },
-    //         ],
-    //     },
-    //     props: true,
-    // },
 ]
