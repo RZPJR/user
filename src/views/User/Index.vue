@@ -41,7 +41,7 @@
             </v-row>
 
             <v-row v-if="show_filter">
-                <v-col cols="12" md="3" class="-mt24">
+                <v-col cols="12" md="3">
                     <v-select
                         v-model="user_list.filter.status"
                         :items="status"
@@ -51,37 +51,33 @@
                         dense
                     ></v-select>
                 </v-col>
-                <v-col cols="12" md="3" class="-mt24">
+                <v-col cols="12" md="3">
                    <SelectArea
-                        v-model="user_list.filter.area"
+                        :label="'Region'"
+                        :disabled="true"
                         :norequired="true"
-                        @selected="areaSelected"
-                        :aux_data="2"
                         :dense="true"
                    ></SelectArea>
                 </v-col>
-                <v-col cols="12" md="3" class="-mt24">
+                <v-col cols="12" md="3">
                     <SelectWarehouse
-                        v-model="user_list.filter.warehouse"
+                        :label="'Site'"
+                        :disabled="true"
                         :norequired="true"
-                        @selected="warehouseSelected"
-                        :area_id="user_list.filter.area ? user_list.filter.area.id : ''"
-                        :disabled="disabled_warehouse"
-                        :clear="clear_warehouse"
                         :dense="true"
                     ></SelectWarehouse>
                 </v-col>
-                <v-col cols="12" md="3" class="-mt24">
+                <v-col cols="12" md="3">
                     <SelectDivision
-                        :norequired="true"
+                        :no_required="true"
                         v-model="user_list.filter.division"
                         @selected="divisionSelected"
                         :dense="true"
                     ></SelectDivision>
                 </v-col>
-                <v-col cols="12" md="3" class="-mt24">
+                <v-col cols="12" md="3">
                     <SelectRole
-                        :norequired="true"
+                        :no_required="true"
                         v-model="user_list.filter.role"
                         @selected="roleSelected"
                         :division_id="user_list.filter.division ? user_list.filter.division.id : ''"
@@ -181,12 +177,12 @@
                                     <div>
                                         <hr/>
                                     </div>
-                                    <v-list-item @click="changeStatus(props.item.user.status,props.item.user.id,props.item.id)" v-if="props.item.status=='1'" v-privilege="'usr_arc'">
+                                    <v-list-item @click="changeStatus(props.item.status, props.item.id)" v-if="props.item.status=='1'" v-privilege="'usr_arc'">
                                         <v-list-item-content>
                                             <v-list-item-title>Archive</v-list-item-title>
                                         </v-list-item-content>
                                     </v-list-item>
-                                    <v-list-item @click="changeStatus(props.item.user.status,props.item.user.id,props.item.id)" v-else v-privilege="'usr_urc'">
+                                    <v-list-item @click="changeStatus(props.item.status, props.item.id)" v-else v-privilege="'usr_urc'">
                                         <v-list-item-content>
                                             <v-list-item-title>Unarchive</v-list-item-title>
                                         </v-list-item-content>
@@ -243,7 +239,7 @@
                 "setDivisionFilterUserList",
                 "setRoleFilterUserList",
             ]),
-            changeStatus(val,id,next) {
+            changeStatus(val,id) {
                 if (val=='1') {
                     this.confirm_data = {
                         model : true,
@@ -252,7 +248,7 @@
                         statusMsg : "Success to Archive this User",
                         text : "Are you sure want to Archive this User?",
                         urlApi : '/user/archive/'+id,
-                        nextPage : "/user/user/detail/"+next,
+                        nextPage : "/user/user/detail/"+id,
                         data : {}
                     }
 
@@ -264,7 +260,7 @@
                         statusMsg : "Success to Archive this User",
                         text : "Are you sure want to Unarchive this User?",
                         urlApi : '/user/unarchive/'+id,
-                        nextPage : "/user/user/detail/"+next,
+                        nextPage : "/user/user/detail/"+id,
                         data : {}
                     }
                 }
@@ -279,24 +275,6 @@
                     }
                 }
                 return sub_roles
-            },
-            areaSelected(d){
-                this.$store.commit('setAreaFilterUserList', null)
-                this.disabled_warehouse = true;
-                this.clear_warehouse = true
-                if(d) {
-                    this.$store.commit('setAreaFilterUserList', d)
-                    this.warehouse = null;
-                    this.$store.commit('setWarehouseFilterUserList', null)
-                    this.disabled_warehouse = false;
-                    this.clear_warehouse = false;
-                }
-                this.fetchUserList()
-            },
-            warehouseSelected(d) {
-                this.$store.commit('setWarehouseFilterUserList', null)
-                if (d) this.$store.commit('setWarehouseFilterUserList', d)
-                this.fetchUserList()
             },
             divisionSelected(d) {
                 this.$store.commit('setDivisionFilterUserList', null)

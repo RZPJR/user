@@ -15,7 +15,7 @@
                                 prepend-inner-icon="search"
                             ></v-text-field>
                         </template>
-                        <span>Search by code and name</span>
+                        <span>Search by name</span>
                     </v-tooltip>
                 </v-col>
             </v-row>
@@ -40,7 +40,7 @@
                 </v-col>
             </v-row>
             <v-row v-if="showFilter">
-                <v-col cols="12" md="3" class="-mt24">
+                <v-col cols="12" md="3">
                     <v-select
                         v-model="statuses"
                         :items="status"

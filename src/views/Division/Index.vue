@@ -42,7 +42,7 @@
                 </v-col>
             </v-row>
             <v-row v-if="showFilter">
-                <v-col cols="12" md="3" class="-mt24">
+                <v-col cols="12" md="3">
                     <SelectStatus
                         :default="1"
                         v-model="statuses"
@@ -93,7 +93,7 @@
                             </div>
                         </td>
                         <td>
-                            <v-menu>
+                            <!-- <v-menu>
                                 <template v-slot:activator="{ on: menu }">
                                     <template >
                                         <v-btn
@@ -123,7 +123,7 @@
                                     </v-list-item>
                                     <router-view></router-view>
                                 </v-list>
-                            </v-menu>
+                            </v-menu> -->
                         </td>
                     </tr>
                 </template>
