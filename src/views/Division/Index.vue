@@ -42,7 +42,7 @@
                 </v-col>
             </v-row>
             <v-row v-if="showFilter">
-                <v-col cols="12" md="3" class="-mt24">
+                <v-col cols="12" md="3">
                     <SelectStatus
                         :default="1"
                         v-model="statuses"

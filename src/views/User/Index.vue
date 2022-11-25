@@ -41,7 +41,7 @@
             </v-row>
 
             <v-row v-if="show_filter">
-                <v-col cols="12" md="3" class="-mt24">
+                <v-col cols="12" md="3">
                     <v-select
                         v-model="user_list.filter.status"
                         :items="status"
@@ -51,27 +51,7 @@
                         dense
                     ></v-select>
                 </v-col>
-                <v-col cols="12" md="3" class="-mt24">
-                   <SelectArea
-                        v-model="user_list.filter.area"
-                        :norequired="true"
-                        @selected="areaSelected"
-                        :aux_data="2"
-                        :dense="true"
-                   ></SelectArea>
-                </v-col>
-                <v-col cols="12" md="3" class="-mt24">
-                    <SelectWarehouse
-                        v-model="user_list.filter.warehouse"
-                        :norequired="true"
-                        @selected="warehouseSelected"
-                        :area_id="user_list.filter.area ? user_list.filter.area.id : ''"
-                        :disabled="disabled_warehouse"
-                        :clear="clear_warehouse"
-                        :dense="true"
-                    ></SelectWarehouse>
-                </v-col>
-                <v-col cols="12" md="3" class="-mt24">
+                <v-col cols="12" md="3">
                     <SelectDivision
                         :norequired="true"
                         v-model="user_list.filter.division"
@@ -79,7 +59,7 @@
                         :dense="true"
                     ></SelectDivision>
                 </v-col>
-                <v-col cols="12" md="3" class="-mt24">
+                <v-col cols="12" md="3">
                     <SelectRole
                         :norequired="true"
                         v-model="user_list.filter.role"

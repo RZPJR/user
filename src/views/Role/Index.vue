@@ -40,7 +40,7 @@
                 </v-col>
             </v-row>
             <v-row v-if="showFilter">
-                <v-col cols="12" md="3" class="-mt24">
+                <v-col cols="12" md="3">
                     <v-select
                         v-model="statuses"
                         :items="status"
