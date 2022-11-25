@@ -29,7 +29,21 @@ import Vuetify from "vuetify/lib";
 
 Vue.config.productionTip = false;
 Vue.use(VueToast);
-Vue.use(Vuetify)
+Vue.use(Vuetify, {components: { 
+  SelectArea, 
+  SelectDivision, 
+  SelectRole, 
+  SelectWarehouse,
+  SelectStatus,
+  SelectUser,
+  SelectSalesGroup,
+  ConfirmationDialogNew,
+  PermissionCreate,
+  PermissionUpdate,
+  DetailRowNew,
+  MultiSelectRole,
+  LoadingBar
+}})
 
 const vueLifecycles = singleSpaVue({
   Vue,
