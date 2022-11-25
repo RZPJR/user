@@ -9,28 +9,11 @@ export default [
         name: 'UserCreate',
         component: () => import("./Create.vue"),
     },
-    // {
-    //     path: '/user/user/reset-password/:id',
-    //     name: 'UserResetPassword',
-    //     component: () => import("./ResetPassword"),
-    //     meta: {
-    //         auth: true,
-    //         title: 'User Reset Password',
-    //         breadcrumbs : [
-    //             {
-    //                 text: 'User',
-    //                 to : '/user/user'
-    //             },
-    //             {
-    //                 text: 'User Detail',
-    //                 to : '/user/user/detail/:id'
-    //             },
-    //             {
-    //                 text: 'Reset Password'
-    //             },
-    //         ],
-    //     }
-    // },
+    {
+        path: '/user/user/reset-password/:id',
+        name: 'UserResetPassword',
+        component: () => import("./ResetPassword.vue"),
+    },
     {
         path: '/user/user/detail/:id',
         name: 'UserDetail',
