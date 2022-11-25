@@ -121,6 +121,7 @@ const state = {
             phone_number: '-',
             email: '-',
             status: 0,
+            status_convert: '-',
         }
     },
 

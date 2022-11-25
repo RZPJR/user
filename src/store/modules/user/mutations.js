@@ -76,10 +76,15 @@ const mutations = {
     // #endregion Update User
 
     // #region Detail User    
+    setPreloadUserDetail: function(state, payload) {
+        state.user_detail.is_loading = payload;
+        return state;
+    },
     setUserDetail: function(state, payload) {
         state.user_detail.user = payload;
         return state;
     },
+    // #endregion Detail User
 };
 
 export default mutations;

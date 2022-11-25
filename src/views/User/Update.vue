@@ -93,11 +93,13 @@
                 </v-col>
                 <v-col cols="12" class="-mt24">
                     <MultiSelectRole
-                        :roles="update_user.role"
+                        :role="update_user.role"
                         :division_id="update_user.division_id"
+                        :main_role="form.main_role"
                         @selected="roleSelected"
-                        :label="'Main Role'"
+                        :label="'Sub Roles'"
                         :dense="true"
+                        :norequired="true"
                         required
                     > </MultiSelectRole>
                 </v-col>
@@ -167,6 +169,7 @@
             </v-row>
         </div>
         <ConfirmationDialogNew :sendData="ConfirmData"/>
+        <LoadingBar :value="update_user.is_loading" />
     </v-container>
 </template>
 
@@ -245,15 +248,14 @@
                 }
             },
             async roleSelected(d) {
-                console.log(d);
-                // this.$store.commit('setRoleUpdateUser', null)
-                // if (d !== ''  && d !== undefined) {
-                //     let selected_sub_roles = await d.map((e) => {
-                //         return e.id
-                //     })
-                //     this.$store.commit('setFormRoleUpdateUser', selected_sub_roles)
-                //     this.$store.commit('setRoleUpdateUser', d)
-                // }
+                this.$store.commit('setRoleUpdateUser', null)
+                if (d !== ''  && d !== undefined) {
+                    let selected_sub_roles = await d.map((e) => {
+                        return e.id
+                    })
+                    this.$store.commit('setFormRoleUpdateUser', selected_sub_roles)
+                    this.$store.commit('setRoleUpdateUser', d)
+                }
             },
         },
         async created(){
