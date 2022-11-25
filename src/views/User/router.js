@@ -12,7 +12,7 @@ export default [
     {
         path: '/user/user/reset-password/:id',
         name: 'UserResetPassword',
-        component: () => import("./ResetPassword"),
+        component: () => import("./ResetPassword.vue"),
     },
     {
         path: '/user/user/detail/:id',
