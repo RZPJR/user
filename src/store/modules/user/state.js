@@ -122,7 +122,12 @@ const state = {
             email: '-',
             status: 0,
         }
-    }
+    },
+
+    password:{
+        password:'',
+        confirm_password:''
+    },
 };
 
 export default state;

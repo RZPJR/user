@@ -33,7 +33,7 @@
                                     <v-icon>open_in_new</v-icon>
                                 </v-list-item-icon>
                             </v-list-item>
-                            <v-list-item  :to="{ name: 'UserUpdatePermission'}" v-privilege="'usr_upd_pms'">
+                            <v-list-item :to="{ name: 'UserUpdatePermission'}" v-privilege="'usr_upd_pms'">
                                 <v-list-item-content>
                                     <v-list-item-title>Update Permission</v-list-item-title>
                                 </v-list-item-content>
@@ -60,11 +60,6 @@
                             <v-list-item v-if="user.status==2" @click="unarchive(user.id)">
                                 <v-list-item-content>
                                     <v-list-item-title>Unarchive</v-list-item-title>
-                                </v-list-item-content>
-                            </v-list-item>
-                            <v-list-item v-if="user.status==2" @click="deleteUser(user.id)">
-                                <v-list-item-content>
-                                    <v-list-item-title>Delete</v-list-item-title>
                                 </v-list-item-content>
                             </v-list-item>
                             <v-list-item @click="seeHistory()">
