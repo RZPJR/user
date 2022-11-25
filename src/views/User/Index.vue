@@ -52,8 +52,24 @@
                     ></v-select>
                 </v-col>
                 <v-col cols="12" md="3">
-                    <SelectDivision
+                   <SelectArea
+                        :label="'Region'"
+                        :disabled="true"
                         :norequired="true"
+                        :dense="true"
+                   ></SelectArea>
+                </v-col>
+                <v-col cols="12" md="3">
+                    <SelectWarehouse
+                        :label="'Site'"
+                        :disabled="true"
+                        :norequired="true"
+                        :dense="true"
+                    ></SelectWarehouse>
+                </v-col>
+                <v-col cols="12" md="3">
+                    <SelectDivision
+                        :no_required="true"
                         v-model="user_list.filter.division"
                         @selected="divisionSelected"
                         :dense="true"
@@ -61,7 +77,7 @@
                 </v-col>
                 <v-col cols="12" md="3">
                     <SelectRole
-                        :norequired="true"
+                        :no_required="true"
                         v-model="user_list.filter.role"
                         @selected="roleSelected"
                         :division_id="user_list.filter.division ? user_list.filter.division.id : ''"
@@ -161,12 +177,12 @@
                                     <div>
                                         <hr/>
                                     </div>
-                                    <v-list-item @click="changeStatus(props.item.user.status,props.item.user.id,props.item.id)" v-if="props.item.status=='1'" v-privilege="'usr_arc'">
+                                    <v-list-item @click="changeStatus(props.item.status, props.item.id)" v-if="props.item.status=='1'" v-privilege="'usr_arc'">
                                         <v-list-item-content>
                                             <v-list-item-title>Archive</v-list-item-title>
                                         </v-list-item-content>
                                     </v-list-item>
-                                    <v-list-item @click="changeStatus(props.item.user.status,props.item.user.id,props.item.id)" v-else v-privilege="'usr_urc'">
+                                    <v-list-item @click="changeStatus(props.item.status, props.item.id)" v-else v-privilege="'usr_urc'">
                                         <v-list-item-content>
                                             <v-list-item-title>Unarchive</v-list-item-title>
                                         </v-list-item-content>
@@ -223,7 +239,7 @@
                 "setDivisionFilterUserList",
                 "setRoleFilterUserList",
             ]),
-            changeStatus(val,id,next) {
+            changeStatus(val,id) {
                 if (val=='1') {
                     this.confirm_data = {
                         model : true,
@@ -232,7 +248,7 @@
                         statusMsg : "Success to Archive this User",
                         text : "Are you sure want to Archive this User?",
                         urlApi : '/user/archive/'+id,
-                        nextPage : "/user/user/detail/"+next,
+                        nextPage : "/user/user/detail/"+id,
                         data : {}
                     }
 
@@ -244,7 +260,7 @@
                         statusMsg : "Success to Archive this User",
                         text : "Are you sure want to Unarchive this User?",
                         urlApi : '/user/unarchive/'+id,
-                        nextPage : "/user/user/detail/"+next,
+                        nextPage : "/user/user/detail/"+id,
                         data : {}
                     }
                 }
@@ -259,24 +275,6 @@
                     }
                 }
                 return sub_roles
-            },
-            areaSelected(d){
-                this.$store.commit('setAreaFilterUserList', null)
-                this.disabled_warehouse = true;
-                this.clear_warehouse = true
-                if(d) {
-                    this.$store.commit('setAreaFilterUserList', d)
-                    this.warehouse = null;
-                    this.$store.commit('setWarehouseFilterUserList', null)
-                    this.disabled_warehouse = false;
-                    this.clear_warehouse = false;
-                }
-                this.fetchUserList()
-            },
-            warehouseSelected(d) {
-                this.$store.commit('setWarehouseFilterUserList', null)
-                if (d) this.$store.commit('setWarehouseFilterUserList', d)
-                this.fetchUserList()
             },
             divisionSelected(d) {
                 this.$store.commit('setDivisionFilterUserList', null)
