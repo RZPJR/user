@@ -50,11 +50,11 @@
                         <template v-slot:activator="{ on }">
                             <v-text-field
                                 name="display_name"
-                                v-model="form.display_name"
+                                v-model="form.nickname"
                                 required
                                 outlined
                                 dense
-                                :error-messages="error.display_name"
+                                :error-messages="error.nickname"
                                 v-on="on"
                             >
                                 <template v-slot:label>
@@ -68,10 +68,10 @@
                 <v-col cols="12" md="6" class="-mt24">
                     <SelectDivision
                         name="division"
-                        v-model="updateUser.division"
+                        v-model="update_user.division"
+                        :division="update_user.division"
                         @selected="divisionSelected"
                         :error="error.division_id"
-                        :division="updateUser.division"
                         disabled
                         required
                         :dense="true"
@@ -80,76 +80,26 @@
                 <v-col cols="12" md="6" class="-mt24">
                     <SelectRole
                         name="role"
-                        :dense="true"
-                        v-model="updateUser.role"
-                        @selected="roleSelected"
-                        :division_id="form.division_id"
+                        label="Main Role"
+                        v-model="update_user.main_role"
+                        :role="update_user.main_role"
+                        @selected="mainRoleSelected"
+                        :division_id="update_user.division_id"
                         :error="error.role_id"
-                        :clear="clearRole"
-                        :role="updateUser.role"
+                        :clear="clear_role"
+                        :dense="true"
                         required
                     > </SelectRole>
                 </v-col>
-                <v-col cols="12" md="6" class="-mt24" v-if="form.role_id == 524288">
-                    <SelectSalesGroup
-                        v-if="form.role_id == 524288"
-                        @selected="salesGroupSelected"
-                        :salesgroup_id="form.sales_group_id"
-                        :norequired="true"
+                <v-col cols="12" class="-mt24">
+                    <MultiSelectRole
+                        :roles="update_user.role"
+                        :division_id="update_user.division_id"
+                        @selected="roleSelected"
+                        :label="'Main Role'"
                         :dense="true"
-                        :error="error.sales_group_id"
-                    ></SelectSalesGroup>
-                </v-col>
-                <v-col cols="12" md="6" class="-mt24">
-                    <SelectUser
-                        name="user"
-                        v-model="updateUser.supervisor"
-                        :user="updateUser.supervisor"
-                        :clear="clearUser"
-                        :norequired="true"
-                        :dense="true"
-                        @selected="supervisorSelected"
-                    ></SelectUser>
-                </v-col>
-                <v-col cols="12" md="6" class="-mt24">
-                    <SelectArea
-                        name="area"
                         required
-                        :error="error.area_id"
-                        v-model="updateUser.area"
-                        :clear="clearArea"
-                        :area="updateUser.area"
-                        @selected="areaSelected"
-                        :dense="true"
-                    ></SelectArea>
-                </v-col>
-                <v-col cols="12" md="6" class="-mt24">
-                    <SelectWarehouse
-                        name="warehouse"
-                        required
-                        :error="error.warehouse_id"
-                        v-model="updateUser.warehouse"
-                        :warehouse="updateUser.warehouse"
-                        :area_id="form.area_id"
-                        :disabled="!updateUser.area"
-                        @selected="warehouseSelected"
-                        :clear="clearWarehouse"
-                        :dense="true"
-                    ></SelectWarehouse>
-                </v-col>
-                <v-col cols="12" md="12" class="-mt24">
-                    <v-textarea
-                        name="note"
-                        v-model="form.note"
-                        :counter="100"
-                        maxlength="100"
-                        outlined
-                        rows="3"
-                    >
-                        <template v-slot:label>
-                            Note
-                        </template>
-                    </v-textarea>
+                    > </MultiSelectRole>
                 </v-col>
                 <v-col cols="12" md="6" class="-mt24">
                     <v-text-field
@@ -229,10 +179,7 @@
         data () {
             return {
                 ConfirmData:[],
-                clearWarehouse:false,
-                clearRole:false,
-                clearSalesGroup:false,
-                clearArea:false,
+                clear_role:false,
                 clearUser:false,
                 passwordRules: [
                     v => !!v || 'Password is required',
@@ -244,121 +191,69 @@
                         value === this.form.password || 'The password confirmation does not match.',
                 ],
                 putData:{},
-                error:{}
+                error:{},
+                update_data: [],
             }
         },
         computed: {
             ...mapState({
-                updateUser: state => state.user.updateUser,
-                form: state => state.user.updateUser.form,
+                update_user: state => state.user.update_user,
+                form: state => state.user.update_user.form,
             }),
         },
         methods:{
             ...mapActions([
                 "fetchUpdateUserDetail",
-                "setRoleUpdateUser",
-                "setAreaUpdateUser",
-                "setSupervisorUpdateUser",
-                "setSalesGroupUpdateUser",
-                "setWarehouseUpdateUser",
             ]),
             ...mapMutations([
                 "setDivisionUpdateUser",
+                "setMainRoleUpdateUser",
                 "setRoleUpdateUser",
+                "setFormRoleUpdateUser",
             ]),
             confirmButton() {
-                this.putData.name = this.form.name
-                this.putData.display_name = this.form.display_name
-                this.putData.division_id = this.form.division_id
-                this.putData.supervisor_id = this.form.supervisor_id
-                this.putData.role_id = this.form.role_id
-                if(this.form.sales_group_id){
-                    this.putData.sales_group_id = this.form.sales_group_id
-                }
-                if(this.form.supervisor_id){
-                    this.putData.supervisor_id = this.form.supervisor_id
-                }
-                this.putData.area_id = this.form.area_id
-                this.putData.note = this.form.note
-                this.putData.warehouse_id = this.form.warehouse_id
-                this.putData.phone_number = this.form.phone_number
-
                 this.ConfirmData = {
                     model : true,
                     title : "Update User",
                     text : "Are you sure want to Update this user?",
                     urlApi : '/user/'+ this.form.idUser,
                     nextPage : '/user/user',
-                    data : this.putData
+                    data : this.form
                 }
-            },
+            },            
             divisionSelected(d) {
                 this.$store.commit('setDivisionUpdateUser', null)
+                this.$store.commit('setMainRoleUpdateUser', null)
                 this.$store.commit('setRoleUpdateUser', null)
-                this.clearRole = true;
+                this.disabled_main_role = true
+                this.clear_role = true
+                this.clear_main_role = true
                 if (d !== '' && d !== undefined) {
                     this.$store.commit('setDivisionUpdateUser', d)
-                    this.clearRole = false
+                    this.disabled_main_role = false
+                    this.clear_main_role = false
+                    this.clear_role = false
                 }
             },
-            roleSelected(d) {
+            mainRoleSelected(d) {
+                this.$store.commit('setMainRoleUpdateUser', null)
                 this.$store.commit('setRoleUpdateUser', null)
-                this.$store.commit('setAreaUpdateUser', null)
-                this.$store.commit('setSupervisorUpdateUser', null)
-                this.$store.commit('setSalesGroupUpdateUser', '')
-                this.form.warehouse_id = '';
-                this.clearUser = true
-                this.clearArea = true
-                this.clearWarehouse = true
+                this.disabled_role = true
                 if (d !== ''  && d !== undefined) {
-                    this.$store.commit('setRoleUpdateUser', d)
-                    this.clearUser = false
-                    this.clearArea = false
-                    this.clearWarehouse = false
+                    this.$store.commit('setMainRoleUpdateUser', d)
+                    this.disabled_role = false
                 }
             },
-            salesGroupSelected(d, setval) {
-                this.$store.commit('setSalesGroupUpdateUser', '')
-                this.$store.commit('setAreaUpdateUser', null)
-                this.$store.commit('setSupervisorUpdateUser', null)
-                this.$store.commit('setWarehouseUpdateUser', null)
-                this.clearUser = true
-                this.clearArea = true
-                if(d){
-                    this.clearUser = false
-                    this.clearArea = false
-                    this.$store.commit('setSalesGroupUpdateUser', d.id)
-                    if(setval == 1){
-                        setval == 2
-                    }else{
-                        Vue.nextTick(() => {
-                            this.supervisorSelected(d.sls_man)
-                            this.areaSelected(d.area)
-                        });
-                    }
-                    
-                }
-            },
-            supervisorSelected(d) {
-                this.$store.commit('setSupervisorUpdateUser', null)
-                if (d !== ''  && d !== undefined) {
-                    this.$store.commit('setSupervisorUpdateUser', d)
-                }
-            },
-            areaSelected(d) {
-                this.$store.commit('setAreaUpdateUser', null)
-                this.$store.commit('setWarehouseUpdateUser', null)
-                this.clearWarehouse = true
-                if (d) {
-                    this.$store.commit('setAreaUpdateUser', d)
-                    this.clearWarehouse = false
-                }
-            },
-            warehouseSelected(d) {
-                this.$store.commit('setWarehouseUpdateUser', null)
-                if (d !== ''  && d !== undefined) {
-                    this.$store.commit('setWarehouseUpdateUser', d)
-                }
+            async roleSelected(d) {
+                console.log(d);
+                // this.$store.commit('setRoleUpdateUser', null)
+                // if (d !== ''  && d !== undefined) {
+                //     let selected_sub_roles = await d.map((e) => {
+                //         return e.id
+                //     })
+                //     this.$store.commit('setFormRoleUpdateUser', selected_sub_roles)
+                //     this.$store.commit('setRoleUpdateUser', d)
+                // }
             },
         },
         async created(){
