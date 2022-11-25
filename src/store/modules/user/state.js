@@ -71,6 +71,10 @@ const state = {
         division: null,
         main_role: [],
         role: [],
+        // region_id: null,
+        // parent_id: null,
+        // site_id: null,
+        // territory_id: null,
         email_rules: [
             v => !!v || 'Please Enter email',
             v => /.+@.+/.test(v) || 'E-mail must be valid',
@@ -86,48 +90,29 @@ const state = {
     },
 
     // Update User
-    update_user: {
-        is_loading: false,
+    updateUser: {
+        isLoading: false,
         form: {
             idUser:'',
-            employee_code: '',
             name: '',
-            nickname: '',
-            main_role: '',
-            sub_roles: [],
-            phone_number: '',
             email:'',
+            display_name: '',
+            employee_code: '',
+            division_id: '',
+            supervisor_id: '',
+            role_id: '',
+            sales_group_id: '',
+            area_id: '',
+            warehouse_id: '',
+            phone_number: '',
+            note: '',
         },
-        division_id: null,
         division: null,
-        main_role: [],
-        role: [],
+        role: null,
         supervisor: null,
         area: null,
         warehouse: null,
-    },
-
-    // Detail User
-    user_detail: {
-        is_loading: false,
-        user: {
-            id: 0,
-            employee_code: '-',
-            name: '-',
-            nickname: '-',
-            division: '-',
-            main_role: '-',
-            sub_roles: [],
-            phone_number: '-',
-            email: '-',
-            status: 0,
-        }
-    },
-
-    password:{
-        password:'',
-        confirm_password:''
-    },
+    }
 };
 
 export default state;
