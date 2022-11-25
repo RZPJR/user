@@ -33,7 +33,8 @@ const actions = {
             if (response.data.data) {
                 let items = response.data.data
                 let selected_sub_roles = []
-                if (items.sub_roles.length > 0) {
+                console.log(items.sub_roles);
+                if (items.sub_roles !== undefined && items.sub_roles.length > 0) {
                     selected_sub_roles = items.sub_roles.map((e)=>{return e.id})
                 }
                 commit("setUpdateUserForm", {                
@@ -59,6 +60,7 @@ const actions = {
         }
     },
     fetchUserDetail: async ({ commit, dispatch }, payload) => {
+        commit("setPreloadUserDetail", true);   
         try {
             const response = await http.get("/user/"+payload.id);
             let res = response.data.data
@@ -76,9 +78,11 @@ const actions = {
                     email: items.email,
                     status: items.status,
                 })
-            }          
+            }
+            commit("setPreloadUserDetail", false);   
         } catch (error) {
             console.log(error)
+            commit("setPreloadUserDetail", false);   
         }
     },
 };

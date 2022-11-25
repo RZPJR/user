@@ -91,6 +91,7 @@
                 <v-col cols="12" class="-mt24">
                     <MultiSelectRole
                         name="role"
+                        :label="'Sub Roles'"
                         v-model="create_user.role"
                         @selected="roleSelected"
                         :division_id="create_user.division_id"
@@ -99,6 +100,7 @@
                         :error="error.role_id"
                         :clear="clear_role"
                         :dense="true"
+                        :norequired="true"
                         required
                     > </MultiSelectRole>
                 </v-col>

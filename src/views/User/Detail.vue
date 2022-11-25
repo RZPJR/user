@@ -6,18 +6,18 @@
                     <span class="bold">{{user.name}}</span> ({{user.nickname}})
                 </v-col>
                 <v-col class="d-flex justify-end align-end">
-                    <!-- <div>
+                    <div>
                         <v-btn
                             elevation="0"
                             rounded
                             depressed
                             small
                             class="no-caps mb4"
-                            :color="statusMaster(user.status)"
+                            :color="statusMaster(user.status_convert)"
                         >
-                            {{capitalizeFirstLetter(user.status)}}
+                            {{capitalizeFirstLetter(user.status_convert)}}
                         </v-btn>
-                    </div> -->
+                    </div>
                     <v-menu offset-y>
                         <template v-slot:activator="{ on }">
                             <v-btn icon v-on="on">
@@ -100,6 +100,7 @@
             </v-row>
         </div>
         <ConfirmationDialogNew :sendData="ConfirmData"/>
+        <LoadingBar :value="user_detail.is_loading" />
     </v-container>
 </template>
 <script>
@@ -118,6 +119,7 @@
         },
         computed: {
             ...mapState({
+                user_detail: state => state.user.user_detail,
                 user: state => state.user.user_detail.user,
             })
         },
