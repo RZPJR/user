@@ -105,6 +105,23 @@ const state = {
         supervisor: null,
         area: null,
         warehouse: null,
+    },
+
+    // Detail User
+    user_detail: {
+        is_loading: false,
+        user: {
+            id: 0,
+            employee_code: '-',
+            name: '-',
+            nickname: '-',
+            division: '-',
+            main_role: '-',
+            sub_roles: [],
+            phone_number: '-',
+            email: '-',
+            status: 0,
+        }
     }
 };
 
