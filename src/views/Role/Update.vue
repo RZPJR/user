@@ -76,14 +76,14 @@
 </template>
 <script>
     export default {
-        name: "RoleUpdate",
+        name: "RoleUpdatePermission",
         data () {
             return {
                 ConfirmData:{},
                 permission:[],
                 division:null,
                 form:{
-                    permissions:[],
+                    permission:[],
                     name:'',
                     division_id: '',
                 },
@@ -97,7 +97,7 @@
                     model : true,
                     title : "Update Role",
                     text : "Are you sure want to Update this role?",
-                    urlApi : '/role/'+ this.$route.params.id,
+                    urlApi : '/role/'+ this.form.id,
                     nextPage : '/user/role/detail/'+this.$route.params.id,
                     data : this.form
                 }
@@ -112,19 +112,28 @@
             },
             async renderData(){
                 await this.$http.get("/role/" + this.$route.params.id).then(response => {
-                    let data = response.data.data
-                    this.form.name = data.name
-                    this.divisionSelected(data.division);
+                    this.form = response.data.data
+                    this.divisionSelected(this.form.division);
                     this.permission=[]
                     response.data.data.permissions.forEach((value, index) => {
-                        this.permission.push(value.id)
+                        this.permission.push(value[index])
                     })
-                    console.log(this.permission,'wwwwwwwww')
+                });
+            },
+            async permissionData(id){
+                await this.$http.get("/role/permission",{params:{
+                        embeds:'permission_id.parent_id',
+                        conditions:'role_id.e:'+this.$route.params.id,
+                    }}).then(response => {
+                    response.data.data.forEach((value, index) => {
+                        this.permission.push(value.permission.id)
+                    });
+                    this.loading= false
                 });
             },
             permissionChecked(d) {
                 if (d.length >0 ) {
-                    this.form.permissions = d
+                    this.form.permission_id = d
                 }
             }
         },
