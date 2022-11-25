@@ -119,7 +119,6 @@
                     response.data.data.permissions.forEach((value, index) => {
                         this.permission.push(value.id)
                     })
-                    console.log(this.permission,'wwwwwwwww')
                 });
             },
             permissionChecked(d) {
