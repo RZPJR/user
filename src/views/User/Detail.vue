@@ -6,18 +6,24 @@
                     <span class="bold">{{user.name}}</span> ({{user.nickname}})
                 </v-col>
                 <v-col class="d-flex justify-end align-end">
-                    <!-- <div>
+                    <div v-if="user.status == 1">
                         <v-btn
                             elevation="0"
                             rounded
-                            depressed
                             small
                             class="no-caps mb4"
-                            :color="statusMaster(user.status)"
-                        >
-                            {{capitalizeFirstLetter(user.status)}}
-                        </v-btn>
-                    </div> -->
+                            :color="statusMaster('active')"
+                        >Active</v-btn>
+                    </div>
+                    <div v-else-if="user.status == 2">
+                        <v-btn
+                            elevation="0"
+                            rounded
+                            small
+                            class="no-caps mb4"
+                            :color="statusMaster('archived')"
+                        >Archived</v-btn>
+                    </div>
                     <v-menu offset-y>
                         <template v-slot:activator="{ on }">
                             <v-btn icon v-on="on">
@@ -28,14 +34,6 @@
                             <v-list-item v-if="user.status === 1" :to="{ name: 'UserUpdate'}">
                                 <v-list-item-content>
                                     <v-list-item-title>Update</v-list-item-title>
-                                </v-list-item-content>
-                                <v-list-item-icon>
-                                    <v-icon>open_in_new</v-icon>
-                                </v-list-item-icon>
-                            </v-list-item>
-                            <v-list-item :to="{ name: 'UserUpdatePermission'}" v-privilege="'usr_upd_pms'">
-                                <v-list-item-content>
-                                    <v-list-item-title>Update Permission</v-list-item-title>
                                 </v-list-item-content>
                                 <v-list-item-icon>
                                     <v-icon>open_in_new</v-icon>
