@@ -29,11 +29,7 @@ import Vuetify from "vuetify/lib";
 
 Vue.config.productionTip = false;
 Vue.use(VueToast);
-Vue.use(Vuetify, {
-  components: {
-    ConfirmationDialogNew,
-  }
-})
+Vue.use(Vuetify)
 
 const vueLifecycles = singleSpaVue({
   Vue,

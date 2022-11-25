@@ -7,7 +7,7 @@
                 </v-col>
                 <v-col class="d-flex justify-end align-end">
                     <div>
-                        <v-btn
+                        <!-- <v-btn
                             elevation="0"
                             rounded
                             depressed
@@ -16,7 +16,7 @@
                             :color="statusMaster(item.status_convert)"
                         >
                             {{capitalizeFirstLetter(item.status_convert)}}
-                        </v-btn>
+                        </v-btn> -->
                     </div>
                     <v-menu offset-y>
                         <template v-slot:activator="{ on }">
@@ -70,7 +70,7 @@
                             <li>{{item.name}}</li>
                             <ul v-for="c in item.child" :key="c.id">
                                 <li>{{ c.name }}</li>
-                                <ul v-for="gc in c.grandChild" :key="gc.id">
+                                <ul v-for="gc in c.grand_child" :key="gc.id">
                                     <li>{{ gc.name }}</li>
                                 </ul>
                             </ul>
@@ -97,63 +97,13 @@
             }
         },
         methods: {
-            async permissionData(){
-                await this.$http.get("/role/" + this.$route.params.id,{params:{
-                    }}).then(response => {
-                        if(response.data.data){
-                            let c = [];
-                            let gc = [];
-                            response.data.data.forEach((value, index) =>{
-                                if(!value.permission.parent){ // check apakah dia memiliki parent, jika undifined maka itu adalah parent
-                                    // get parent
-                                    let a= {
-                                        id:value.id,
-                                        name:value.permission.name,
-                                        value:value.permission.value,
-                                        child:[]
-                                    };
-                                    this.permission.push(a)
-                                }else if(value.permission.parent && value.permission.parent.parent){ // check apakah memiliki parent dan grand parent, jika punya makan dia akan menjadi grand child
-                                    // get grand child
-                                    let d ={
-                                        id:value.id,
-                                        name:value.permission.name,
-                                        parent:value.permission.parent.value,
-                                    };
-                                    gc.push(d)
-                                }else {
-                                    // get child
-                                    if(value.permission.parent){ // check apakah memiliki grand parent, jika tidak maka dia akan menjadi child
-                                        let b = {
-                                            id:value.id,
-                                            name:value.permission.name,
-                                            parent:value.permission.parent.value,
-                                            child:value.permission.value, // untuk perbandingan value == parent dari grand child
-                                            grandChild:[]
-                                        };
-                                        c.push(b)
-                                    }
-                                }
-                            });
-                            gc.forEach((g, inds) =>{  // looping grand child
-                                c.forEach((v, ind) =>{ // looping child
-                                    if(v.child === g.parent)v.grandChild.push(g)
-                                })
-
-                            });
-                            this.permission.forEach((values, i) =>{ //looping parent
-                                c.forEach((v, ind) =>{ // looping child
-                                    if(values.value === v.parent)this.permission[i].child.push(v);// check value parent dengan  value child
-                                })
-                            });
-                        }
-                    });
-            },
             async renderData(){
                 await this.$http.get("/role/" + this.$route.params.id).then(response => {
                     this.item = response.data.data
                     this.permission=[]
-                    this.permissionData()
+                    if(response.data.data.permissions){
+                        this.permission = response.data.data.permissions
+                    }
                 });
             },
             changeStatus(val,id) {

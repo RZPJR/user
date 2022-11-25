@@ -7,7 +7,7 @@
                         <template v-slot:activator="{ on: tooltip }">
                             <v-text-field
                                 dense
-                                v-model="search"
+                                v-model="permissionList.search"
                                 outlined
                                 filled
                                 placeholder="Search..."
@@ -45,7 +45,7 @@
                 <v-col cols="12" md="3" class="-mt24">
                     <SelectStatus
                         :default="1"
-                        v-model="statuses"
+                        v-model="permissionList.status"
                         @selected="statusSelected"
                         v-privilege="'filter_rdl'"
                         :dense="true"
@@ -56,9 +56,9 @@
         <div class="box-body-table">
             <v-data-table
                 :mobile-breakpoint="0"
-                :headers="table.fields"
-                :items="items"
-                :loading="loading"
+                :headers="permissionList.tableHeaders"
+                :items="permissionList.data"
+                :loading="permissionList.isLoading"
                 :items-per-page="10"
             >
                 <template v-slot:item="props">
@@ -85,84 +85,51 @@
 </template>
 
 <script>
+import { mapState, mapActions, mapMutations } from "vuex";
     export default {
         name: "Division",
         data() {
             return {
-                search: '',
-                loading: false,
-                statuses:1,
-                filter : false,
                 showFilter : false,
-                table: {
-                    fields: [
-                        {
-                            text:'Name',
-                            class: 'grey--text text--darken-4',
-                            sortable: false
-                        },
-                        {
-                            text:'Value',
-                            class: 'grey--text text--darken-4',
-                            sortable: false
-                        },
-                        {
-                            text:'Status',
-                            class: 'grey--text text--darken-4',
-                            sortable: false
-                        },
-                    ],
-                },
-                items:[],
             }
         },
-        mounted() {
-            this.renderData('')
+        created(){
+            this.fetchPermissionList()
+        },
+        computed: {
+            ...mapState({
+                permissionList: state => state.permission.permissionList,
+            }),
         },
         methods: {
-            renderData(search){
-                this.loading = true;
-                this.items = []
-                let statuses = ''
-                if(this.statuses === 999){
-                    statuses = ''
-                }else{
-                    statuses= "|status:"+this.statuses
-                }
-                this.$http.get("/permission",{params:{
-                        per_page:100,
-                        conditions:'Or.name.icontains:'+search+statuses,
-                    }}).then(response => {
-                    this.loading = false
-                    this.items = response.data.data
-                    if(this.items === null){
-                        this.items = []
-                    }
-                });
-            },
+            ...mapActions([
+                "fetchPermissionList"
+            ]),
+            ...mapMutations([
+                "setStatusFilterUserList",
+            ]),
             statusSelected(d) {
-                this.statuses = null;
+                this.$store.commit('setStatusFilterUserList', null)
                 if (d !== ''  && d !== undefined) {
-                    this.statuses = d.value;
+                    this.$store.commit('setStatusFilterUserList', d.value)
                 }
             },
         },
         watch: {
-            'search': {
+            'permissionList.search': {
                 handler: function (val) {
                     let that = this
                     clearTimeout(this._timerId)
                     this._timerId = setTimeout(function(){ 
-                        that.renderData(val)
+                        that.fetchPermissionList()
                     }, 1000);
                 },
                 deep: true
             },
-            'statuses': {
+            'permissionList.status': {
                 handler: function (val) {
                     let that = this
-
-                    that.renderData(this.search)
+                    that.fetchPermissionList()
                 },
                 deep: true
             },

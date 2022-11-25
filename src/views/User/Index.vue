@@ -273,9 +273,7 @@
                 let sub_roles = ''
                 if (items !== undefined) {
                     if (items.length > 0){
-                        items.map((item, idx) => {
-                            sub_roles += (item.name + (idx !== (items.length-1) ? ', ' : ''))
-                        })
+                        items.map((item, idx) => {sub_roles += (item.name + (idx !== 0 && idx !== (items.length-1) ? ', ' : ''))})
                     }
                 }
                 return sub_roles
