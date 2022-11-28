@@ -40,7 +40,7 @@ Build Image:
       --dockerfile docker/Dockerfile
       --destination $CI_REGISTRY_IMAGE/$CI_COMMIT_BRANCH:$CI_COMMIT_SHORT_SHA
   only:
-    - junior-dev
+    - dev
 
 Deploy Dev:
   stage: deploy
