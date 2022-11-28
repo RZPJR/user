@@ -1,15 +1,26 @@
 import Vue from "vue";
-import VueRouter from "vue-router";
-import Index from "../views/Index.vue";
+import Router from "vue-router";
 
-Vue.use(VueRouter);
+Vue.use(Router);
 
-const routes = [{ path: "/user", component: Index }];
+let path = []
+let route = []
+const comps = require.context('../views/', true, /\.(js)$/i);
+comps.keys().map(key => {
+    path.push(comps(key).default)
+});
+path.forEach((value, index) => {
+    if (value !== undefined) {
+        value.forEach((c, index) => {
+            route.push(c)
+        });
+    }
+});
 
-const router = new VueRouter({
-  mode: "history",
-  base: process.env.BASE_URL,
-  routes
+let router = new Router({
+    mode: "history",
+    base: process.env.BASE_URL,
+    routes: route,
 });
 
 export default router;

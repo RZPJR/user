@@ -1,0 +1,297 @@
+<template>
+    <v-container fill-height class="main-container">
+        <div class="box">
+            <v-row class="mt24">
+                <v-col cols="12" md="6">
+                    <v-tooltip top>
+                        <template v-slot:activator="{ on }">
+                            <v-text-field
+                                name="employee_code"
+                                v-model="form.employee_code"
+                                required
+                                outlined
+                                dense
+                                :error-messages="error.employee_code"
+                                v-on="on"
+                            >
+                            <template v-slot:label>
+                                Employee Code<span style="color:red">*</span>
+                            </template>
+                            </v-text-field>
+                        </template>
+                        <span>Employee ID in HR System</span>
+                    </v-tooltip>
+                </v-col>
+                <v-col cols="12" md="6">
+                    <v-tooltip top>
+                        <template v-slot:activator="{ on }">
+                            <v-text-field
+                                name="name"
+                                v-model="form.name"
+                                required
+                                outlined
+                                style=""
+                                dense
+                                maxlength="30"
+                                :error-messages="error.name"
+                                v-on="on"
+                            >
+                            <template v-slot:label>
+                                Full Name (KTP)<span style="color:red">*</span>
+                            </template>
+                            </v-text-field>
+                        </template>
+                        <span>Name according to Resident Identity Card (KTP)</span>
+                    </v-tooltip>
+                </v-col>
+                <v-col cols="12" md="6" class="-mt24">
+                    <v-tooltip top>
+                        <template v-slot:activator="{ on }">
+                            <v-text-field
+                                name="display_name"
+                                v-model="form.nickname"
+                                required
+                                outlined
+                                dense
+                                :error-messages="error.nickname"
+                                v-on="on"
+                            >
+                            <template v-slot:label>
+                                Display Name<span style="color:red">*</span>
+                            </template>
+                            </v-text-field>
+                        </template>
+                        <span>Name displayed on system</span>
+                    </v-tooltip>
+                </v-col>
+                <v-col cols="12" md="6" class="-mt24">
+                    <SelectDivision
+                        name="division"
+                        v-model="create_user.division"
+                        @selected="divisionSelected"
+                        :error="error.division_id"
+                        required
+                        :dense="true"
+                    > </SelectDivision>
+                </v-col>
+                <v-col cols="12" md="6" class="-mt24">
+                    <SelectRole
+                        name="role"
+                        label="Main Role"
+                        v-model="create_user.main_role"
+                        @selected="mainRoleSelected"
+                        :division_id="create_user.division_id"
+                        :disabled="disabled_main_role"
+                        :error="error.role_id"
+                        :clear="clear_main_role"
+                        :dense="true"
+                        required
+                    > </SelectRole>
+                </v-col>
+                <v-col cols="12" class="-mt24">
+                    <MultiSelectRole
+                        name="role"
+                        :label="'Sub Roles'"
+                        v-model="create_user.role"
+                        @selected="roleSelected"
+                        :division_id="create_user.division_id"
+                        :main_role="form.main_role"
+                        :disabled="disabled_role"
+                        :error="error.role_id"
+                        :clear="clear_role"
+                        :dense="true"
+                        :norequired="true"
+                        required
+                    > </MultiSelectRole>
+                </v-col>
+                <v-col cols="12" md="6" class="-mt24">
+                    <v-text-field
+                        name="phone_number"
+                        v-model="form.phone_number"
+                        required
+                        outlined
+                        dense
+                        :error-messages="error.phone_number"
+                        onkeypress='return event.charCode >= 48 && event.charCode <= 57'
+                        maxlength="15"
+                    ><template v-slot:label>
+                        Phone Number<span style="color:red">*</span>
+                    </template>
+                    </v-text-field>
+                </v-col>
+                <v-col cols="12" md="6" class="-mt24">
+                    <v-tooltip top>
+                        <template v-slot:activator="{ on }">
+                            <v-text-field
+                                name="email"
+                                v-model="form.email"
+                                required
+                                outlined
+                                dense
+                                :rules="create_user.email_rules"
+                                :error-messages="error.email"
+                                v-on="on"
+                            >
+                                <template v-slot:label>
+                                    Email<span style="color:red">*</span>
+                                </template>
+                            </v-text-field>
+                        </template>
+                        <span>Email Company</span>
+                    </v-tooltip>
+                </v-col>
+                <v-col cols="12" md="6" class="-mt24">
+                    <v-text-field
+                        :append-icon="show_password ? 'visibility' : 'visibility_off'"
+                        :type="show_password ? 'text' : 'password'"
+                        @click:append="show_password = !show_password"
+                        name="password"
+                        v-model="form.password"
+                        outlined
+                        dense
+                        :error-messages="error.password"
+                        :rules="create_user.password_rules"
+                        maxlength="32"
+                    >
+                        <template v-slot:label>
+                            Password<span style="color:red">*</span>
+                        </template>
+                    </v-text-field>
+                </v-col>
+                <v-col cols="12" md="6" class="-mt24">
+                    <v-text-field
+                        :append-icon="show_confirm ? 'visibility' : 'visibility_off'"
+                        :type="show_confirm ? 'text' : 'password'"
+                        @click:append="show_confirm = !show_confirm"
+                        name="confirm_password"
+                        v-model="form.password_confirm"
+                        outlined
+                        dense
+                        :error-messages="error.password_confirm"
+                        :rules="create_user.confirm_password_rules"
+                        maxlength="32"
+                    >
+                        <template v-slot:label>
+                            Confirm Password<span style="color:red">*</span>
+                        </template>
+                    </v-text-field>
+                </v-col>
+            </v-row>
+        </div>
+        <div class="box-end">
+            <v-row class="-ma16">
+                <v-col>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn
+                            @click="$router.go(-1)"
+                            depressed
+                            outlined
+                            color="#EBEBEB"
+                            class="main-btn"
+                        >
+                            <span class="text-black80">Cancel</span>
+                        </v-btn>
+                        <v-btn
+                            depressed
+                            color="#50ABA3"
+                            class="main-btn white--text"
+                            @click="confirmButton()"
+                        >
+                            Save
+                        </v-btn>
+                    </v-card-actions>
+                </v-col>
+            </v-row>
+        </div>
+        <ConfirmationDialogNew :sendData="confirm_data"/>
+    </v-container>
+</template>
+<script>
+    import { mapState, mapMutations } from "vuex";
+
+    export default {
+        name: "UserCreate",
+        data () {
+            return {
+                confirm_data:{},
+                show_password:false,
+                show_confirm:false,
+                disabled_main_role: true,
+                disabled_role:true,
+                clear_main_role: false,
+                clear_role:false,
+                error:{}
+            }
+        },
+        computed: {
+            ...mapState({
+                create_user: state => state.user.create_user,
+                form: state => state.user.create_user.form,
+            }),
+        },
+        methods:{
+            ...mapMutations([
+                "setDivisionCreateUser",
+                "setRoleCreateUser",
+            ]),
+            confirmButton() {
+                this.confirm_data = {
+                    model : true,
+                    title : "Create User",
+                    text : "Are you sure want to create this user?",
+                    urlApi : '/user',
+                    nextPage : '/user/user',
+                    post : true,
+                    data : this.form
+                }
+            },
+            divisionSelected(d) {
+                this.$store.commit('setDivisionCreateUser', null)
+                this.$store.commit('setMainRoleCreateUser', null)
+                this.$store.commit('setRoleCreateUser', null)
+                this.disabled_main_role = true
+                this.clear_role = true
+                this.clear_main_role = true
+                if (d !== '' && d !== undefined) {
+                    this.$store.commit('setDivisionCreateUser', d)
+                    this.disabled_main_role = false
+                    this.clear_main_role = false
+                    this.clear_role = false
+                }
+            },
+            mainRoleSelected(d) {
+                this.$store.commit('setMainRoleCreateUser', null)
+                this.$store.commit('setRoleCreateUser', null)
+                this.disabled_role = true
+                if (d !== ''  && d !== undefined) {
+                    this.$store.commit('setMainRoleCreateUser', d)
+                    this.disabled_role = false
+                }
+            },
+            async roleSelected(d) {
+                this.$store.commit('setRoleCreateUser', null)
+                if (d !== ''  && d !== undefined) {
+                    let selected_sub_roles = await d.map((e) => {
+                        return e.id
+                    })
+                    this.$store.commit('setRoleCreateUser', selected_sub_roles)
+                }
+            },
+        },
+        mounted () {
+            let self = this
+            this.$root.$on('event_error', function(err){
+                self.error = err
+            });
+        },
+        watch: {
+            'form.phone_number': {
+                handler: function (val) {
+                    this.form.phone_number = val.replace(/^0+/, '')
+                },
+                deep: true
+            },
+        },
+    }
+</script>
