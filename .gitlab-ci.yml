@@ -4,7 +4,7 @@ stages:
   - reconfig
 
 before_script:
-  - cp .env.example .env
+  - cp $ENV .env
 
 Build Image:
   stage: build
@@ -21,7 +21,7 @@ Build Image:
       --dockerfile docker/Dockerfile
       --destination $CI_REGISTRY_IMAGE/$CI_COMMIT_BRANCH:$CI_COMMIT_SHORT_SHA
   only:
-    - dev
+    - junior
 
 Deploy Dev:
   stage: deploy
