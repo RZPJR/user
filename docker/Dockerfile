@@ -1,4 +1,4 @@
-FROM node:16-alpine AS builder
+FROM node:16 AS builder
 
 WORKDIR /app
 COPY . .
@@ -6,7 +6,7 @@ COPY . .
 RUN npm install
 RUN npm run build
 
-FROM nginx:1.23-alpine
+FROM nginx:1.23
 
 COPY nginx/apps.conf /etc/nginx/conf.d/apps.conf
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
