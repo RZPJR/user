@@ -1,10 +1,29 @@
 stages:
+  - scan
   - build
   - deploy
   - reconfig
 
 before_script:
-  - cp .env.example .env
+  - cp $ENV .env
+
+sonarqube-check:
+  stage: scan
+  image: 
+    name: sonarsource/sonar-scanner-cli:latest
+    entrypoint: [""]
+  variables:
+    SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"  # Defines the location of the analysis task cache
+    GIT_DEPTH: "0"  # Tells git to fetch all the branches of the project, required by the analysis task
+  cache:
+    key: "${CI_JOB_NAME}"
+    paths:
+      - .sonar/cache
+  script: 
+    - sonar-scanner
+  allow_failure: true
+  only:
+    - dev
 
 Build Image:
   stage: build
@@ -21,15 +40,14 @@ Build Image:
       --dockerfile docker/Dockerfile
       --destination $CI_REGISTRY_IMAGE/$CI_COMMIT_BRANCH:$CI_COMMIT_SHORT_SHA
   only:
-    - dev
+    - hb-dev
 
 Deploy Dev:
   stage: deploy
   image: gcr.io/google.com/cloudsdktool/google-cloud-cli:alpine
   before_script:
     - gcloud components install kubectl gke-gcloud-auth-plugin
-    - echo $GCP_SA_KEY > gcloud-service-key.json
-    - gcloud auth activate-service-account --key-file gcloud-service-key.json
+    - gcloud auth activate-service-account --key-file $GCP_SA_KEY
     - gcloud container clusters get-credentials $CLUSTER_NAME --region asia-southeast1 --project $PROJECT_NAME
   script:
     - sed -i "s/<VERSION>/${CI_COMMIT_SHORT_SHA}/g" kubernetes/deploy-dev.yaml
