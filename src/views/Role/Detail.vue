@@ -6,17 +6,23 @@
                     {{item.name}}
                 </v-col>
                 <v-col class="d-flex justify-end align-end">
-                    <div>
-                        <!-- <v-btn
+                    <div v-if="item.status == 1">
+                        <v-btn
                             elevation="0"
                             rounded
-                            depressed
                             small
                             class="no-caps mb4"
-                            :color="statusMaster(item.status_convert)"
-                        >
-                            {{capitalizeFirstLetter(item.status_convert)}}
-                        </v-btn> -->
+                            :color="statusMaster('active')"
+                        >Active</v-btn>
+                    </div>
+                    <div v-else-if="item.status == 2">
+                        <v-btn
+                            elevation="0"
+                            rounded
+                            small
+                            class="no-caps mb4"
+                            :color="statusMaster('archived')"
+                        >Archived</v-btn>
                     </div>
                     <v-menu offset-y>
                         <template v-slot:activator="{ on }">
@@ -51,10 +57,10 @@
                 </v-col>
             </v-row>
             <v-row>
-                <v-col cols="12" md="6" class="-mt24">
+                <v-col cols="12" md="6" class="mt24">
                     <DetailRowNew :name="'Name'" :value="item.name"/>
                 </v-col>
-                <v-col cols="12" md="6" class="-mt24">
+                <v-col cols="12" md="6" class="mt24">
                     <DetailRowNew :name="'Division'" :value="item.division.name"/>
                 </v-col>
             </v-row>
