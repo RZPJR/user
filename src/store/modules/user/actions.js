@@ -18,6 +18,21 @@ const actions = {
                     orderby:'-id',
                 }
             });
+            commit("setCreateUserForm", {
+                employee_code: '',
+                name: '',
+                nickname: '',
+                region_id: 1, 
+                site_id: 1, 
+                main_role: null,
+                sub_roles: [],
+                phone_number: '',
+                email: '',
+                password:'',
+                password_confirm:'',
+                parent_id: null, 
+                territory_id: null, 
+            })
             if (response.data.data) commit("setUserList", response.data.data)
             commit("setPreloadUserList", false);            
         } catch (error) {
