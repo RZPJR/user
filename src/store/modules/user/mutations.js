@@ -35,13 +35,17 @@ const mutations = {
         return state;
     },
     setMainRoleCreateUser: function(state, payload) {
-        state.create_user.main_role = payload;
-        state.create_user.form.main_role = payload ? payload.id : ''
+        state.create_user.main_role = payload ? payload : null;
+        state.create_user.form.main_role = payload ? payload.id : null
         return state;
     },
     setRoleCreateUser: function(state, payload) {
-        state.create_user.role = payload;
-        state.create_user.form.sub_roles = payload
+        state.create_user.role = payload ? payload : null;
+        state.create_user.form.sub_roles = payload ? payload.id : null
+        return state;
+    },
+    setCreateUserForm: function(state, payload) {
+        state.create_user.form = payload;
         return state;
     },
     // #endregion
