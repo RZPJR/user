@@ -42,6 +42,7 @@
                     v-model="form.permission_id"
                     @selected="permissionChecked"
                     :idPermission="permission"
+                    :idRole="role_id"
                 ></PermissionUpdate>
             </div>
         </div>
@@ -89,6 +90,7 @@
                 },
                 error:{},
                 putData:{},
+                role_id: ''
             }
         },
         methods:{
@@ -115,10 +117,12 @@
                     let data = response.data.data
                     this.form.name = data.name
                     this.divisionSelected(data.division);
+                    this.role_id = data.id
                     this.permission=[]
-                    response.data.data.permissions.forEach((value, index) => {
-                        this.permission.push(value.id)
-                    })
+                    let temp = data.permission_ids
+                    temp.forEach((value, index) => {
+                        this.permission.push(value)
+                    });
                 });
             },
             permissionChecked(d) {
