@@ -12,7 +12,6 @@
                                 filled
                                 placeholder="Search..."
                                 prepend-inner-icon="search"
-                                v-privilege="'filter_rdl'"
                                 v-on="{ ...tooltip }"
                             >
                             </v-text-field>
@@ -47,7 +46,6 @@
                         :default="1"
                         v-model="statuses"
                         @selected="statusSelected"
-                        v-privilege="'filter_rdl'"
                         :dense="true"
                     ></SelectStatus>
                 </v-col>
@@ -61,6 +59,7 @@
                         color="#50ABA3"
                         to="/user/division/create"
                         class="no-caps bold"
+                        v-privilege="'dvs_crt'"
                     >
                     <span class="text-white">
                         Create Division
