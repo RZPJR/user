@@ -31,7 +31,7 @@
                             </v-btn>
                         </template>
                         <v-list class="bg-white">
-                            <v-list-item v-if="user.status === 1" :to="{ name: 'UserUpdate'}">
+                            <v-list-item v-privilege="'usr_upd'" v-if="user.status === 1" :to="{ name: 'UserUpdate'}">
                                 <v-list-item-content>
                                     <v-list-item-title>Update</v-list-item-title>
                                 </v-list-item-content>
@@ -50,19 +50,14 @@
                             <div>
                                 <hr/>
                             </div>
-                            <v-list-item v-if="user.status==1" @click="archive(user.id)">
+                            <v-list-item v-privilege="'usr_arc'" v-if="user.status==1" @click="archive(user.id)">
                                 <v-list-item-content>
                                     <v-list-item-title>Archive</v-list-item-title>
                                 </v-list-item-content>
                             </v-list-item>
-                            <v-list-item v-if="user.status==2" @click="unarchive(user.id)">
+                            <v-list-item v-privilege="'usr_urc'" v-if="user.status==2" @click="unarchive(user.id)">
                                 <v-list-item-content>
                                     <v-list-item-title>Unarchive</v-list-item-title>
-                                </v-list-item-content>
-                            </v-list-item>
-                            <v-list-item @click="seeHistory()">
-                                <v-list-item-content>
-                                    <v-list-item-title>See History</v-list-item-title>
                                 </v-list-item-content>
                             </v-list-item>
                         </v-list>
