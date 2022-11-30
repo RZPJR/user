@@ -31,7 +31,7 @@
                             </v-btn>
                         </template>
                         <v-list class="bg-white">
-                            <v-list-item  :to="{ name: 'RoleUpdate', params: { id: item.id } }"  v-privilege="'rol_upd'">
+                            <v-list-item  :to="{ name: 'RoleUpdate', params: { id: item.id } }" v-if="item.status === 1"  v-privilege="'rol_upd'">
                                 <v-list-item-content>
                                     <v-list-item-title>Update</v-list-item-title>
                                 </v-list-item-content>
@@ -39,7 +39,7 @@
                                     <v-icon>mdi-open-in-new</v-icon>
                                 </v-list-item-icon>
                             </v-list-item>
-                            <div>
+                            <div v-if="item.status === 1">
                                 <hr/>
                             </div>
                             <v-list-item @click="changeStatus(item.status,item.id)" v-if="item.status === 1" v-privilege="'rol_arc'">

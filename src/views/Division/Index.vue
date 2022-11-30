@@ -116,7 +116,7 @@
                                     <div>
                                         <hr/>
                                     </div>
-                                    <v-list-item @click="changeStatus(props.item.status,props.item.id)" v-if="props.item.status=='1'">
+                                    <v-list-item v-privilege="'dvs_arc'" @click="changeStatus(props.item.status,props.item.id)" v-if="props.item.status=='1'">
                                         <v-list-item-content>
                                             <v-list-item-title>Archive</v-list-item-title>
                                         </v-list-item-content>
