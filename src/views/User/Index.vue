@@ -15,7 +15,7 @@
                                 prepend-inner-icon="search"
                             ></v-text-field>
                         </template>
-                        <span>Search by code and name</span>
+                        <span>Search by display name</span>
                     </v-tooltip>
                 </v-col>
             </v-row>
