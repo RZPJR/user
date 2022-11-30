@@ -105,7 +105,7 @@
                                     </template>
                                 </template>
                                 <v-list class="bg-white">
-                                    <v-list-item :to="{ name: 'DivisionUpdate', params: { id: props.item.id } }" v-if="props.item.status == 1">
+                                    <v-list-item v-privilege="'dvs_upd'" :to="{ name: 'DivisionUpdate', params: { id: props.item.id } }" v-if="props.item.status == 1">
                                         <v-list-item-content>
                                             <v-list-item-title>Update</v-list-item-title>
                                         </v-list-item-content>
