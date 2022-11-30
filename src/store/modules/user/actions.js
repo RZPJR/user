@@ -8,14 +8,16 @@ const actions = {
             let search = state.user_list.filter.search
             let status = state.user_list.filter.status === 999 ? '' : "|status:"+state.user_list.filter.status
             let area = !state.user_list.filter.area ? '' : "|area_id.e:"+state.user_list.filter.area.id
-            let division = !state.user_list.filter.division ? '' : "|role_id.division_id.id.e:"+state.user_list.filter.division.id
-            let role = !state.user_list.filter.role ? '' : "|role_id.e:"+state.user_list.filter.role.id
+            let division = !state.user_list.filter.division ? '' : state.user_list.filter.division.id
+            let role = !state.user_list.filter.role ? '' : state.user_list.filter.role.id
             let warehouse = !state.user_list.filter.warehouse ? '' : "|warehouse_id.e:"+state.user_list.filter.warehouse.id            
             const response = await http.get("/user", {
                 params: {
                     per_page:10000,
                     conditions:'Or.name.icontains:'+search+status,
                     orderby:'-id',
+                    division_id: division,
+                    role_id: role
                 }
             });
             commit("setCreateUserForm", {
