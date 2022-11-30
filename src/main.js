@@ -50,17 +50,11 @@ export const unmount = vueLifecycles.unmount;
 Vue.directive('privilege', {
   inserted: function (el, binding, vnode) {
       let priv = localStorage.getItem('priv')
-      if (store.getters.getStaff) {
-          let superAdmin = store.getters.getStaff
-          superAdmin.user.email = store.getters.getStaff.user.email
-          if (superAdmin.user.email !== 'superadmin') {
-              if (typeof binding.value !== 'undefined') {
-                  priv = "," + priv + ","
-                  binding.value = "," + binding.value + ","
-                  if (priv.indexOf(binding.value) < 0) {
-                      vnode.elm.parentElement.removeChild(vnode.elm)
-                  }
-              }
+      if (typeof binding.value !== 'undefined') {
+          priv = "," + priv + ","
+          binding.value = "," + binding.value + ","
+          if (priv.indexOf(binding.value) < 0) {
+              vnode.elm.parentElement.removeChild(vnode.elm)
           }
       }
   }
