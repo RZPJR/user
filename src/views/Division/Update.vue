@@ -70,7 +70,7 @@
         },
         methods:{
             renderData(){
-                this.$http.get("/division/" + this.$route.params.id,{params:{
+                this.$http.get("/account/v1/division/" + this.$route.params.id,{params:{
                         per_page:100,
                     }}).then(response => {
                     this.form.name = response.data.data.name

@@ -73,7 +73,7 @@
                     model : true,
                     title : "Create Division",
                     text : "Are you sure want to create this Division?",
-                    urlApi : "/division",
+                    urlApi : "/account/v1/division",
                     nextPage : "/user/division",
                     post : true,
                     data : this.form

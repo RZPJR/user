@@ -237,7 +237,7 @@
                 }else{
                   statuses= "|status:"+statuses
                 }
-                this.$http.get("/role",{params:{
+                this.$http.get("/account/v1/role",{params:{
                       per_page:100,
                       conditions:'Or.name.icontains:'+search+statuses,
                       orderby:'-id',
