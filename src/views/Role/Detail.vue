@@ -104,7 +104,7 @@
         },
         methods: {
             async renderData(){
-                await this.$http.get("/role/" + this.$route.params.id).then(response => {
+                await this.$http.get("/account/v1/role/" + this.$route.params.id).then(response => {
                     this.item = response.data.data
                     this.permission=[]
                     if(response.data.data.permissions){

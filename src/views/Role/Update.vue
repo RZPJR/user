@@ -99,7 +99,7 @@
                     model : true,
                     title : "Update Role",
                     text : "Are you sure want to Update this role?",
-                    urlApi : '/role/'+ this.$route.params.id,
+                    urlApi : '/account/v1/role/'+ this.$route.params.id,
                     nextPage : '/user/role/detail/'+this.$route.params.id,
                     data : this.form
                 }

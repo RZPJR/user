@@ -197,7 +197,7 @@
                 }else{
                     statuses= "|status:"+this.statuses
                 }
-                this.$http.get("/division",{params:{
+                this.$http.get("/account/v1/division",{params:{
                         per_page:100,
                         conditions:'Or.name.icontains:'+search+statuses,
                     }}).then(response => {

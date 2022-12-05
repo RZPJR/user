@@ -96,7 +96,7 @@
                     model : true,
                     title : "Create Role",
                     text : "Are you sure want to create this role?",
-                    urlApi : '/role',
+                    urlApi : '/account/v1/role',
                     nextPage : '/user/role',
                     post : true,
                     data : this.form
