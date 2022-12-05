@@ -26,12 +26,21 @@
                     </div>
                     <v-menu offset-y>
                         <template v-slot:activator="{ on }">
-                            <v-btn icon v-on="on">
+                            <v-btn 
+                                data-unq="user-button-actionButton"
+                                icon
+                                v-on="on"
+                            >
                                 <v-icon>more_vert</v-icon>
                             </v-btn>
                         </template>
                         <v-list class="bg-white">
-                            <v-list-item v-privilege="'usr_upd'" v-if="user.status === 1" :to="{ name: 'UserUpdate'}">
+                            <v-list-item 
+                                data-unq="user-button-updateUser"
+                                v-privilege="'usr_upd'"
+                                v-if="user.status === 1"
+                                :to="{ name: 'UserUpdate'}"
+                            >
                                 <v-list-item-content>
                                     <v-list-item-title>Update</v-list-item-title>
                                 </v-list-item-content>
@@ -39,7 +48,11 @@
                                     <v-icon>open_in_new</v-icon>
                                 </v-list-item-icon>
                             </v-list-item>
-                            <v-list-item  :to="{ name: 'UserResetPassword', params: { id_user: user.id }}" v-privilege="'usr_rst_pass'">
+                            <v-list-item 
+                                data-unq="user-button-resetPassword"
+                                :to="{ name: 'UserResetPassword', params: { id_user: user.id }}"
+                                v-privilege="'usr_rst_pass'"
+                            >
                                 <v-list-item-content>
                                     <v-list-item-title>Reset Password</v-list-item-title>
                                 </v-list-item-content>
@@ -50,12 +63,22 @@
                             <div>
                                 <hr/>
                             </div>
-                            <v-list-item v-privilege="'usr_arc'" v-if="user.status==1" @click="archive(user.id)">
+                            <v-list-item 
+                                data-unq="user-button-archiveUser"
+                                v-privilege="'usr_arc'"
+                                v-if="user.status==1"
+                                @click="archive(user.id)"
+                            >
                                 <v-list-item-content>
                                     <v-list-item-title>Archive</v-list-item-title>
                                 </v-list-item-content>
                             </v-list-item>
-                            <v-list-item v-privilege="'usr_urc'" v-if="user.status==2" @click="unarchive(user.id)">
+                            <v-list-item 
+                                data-unq="user-button-unarchiveUser"
+                                v-privilege="'usr_urc'"
+                                v-if="user.status==2"
+                                @click="unarchive(user.id)"
+                            >
                                 <v-list-item-content>
                                     <v-list-item-title>Unarchive</v-list-item-title>
                                 </v-list-item-content>

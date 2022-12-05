@@ -6,6 +6,7 @@
                     <v-tooltip bottom>
                         <template v-slot:activator="{ on: tooltip }">
                             <v-text-field
+                                data-unq="user-input-search"
                                 dense
                                 v-model="search"
                                 outlined
@@ -24,6 +25,7 @@
                 <v-col>
                     Filter 
                     <v-btn 
+                        data-unq="user-button-filterExpandLess"
                         depressed
                         x-small
                         @click="showFilter = !showFilter"
@@ -31,6 +33,7 @@
                         class="no-caps fs12"
                     >Hide<v-icon right>expand_less</v-icon></v-btn>
                     <v-btn 
+                        data-unq="user-button-filterExpandMore"
                         depressed
                         x-small
                         @click="showFilter = !showFilter"
@@ -42,6 +45,7 @@
             <v-row v-if="showFilter">
                 <v-col cols="12" md="3">
                     <v-select
+                        data-unq="user-select-status"
                         v-model="statuses"
                         :items="status"
                         item-text="text"
@@ -56,6 +60,7 @@
             <v-row >
                 <v-col class="flex-align-end">
                     <v-btn
+                        data-unq="user-button-createRole"
                         depressed
                         color="#50ABA3"
                         :to="{ name: 'RoleCreate' }"
@@ -107,7 +112,11 @@
                                     </template>
                                 </template>
                                 <v-list class="bg-white">
-                                    <v-list-item v-privilege="'rol_rdd'" :to="{ name: 'RoleDetail', params: { id: props.item.id } }">
+                                    <v-list-item 
+                                        data-unq="user-button-detailRole"
+                                        v-privilege="'rol_rdd'"
+                                        :to="{ name: 'RoleDetail', params: { id: props.item.id } }"
+                                    >
                                         <v-list-item-content>
                                             <v-list-item-title>Detail</v-list-item-title>
                                         </v-list-item-content>
@@ -115,7 +124,12 @@
                                             <v-icon>open_in_new</v-icon>
                                         </v-list-item-icon>
                                     </v-list-item>
-                                    <v-list-item v-privilege="'rol_upd'" :to="{ name: 'RoleUpdate', params: { id: props.item.id } }" v-if="props.item.status == 1">
+                                    <v-list-item 
+                                        data-unq="user-button-updateRole"
+                                        v-privilege="'rol_upd'"
+                                        :to="{ name: 'RoleUpdate', params: { id: props.item.id } }"
+                                        v-if="props.item.status == 1"
+                                    >
                                         <v-list-item-content>
                                             <v-list-item-title>Update</v-list-item-title>
                                         </v-list-item-content>
@@ -126,12 +140,22 @@
                                     <div>
                                         <hr/>
                                     </div>
-                                    <v-list-item @click="changeStatus(props.item.status,props.item.id)" v-if="props.item.status=='1'" v-privilege="'rol_arc'">
+                                    <v-list-item 
+                                        data-unq="user-button-archiveRole"
+                                        @click="changeStatus(props.item.status,props.item.id)"
+                                        v-if="props.item.status=='1'"
+                                        v-privilege="'rol_arc'"
+                                    >
                                         <v-list-item-content>
                                             <v-list-item-title>Archive</v-list-item-title>
                                         </v-list-item-content>
                                     </v-list-item>
-                                    <v-list-item @click="changeStatus(props.item.status,props.item.id)" v-else v-privilege="'rol_urc'">
+                                    <v-list-item 
+                                        data-unq="user-button-unarchiveRole"
+                                        @click="changeStatus(props.item.status,props.item.id)"
+                                        v-else
+                                        v-privilege="'rol_urc'"
+                                    >
                                         <v-list-item-content>
                                             <v-list-item-title>Unarchive</v-list-item-title>
                                         </v-list-item-content>

@@ -31,7 +31,12 @@
                             </v-btn>
                         </template>
                         <v-list class="bg-white">
-                            <v-list-item  :to="{ name: 'RoleUpdate', params: { id: item.id } }" v-if="item.status === 1"  v-privilege="'rol_upd'">
+                            <v-list-item 
+                                data-unq="role-button-updateRole"
+                                :to="{ name: 'RoleUpdate', params: { id: item.id } }"
+                                v-if="item.status === 1"
+                                v-privilege="'rol_upd'"
+                            >
                                 <v-list-item-content>
                                     <v-list-item-title>Update</v-list-item-title>
                                 </v-list-item-content>
@@ -42,12 +47,22 @@
                             <div v-if="item.status === 1">
                                 <hr/>
                             </div>
-                            <v-list-item @click="changeStatus(item.status,item.id)" v-if="item.status === 1" v-privilege="'rol_arc'">
+                            <v-list-item 
+                                data-unq="role-button-archiveRole"
+                                @click="changeStatus(item.status,item.id)"
+                                v-if="item.status === 1"
+                                v-privilege="'rol_arc'"
+                            >
                                 <v-list-item-content>
                                     <v-list-item-title>Archive</v-list-item-title>
                                 </v-list-item-content>
                             </v-list-item>
-                            <v-list-item @click="changeStatus(item.status,item.id)" v-else v-privilege="'rol_urc'">
+                            <v-list-item 
+                                data-unq="role-button-unarchiveRole"
+                                @click="changeStatus(item.status,item.id)"
+                                v-else
+                                v-privilege="'rol_urc'"
+                            >
                                 <v-list-item-content>
                                     <v-list-item-title>Unarchive</v-list-item-title>
                                 </v-list-item-content>

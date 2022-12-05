@@ -6,6 +6,7 @@
                     <v-tooltip bottom>
                         <template v-slot:activator="{ on: tooltip }">
                             <v-text-field
+                                data-unq="permission-input-search"
                                 dense
                                 v-model="permissionList.search"
                                 outlined
@@ -26,6 +27,7 @@
                 <v-col>
                     Filter 
                     <v-btn 
+                        data-unq="permission-btn-filterExpandLess"
                         depressed
                         x-small
                         @click="showFilter = !showFilter"
@@ -33,6 +35,7 @@
                         class="no-caps fs12"
                     >Hide<v-icon right>expand_less</v-icon></v-btn>
                     <v-btn 
+                        data-unq="permission-btn-filterExpandMore"
                         depressed
                         x-small
                         @click="showFilter = !showFilter"
@@ -44,6 +47,7 @@
             <v-row v-if="showFilter">
                 <v-col cols="12" md="3">
                     <SelectStatus
+                        data-unq="permission-select-status"
                         :default="1"
                         v-model="permissionList.status"
                         @selected="statusSelected"
