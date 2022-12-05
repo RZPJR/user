@@ -4,6 +4,7 @@
             <v-row class="mt24">
                 <v-col cols="12" md="6" class="mt24">
                     <v-text-field
+                        data-unq="role-input-name"
                         name="name"
                         v-model="form.name"
                         :counter="20"
@@ -20,6 +21,7 @@
                 </v-col>
                 <v-col cols="12" md="6" class="mt24">
                     <SelectDivision
+                        data-unq="role-select-division"
                         name="division"
                         v-model="division"
                         @selected="divisionSelected"
@@ -37,6 +39,7 @@
         <div class="box-body">
             <div class="-ma16">
                 <PermissionCreate
+                    data-unq="role-checkbox-permission"
                     name="permission"
                     v-model="form.permissions"
                     @checked="permissionChecked"
@@ -50,6 +53,7 @@
                     <v-card-actions>
                         <v-spacer></v-spacer>
                         <v-btn
+                            data-unq="role-button-cancel"
                             @click="$router.go(-1)"
                             depressed
                             outlined
@@ -59,6 +63,7 @@
                             <span class="text-black80">Cancel</span>
                         </v-btn>
                         <v-btn
+                            data-unq="role-button-save"
                             depressed
                             color="#50ABA3"
                             class="main-btn white--text"

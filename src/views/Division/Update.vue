@@ -4,6 +4,7 @@
             <v-row class="mt24">
                 <v-col cols="12" class="mt24">
                     <v-text-field
+                        data-unq="division-input-search"
                         name="name"
                         v-model="form.name"
                         maxlength="20"
@@ -24,6 +25,7 @@
                     <v-card-actions>
                         <v-spacer></v-spacer>
                         <v-btn
+                            data-unq="division-button-cancel"
                             @click="$router.go(-1)"
                             depressed
                             outlined
@@ -32,7 +34,8 @@
                         >
                             <span class="text-black80">Cancel</span>
                         </v-btn>
-                        <v-btn
+                        <v-btn 
+                            data-unq="division-button-save"
                             depressed
                             color="#50ABA3"
                             class="main-btn white--text"

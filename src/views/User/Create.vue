@@ -6,6 +6,7 @@
                     <v-tooltip top>
                         <template v-slot:activator="{ on }">
                             <v-text-field
+                                data-unq="user-input-employeeCode"
                                 name="employee_code"
                                 v-model="form.employee_code"
                                 required
@@ -26,6 +27,7 @@
                     <v-tooltip top>
                         <template v-slot:activator="{ on }">
                             <v-text-field
+                                data-unq="user-button-fullName"
                                 name="name"
                                 v-model="form.name"
                                 required
@@ -48,6 +50,7 @@
                     <v-tooltip top>
                         <template v-slot:activator="{ on }">
                             <v-text-field
+                                data-unq="user-input-displayName"
                                 name="display_name"
                                 v-model="form.nickname"
                                 required
@@ -66,6 +69,7 @@
                 </v-col>
                 <v-col cols="12" md="6" class="-mt24">
                     <SelectDivision
+                        data-unq="user-select-division"
                         name="division"
                         v-model="create_user.division"
                         @selected="divisionSelected"
@@ -76,6 +80,7 @@
                 </v-col>
                 <v-col cols="12" md="6" class="-mt24">
                     <SelectRole
+                        data-unq="user-select-role"
                         name="role"
                         label="Main Role"
                         v-model="create_user.main_role"
@@ -90,6 +95,7 @@
                 </v-col>
                 <v-col cols="12" class="-mt24">
                     <MultiSelectRole
+                        data-unq="user-select-multiRole"
                         name="role"
                         :label="'Sub Roles'"
                         v-model="create_user.role"
@@ -106,6 +112,7 @@
                 </v-col>
                 <v-col cols="12" md="6" class="-mt24">
                     <v-text-field
+                        data-unq="user-input-phoneNumber"
                         name="phone_number"
                         v-model="form.phone_number"
                         required
@@ -123,6 +130,7 @@
                     <v-tooltip top>
                         <template v-slot:activator="{ on }">
                             <v-text-field
+                                data-unq="user-input-email"
                                 name="email"
                                 v-model="form.email"
                                 required
@@ -142,6 +150,7 @@
                 </v-col>
                 <v-col cols="12" md="6" class="-mt24">
                     <v-text-field
+                        data-unq="user-input-password"
                         :append-icon="show_password ? 'visibility' : 'visibility_off'"
                         :type="show_password ? 'text' : 'password'"
                         @click:append="show_password = !show_password"
@@ -160,6 +169,7 @@
                 </v-col>
                 <v-col cols="12" md="6" class="-mt24">
                     <v-text-field
+                        data-unq="user-input-passwordConfirmation"
                         :append-icon="show_confirm ? 'visibility' : 'visibility_off'"
                         :type="show_confirm ? 'text' : 'password'"
                         @click:append="show_confirm = !show_confirm"
@@ -184,6 +194,7 @@
                     <v-card-actions>
                         <v-spacer></v-spacer>
                         <v-btn
+                            data-unq="user-button-cancel"
                             @click="$router.go(-1)"
                             depressed
                             outlined
@@ -193,6 +204,7 @@
                             <span class="text-black80">Cancel</span>
                         </v-btn>
                         <v-btn
+                            data-unq="user-button-save"
                             depressed
                             color="#50ABA3"
                             class="main-btn white--text"

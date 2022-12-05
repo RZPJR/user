@@ -6,6 +6,7 @@
                     <v-tooltip bottom>
                         <template v-slot:activator="{ on: tooltip }">
                             <v-text-field
+                                data-unq="division-input-search"
                                 dense
                                 v-model="search"
                                 outlined
@@ -25,6 +26,7 @@
                 <v-col>
                     Filter 
                     <v-btn 
+                        data-unq="division-btn-filterExpandLess"
                         depressed
                         x-small
                         @click="showFilter = !showFilter"
@@ -32,6 +34,7 @@
                         class="no-caps fs12"
                     >Hide<v-icon right>expand_less</v-icon></v-btn>
                     <v-btn 
+                        data-unq="division-btn-filterExpandMore"
                         depressed
                         x-small
                         @click="showFilter = !showFilter"
@@ -43,6 +46,7 @@
             <v-row v-if="showFilter">
                 <v-col cols="12" md="3">
                     <SelectStatus
+                        data-unq="division-select-status"
                         :default="1"
                         v-model="statuses"
                         @selected="statusSelected"
@@ -55,6 +59,7 @@
             <v-row >
                 <v-col class="flex-align-end">
                     <v-btn
+                        data-unq="division-button-createDivision"
                         depressed
                         color="#50ABA3"
                         to="/user/division/create"
@@ -96,6 +101,7 @@
                                 <template v-slot:activator="{ on: menu }">
                                     <template >
                                         <v-btn
+                                            data-unq="division-button-actionButton"
                                             icon
                                             v-on="{ ...menu }"
                                         >  
@@ -104,7 +110,12 @@
                                     </template>
                                 </template>
                                 <v-list class="bg-white">
-                                    <v-list-item v-privilege="'dvs_upd'" :to="{ name: 'DivisionUpdate', params: { id: props.item.id } }" v-if="props.item.status == 1">
+                                    <v-list-item 
+                                        data-unq="division-button-updateUser"
+                                        v-privilege="'dvs_upd'"
+                                        :to="{ name: 'DivisionUpdate', params: { id: props.item.id } }"
+                                        v-if="props.item.status == 1"
+                                    >
                                         <v-list-item-content>
                                             <v-list-item-title>Update</v-list-item-title>
                                         </v-list-item-content>
@@ -115,7 +126,12 @@
                                     <div>
                                         <hr/>
                                     </div>
-                                    <v-list-item v-privilege="'dvs_arc'" @click="changeStatus(props.item.status,props.item.id)" v-if="props.item.status=='1'">
+                                    <v-list-item 
+                                        data-unq="division-button-archiveUser"
+                                        v-privilege="'dvs_arc'"
+                                        @click="changeStatus(props.item.status,props.item.id)"
+                                        v-if="props.item.status=='1'"
+                                    >
                                         <v-list-item-content>
                                             <v-list-item-title>Archive</v-list-item-title>
                                         </v-list-item-content>

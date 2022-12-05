@@ -6,6 +6,7 @@
                     <v-tooltip bottom>
                         <template v-slot:activator="{ on: tooltip }">
                             <v-text-field
+                                data-unq="user-input-search"
                                 dense
                                 v-model="user_list.filter.search"
                                 outlined
@@ -24,6 +25,7 @@
                 <v-col>
                     Filter 
                     <v-btn 
+                        data-unq="user-button-filterExpandLess"
                         depressed
                         x-small
                         @click="show_filter = !show_filter"
@@ -31,6 +33,7 @@
                         class="no-caps fs12"
                     >Hide<v-icon right>expand_less</v-icon></v-btn>
                     <v-btn 
+                        data-unq="user-button-filterExpandMore"
                         depressed
                         x-small
                         @click="show_filter = !show_filter"
@@ -43,6 +46,7 @@
             <v-row v-if="show_filter">
                 <v-col cols="12" md="3">
                     <v-select
+                        data-unq="user-select-status"
                         v-model="user_list.filter.status"
                         :items="status"
                         item-text="text"
@@ -53,6 +57,7 @@
                 </v-col>
                 <v-col cols="12" md="3">
                    <SelectArea
+                        data-unq="user-select-area"
                         :label="'Region'"
                         :disabled="true"
                         :norequired="true"
@@ -61,6 +66,7 @@
                 </v-col>
                 <v-col cols="12" md="3">
                     <SelectWarehouse
+                        data-unq="user-select-warehouse"
                         :label="'Site'"
                         :disabled="true"
                         :norequired="true"
@@ -69,6 +75,7 @@
                 </v-col>
                 <v-col cols="12" md="3">
                     <SelectDivision
+                        data-unq="user-select-division"
                         :no_required="true"
                         v-model="user_list.filter.division"
                         @selected="divisionSelected"
@@ -77,6 +84,7 @@
                 </v-col>
                 <v-col cols="12" md="3">
                     <SelectRole
+                        data-unq="user-select-role"
                         :no_required="true"
                         v-model="user_list.filter.role"
                         @selected="roleSelected"
@@ -92,6 +100,7 @@
             <v-row>
                 <v-col class="flex-align-end">
                     <v-btn
+                        data-unq="user-button-createUser"
                         depressed
                         color="#50ABA3"
                         :to="{ name: 'UserCreate' }"
@@ -150,6 +159,7 @@
                                 <template v-slot:activator="{ on: menu }">
                                     <template >
                                         <v-btn
+                                            data-unq="user-button-actionButton"
                                             icon
                                             v-on="{ ...menu }"
                                         >  
@@ -158,7 +168,11 @@
                                     </template>
                                 </template>
                                 <v-list class="bg-white">
-                                    <v-list-item v-privilege="'usr_rdd'" :to="{ name: 'UserDetail', params: { id: props.item.id } }">
+                                    <v-list-item 
+                                        data-unq="user-button-detailUser"
+                                        v-privilege="'usr_rdd'"
+                                        :to="{ name: 'UserDetail', params: { id: props.item.id } }"
+                                    >
                                         <v-list-item-content>
                                             <v-list-item-title>Detail</v-list-item-title>
                                         </v-list-item-content>
@@ -166,7 +180,12 @@
                                             <v-icon>open_in_new</v-icon>
                                         </v-list-item-icon>
                                     </v-list-item>
-                                    <v-list-item v-privilege="'usr_upd'" :to="{ name: 'UserUpdate', params: { id: props.item.id } }" v-if="props.item.status == 1">
+                                    <v-list-item 
+                                        data-unq="user-button-updateUser"
+                                        v-privilege="'usr_upd'" 
+                                        :to="{ name: 'UserUpdate', params: { id: props.item.id } }"
+                                        v-if="props.item.status == 1"
+                                    >
                                         <v-list-item-content>
                                             <v-list-item-title>Update</v-list-item-title>
                                         </v-list-item-content>
@@ -177,12 +196,22 @@
                                     <div>
                                         <hr/>
                                     </div>
-                                    <v-list-item @click="changeStatus(props.item.status, props.item.id)" v-if="props.item.status=='1'" v-privilege="'usr_arc'">
+                                    <v-list-item 
+                                        data-unq="user-button-archiveUser"
+                                        @click="changeStatus(props.item.status, props.item.id)"
+                                        v-if="props.item.status=='1'"
+                                        v-privilege="'usr_arc'"
+                                    >
                                         <v-list-item-content>
                                             <v-list-item-title>Archive</v-list-item-title>
                                         </v-list-item-content>
                                     </v-list-item>
-                                    <v-list-item @click="changeStatus(props.item.status, props.item.id)" v-else v-privilege="'usr_urc'">
+                                    <v-list-item 
+                                        data-unq="user-button-unarchiveUser"
+                                        @click="changeStatus(props.item.status, props.item.id)"
+                                        v-else
+                                        v-privilege="'usr_urc'"
+                                    >
                                         <v-list-item-content>
                                             <v-list-item-title>Unarchive</v-list-item-title>
                                         </v-list-item-content>

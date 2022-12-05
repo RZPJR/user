@@ -4,6 +4,7 @@
             <v-row class="-mb28">
                 <v-col cols="12" md="6">
                     <v-text-field
+                        data-unq="user-input-password"
                         :append-icon="show_password ? 'mdi-eye' : 'mdi-eye-off'"
                         :type="show_password ? 'text' : 'password'"
                         @click:append="show_password = !show_password"
@@ -20,6 +21,7 @@
                 </v-col>
                 <v-col cols="12" md="6">
                     <v-text-field
+                        data-unq="user-input-confirmPassword"
                         :append-icon="show_confirm ? 'mdi-eye' : 'mdi-eye-off'"
                         :type="show_confirm ? 'text' : 'password'"
                         @click:append="show_confirm = !show_confirm"
