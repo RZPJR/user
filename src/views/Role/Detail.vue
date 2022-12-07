@@ -119,7 +119,7 @@
                         status : true,
                         title : "Archive",
                         text : "Are you sure want to Archive this Role?",
-                        urlApi : '/role/archive/'+id,
+                        urlApi : '/account/v1/role/archive/'+id,
                         statusMsg : "Success to Archive this Role",
                         data : {}
                     }
@@ -129,7 +129,7 @@
                         status : true,
                         title : "Unarchive",
                         text : "Are you sure want to Unarchive this Role?",
-                        urlApi : '/role/unarchive/'+id,
+                        urlApi : '/account/v1/role/unarchive/'+id,
                         statusMsg : "Success to Unarchive this Role",
                         data : {}
                     }
