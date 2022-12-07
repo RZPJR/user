@@ -276,7 +276,7 @@
                         title : "Archive",
                         statusMsg : "Success to Archive this User",
                         text : "Are you sure want to Archive this User?",
-                        urlApi : '/user/archive/'+id,
+                        urlApi : '/account/v1/user/archive/'+id,
                         nextPage : "/user/user/detail/"+id,
                         data : {}
                     }
@@ -288,7 +288,7 @@
                         title : "Unarchive",
                         statusMsg : "Success to Archive this User",
                         text : "Are you sure want to Unarchive this User?",
-                        urlApi : '/user/unarchive/'+id,
+                        urlApi : '/account/v1/user/unarchive/'+id,
                         nextPage : "/user/user/detail/"+id,
                         data : {}
                     }
