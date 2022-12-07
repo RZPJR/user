@@ -199,7 +199,7 @@
                         title : "Archive",
                         statusMsg : "Success to Archive this Division",
                         text : "Are you sure want to Archive this Division?",
-                        urlApi : '/division/archive/'+id,
+                        urlApi : '/account/v1/division/archive/'+id,
                         data : {}
                     }
                 }
