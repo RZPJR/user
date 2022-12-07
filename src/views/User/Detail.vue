@@ -148,7 +148,7 @@
                     statusMsg : "Success to Archive this User",
                     title : "Archive User",
                     text : "Are you sure want to Archive this User?",
-                    urlApi : "/user/archive/"+id,
+                    urlApi : "/account/v1/user/archive/"+id,
                     data : {}
                 }
             },
@@ -159,7 +159,7 @@
                     statusMsg : "Success to Unarchive this User",
                     title : "Unarchive User",
                     text : "Are you sure want to Unarchive this User?",
-                    urlApi : "/user/unarchive/"+id,
+                    urlApi : "/account/v1/user/unarchive/"+id,
                     data : {}
                 }
             },
@@ -170,7 +170,7 @@
                     statusMsg : "Success to Delete this User",
                     title : "Delete User",
                     text : "Are you sure want to delete this User?",
-                    urlApi : "/user/delete/"+id,
+                    urlApi : "/account/v1/user/delete/"+id,
                     nextPage : "/user/user",
                     cancelNote : "Note",
                     noDisable : true,
