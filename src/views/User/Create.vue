@@ -27,7 +27,7 @@
                     <v-tooltip top>
                         <template v-slot:activator="{ on }">
                             <v-text-field
-                                data-unq="user-button-fullName"
+                                data-unq="user-input-fullName"
                                 name="name"
                                 v-model="form.name"
                                 required
