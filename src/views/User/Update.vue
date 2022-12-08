@@ -219,7 +219,7 @@
                     model : true,
                     title : "Update User",
                     text : "Are you sure want to Update this user?",
-                    urlApi : '/user/'+ this.form.idUser,
+                    urlApi : '/account/v1/user/'+ this.form.idUser,
                     nextPage : '/user/user',
                     data : this.form
                 }
