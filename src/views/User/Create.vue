@@ -252,7 +252,7 @@
                     model : true,
                     title : "Create User",
                     text : "Are you sure want to create this user?",
-                    urlApi : '/user',
+                    urlApi : '/account/v1/user',
                     nextPage : '/user/user',
                     post : true,
                     data : this.form

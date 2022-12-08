@@ -103,7 +103,7 @@
                     model : true,
                     title : "Reset Password",
                     text : "Are you sure want to reset this password?",
-                    urlApi : "/user/" + this.$route.params.id + "/reset_password",
+                    urlApi : "/account/v1/user/" + this.$route.params.id + "/reset_password",
                     nextPage : "/user/user/detail/" + this.$route.params.id,
                     data : this.form
                 }
