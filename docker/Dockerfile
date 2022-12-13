@@ -3,9 +3,10 @@ FROM node:16 AS builder
 WORKDIR /app
 COPY . .
 
-RUN npm install
-RUN npm install -g @vue/cli@5.0.5
-RUN npm run build
+RUN npm cache clean --force
+RUN npm install --force
+RUN npm i @vue/cli@5.0.5 --force
+RUN npm run build -- --mode development
 
 FROM nginx:1.23
 
