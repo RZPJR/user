@@ -84,7 +84,7 @@
                     model : true,
                     title : "Update Division",
                     text : "Are you sure want to update this Division?",
-                    urlApi : "/division/" + this.$route.params.id,
+                    urlApi : "/account/v1/division/" + this.$route.params.id,
                     nextPage : "/user/division",
                     data : this.form
                 }
