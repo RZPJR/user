@@ -101,7 +101,7 @@
                                 <template v-slot:activator="{ on: menu }">
                                     <template >
                                         <v-btn
-                                            data-unq="division-button-actionButton"
+                                            :data-unq="`division-button-actionButton-${props.item.id}`"
                                             icon
                                             v-on="{ ...menu }"
                                         >  
@@ -111,7 +111,7 @@
                                 </template>
                                 <v-list class="bg-white">
                                     <v-list-item 
-                                        data-unq="division-button-updateUser"
+                                        :data-unq="`division-button-updateUser-${props.item.id}`"
                                         v-privilege="'dvs_upd'"
                                         :to="{ name: 'DivisionUpdate', params: { id: props.item.id } }"
                                         v-if="props.item.status == 1"
@@ -127,7 +127,7 @@
                                         <hr/>
                                     </div>
                                     <v-list-item 
-                                        data-unq="division-button-archiveUser"
+                                        :data-unq="`division-button-archiveUser-${props.item.id}`"
                                         v-privilege="'dvs_arc'"
                                         @click="changeStatus(props.item.status,props.item.id)"
                                         v-if="props.item.status=='1'"

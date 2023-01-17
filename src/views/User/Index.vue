@@ -159,7 +159,7 @@
                                 <template v-slot:activator="{ on: menu }">
                                     <template >
                                         <v-btn
-                                            data-unq="user-button-actionButton"
+                                            :data-unq="`user-button-actionButton-${props.item.id}`"
                                             icon
                                             v-on="{ ...menu }"
                                         >  
@@ -169,7 +169,7 @@
                                 </template>
                                 <v-list class="bg-white">
                                     <v-list-item 
-                                        data-unq="user-button-detailUser"
+                                        :data-unq="`user-button-detailUser-${props.item.id}`"
                                         v-privilege="'usr_rdd'"
                                         :to="{ name: 'UserDetail', params: { id: props.item.id } }"
                                     >
@@ -181,7 +181,7 @@
                                         </v-list-item-icon>
                                     </v-list-item>
                                     <v-list-item 
-                                        data-unq="user-button-updateUser"
+                                        :data-unq="`user-button-updateUser-${props.item.id}`"
                                         v-privilege="'usr_upd'" 
                                         :to="{ name: 'UserUpdate', params: { id: props.item.id } }"
                                         v-if="props.item.status == 1"
@@ -197,7 +197,7 @@
                                         <hr/>
                                     </div>
                                     <v-list-item 
-                                        data-unq="user-button-archiveUser"
+                                        :data-unq="`user-button-archiveUser-${props.item.id}`"
                                         @click="changeStatus(props.item.status, props.item.id)"
                                         v-if="props.item.status=='1'"
                                         v-privilege="'usr_arc'"
@@ -207,7 +207,7 @@
                                         </v-list-item-content>
                                     </v-list-item>
                                     <v-list-item 
-                                        data-unq="user-button-unarchiveUser"
+                                        :data-unq="`user-button-unarchiveUser-${props.item.id}`"
                                         @click="changeStatus(props.item.status, props.item.id)"
                                         v-else
                                         v-privilege="'usr_urc'"
