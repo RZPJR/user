@@ -8,8 +8,8 @@ const mutations = {
         state.user_list.is_loading = payload;
         return state;
     },
-    setAreaFilterUserList: function(state, payload) {
-        state.user_list.filter.area = payload;
+    setRegionFilterUserList: function(state, payload) {
+        state.user_list.filter.region = payload;
         return state;
     },
     setDivisionFilterUserList: function(state, payload) {

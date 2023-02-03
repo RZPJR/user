@@ -4,7 +4,7 @@ const state = {
         data: [],
         is_loading: [],
         filter:{
-            area: null,
+            region: null,
             division: null,
             role: null,
             search: '',
@@ -15,13 +15,13 @@ const state = {
             {
                 text:'Code',
                 class: 'grey--text text--darken-4',
-                width: '10%',
+                width: '15%',
                 sortable: false,
             },
             {
                 class: 'grey--text text--darken-4',
                 text:'Display Name',
-                width: '30%',
+                width: '25%',
                 sortable: false,
             },
             {
@@ -31,19 +31,19 @@ const state = {
                 sortable: false,
             },
             {
-                text:'Area',
+                text:'Region',
                 class: 'grey--text text--darken-4',
-                width: '20%',
+                width: '15%',
                 sortable: false,
             },
             {
                 text:'Status',
-                width: '5%',
+                width: '3%',
                 class: 'grey--text text--darken-4',
                 sortable: false,
             },
             {
-                width: '3%',
+                width: '2%',
                 class: 'grey--text text--darken-4',
                 sortable: false
             },
