@@ -232,29 +232,6 @@
                     }
                 }
             },
-            // renderData(search, status){
-            //     this.loading = true;
-            //     this.items = []
-            //     if(status === 999){
-            //       status = ''
-            //     }else{
-            //       status= "|status:"+status
-            //     }
-            //     this.$http.get("/account/v1/role",{params:{
-            //           per_page:100,
-            //           conditions:'Or.name.icontains:'+search+status,
-            //           orderby:'-id',
-            //       }}).then(response => {
-            //       this.loading = false;
-            //       this.items = response.data.data
-            //       if(this.items === null){
-            //           this.items = []
-            //       }
-            //     })
-            //     .catch(e => {
-            //         this.items = []
-            //     });
-            // },
         },
         watch: {
             'role_list.search': {

@@ -4,6 +4,19 @@
             <v-row class="mt24">
                 <v-col cols="12" md="6" class="mt18">
                     <v-text-field
+                        data-unq="role-input-code"
+                        name="code"
+                        v-model="form.code"
+                        disabled
+                        required
+                        outlined
+                        dense
+                    >
+                        <template v-slot:label>
+                            Code<span style="color:red">*</span>
+                        </template>
+                    </v-text-field>
+                    <v-text-field
                         data-unq="role-input-name"
                         name="name"
                         v-model="form.name"
@@ -31,6 +44,21 @@
                         required
                         :dense="true"
                     > </SelectDivision>
+                </v-col>
+                <v-col cols="12" md="12" class="-mt24">
+                    <v-textarea
+                        name="note"
+                        v-model="form.note"
+                        :counter="250"
+                        outlined
+                        rows="3"
+                    >
+                        <template v-slot:label>
+                            <div>
+                                Note
+                            </div>
+                        </template>
+                    </v-textarea>
                 </v-col>
             </v-row>
         </div>
@@ -81,17 +109,20 @@
     </v-container>
 </template>
 <script>
+    import http from "../../services/http";
     export default {
         name: "RoleUpdate",
-        data () {
+        data() {
             return {
                 ConfirmData:{},
                 permission:[],
                 division:null,
                 form:{
-                    permissions:[],
+                    code:'',
                     name:'',
                     division_id: '',
+                    note: '',
+                    permissions:[],
                 },
                 error:{},
                 putData:{},
@@ -118,7 +149,7 @@
                 }
             },
             async renderData(){
-                await this.$http.get("/role/" + this.$route.params.id).then(response => {
+                await http.get("/role/" + this.$route.params.id).then(response => {
                     let data = response.data.data
                     this.form.name = data.name
                     this.divisionSelected(data.division);

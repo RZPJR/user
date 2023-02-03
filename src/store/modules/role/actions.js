@@ -10,6 +10,7 @@ const actions = {
             const response = await http.get("/role", {
                 params: {
                     per_page:100,
+                    order_by:'-id',
                     search:search,
                     status:status,
                 }

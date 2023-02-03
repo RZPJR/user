@@ -29,7 +29,20 @@
                         :division="division"
                         :dense="true"
                         required
-                    > </SelectDivision>
+                    ></SelectDivision>
+                </v-col>
+                <v-col cols="12" md="12" class="-mt24">
+                    <v-textarea
+                        name="note"
+                        v-model="form.note"
+                        :counter="250"
+                        outlined
+                        rows="3"
+                    >
+                        <template v-slot:label>
+                            Note
+                        </template>
+                    </v-textarea>
                 </v-col>
             </v-row>
         </div>
@@ -89,6 +102,7 @@
                 form:{
                     name: '',
                     division_id: '',
+                    note: '',
                     permissions:[],
                 },
                 error:{},

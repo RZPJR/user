@@ -73,10 +73,13 @@
             </v-row>
             <v-row>
                 <v-col cols="12" md="6" class="mt24">
-                    <DetailRowNew :name="'Name'" :value="item.name"/>
+                    <DetailRowNew :name="'Code'" :value="item.code ? item.code : '-'"/>
                 </v-col>
                 <v-col cols="12" md="6" class="mt24">
-                    <DetailRowNew :name="'Division'" :value="item.division.name"/>
+                    <DetailRowNew :name="'Division'" :value="item.division.name ? item.division.name : '-'"/>
+                </v-col>
+                <v-col cols="12" md="12" class="-mt24">
+                    <DetailRowNew :name="'Notes'" :value="item.note ? item.division.note : '-'" :left="true"/>
                 </v-col>
             </v-row>
         </div>
