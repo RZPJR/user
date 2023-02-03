@@ -1,6 +1,7 @@
 import http from "../../../services/http";
 
 const actions = {
+    // Role List
     fetchRoleList: async ({ state, commit, dispatch }, payload) => {
         commit("setPreloadRoleList", true);
         commit("setRoleList", []);
@@ -10,7 +11,6 @@ const actions = {
             const response = await http.get("/role", {
                 params: {
                     per_page:100,
-                    order_by:'-id',
                     search:search,
                     status:status,
                 }
@@ -21,6 +21,32 @@ const actions = {
             console.log(error)
             commit("setPreloadRoleList", false);
         }
+    },
+
+    // Role Create
+    fetchRoleCreate: async ({ state, commit, dispatch }, payload) => {
+        commit("setConfirmRoleCreate", {});
+        commit("setRoleCreate", {
+            name: '',
+            division_id: '',
+            note: '',
+            permissions:[],
+        });
+    },
+
+    // Role Detail
+    fetchRoleDetail: async ({ state, commit, dispatch }, payload) => {
+        commit('setRoleDetail', []);
+        try {
+            const response = await http.get("/role/"+payload.id);
+            if (response.data.data) commit('setRoleDetail', response.data.data);
+        } catch (error) {
+        }
+    },
+
+    // Role Update
+    fetchRoleUpdate: async ({ state, commit, dispatch }, payload) => {
+        commit("setConfirmRoleUpdate", {});
     },
 }
 

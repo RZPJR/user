@@ -54,6 +54,39 @@ const state = {
         },
         items:[],
         ConfirmData : {},
+    },
+
+    role_create: {
+        ConfirmData:{},
+        permission:[],
+        division:{},
+        form:{
+            name: '',
+            division_id: '',
+            note: '',
+            permissions:[],
+        },
+        error:{},
+        putData:{},
+    },
+
+    role_detail: {
+        item:{
+            code: '',
+            name: '',
+            division: {
+                name: ''
+            },
+            note: '',
+            permissions:[],
+            status_convert : '',
+        },
+        ConfirmData:{},
+    },
+
+    role_update:{
+        ConfirmData:{},
+        error:{},
     }
 }
 

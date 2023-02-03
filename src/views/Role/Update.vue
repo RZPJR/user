@@ -25,7 +25,7 @@
                         required
                         outlined
                         dense
-                        :error-messages="error.name"
+                        :error-messages="role_update.error.name"
                     >
                         <template v-slot:label>
                             Name<span style="color:red">*</span>
@@ -36,10 +36,9 @@
                     <SelectDivision
                         data-unq="role-select-division"
                         name="division"
-                        v-model="division"
-                        @selected="divisionSelected"
-                        :error="error.division_id"
-                        :division="division"
+                        v-model="form.division"
+                        :error="role_update.error.division_id"
+                        :division="form.division"
                         disabled
                         required
                         :dense="true"
@@ -70,10 +69,10 @@
                 <PermissionUpdate
                     data-unq="role-checkbox-permission"
                     name="permission"
-                    v-model="form.permission_id"
+                    v-model="form.permission_ids"
                     @selected="permissionChecked"
-                    :idPermission="permission"
-                    :idRole="role_id"
+                    :idPermission="form.permission_ids"
+                    :idRole="form.id"
                 ></PermissionUpdate>
             </div>
         </div>
@@ -105,70 +104,20 @@
                 </v-col>
             </v-row>
         </div>
-        <ConfirmationDialogNew :sendData="ConfirmData"/>
+        <ConfirmationDialogNew :sendData="role_update.ConfirmData"/>
     </v-container>
 </template>
 <script>
-    import http from "../../services/http";
+    import { mapState, mapActions } from "vuex";
     export default {
         name: "RoleUpdate",
         data() {
             return {
-                ConfirmData:{},
-                permission:[],
-                division:null,
-                form:{
-                    code:'',
-                    name:'',
-                    division_id: '',
-                    note: '',
-                    permissions:[],
-                },
-                error:{},
-                putData:{},
-                role_id: ''
-            }
-        },
-        methods:{
-            confirmButton() {
-                this.ConfirmData = {
-                    model : true,
-                    title : "Update Role",
-                    text : "Are you sure want to Update this role?",
-                    urlApi : '/account/v1/role/'+ this.$route.params.id,
-                    nextPage : '/user/role/detail/'+this.$route.params.id,
-                    data : this.form
-                }
-            },
-            divisionSelected(d) {
-                this.division = null;
-                this.form.division_id = '';
-                if (d !== '' && d !== undefined) {
-                    this.division = d;
-                    this.form.division_id = d.id;
-                }
-            },
-            async renderData(){
-                await http.get("/role/" + this.$route.params.id).then(response => {
-                    let data = response.data.data
-                    this.form.name = data.name
-                    this.divisionSelected(data.division);
-                    this.role_id = data.id
-                    this.permission=[]
-                    let temp = data.permission_ids
-                    temp.forEach((value, index) => {
-                        this.permission.push(value)
-                    });
-                });
-            },
-            permissionChecked(d) {
-                if (d.length >0 ) {
-                    this.form.permissions = d
-                }
             }
         },
         created(){
-            this.renderData()
+            this.fetchRoleUpdate()
+            this.fetchRoleDetail({id: this.$route.params.id});
         },
         mounted () {
             let self = this
@@ -176,14 +125,35 @@
                 self.error = err
             });
         },
-        watch: {
-            'division': {
-                handler: function (val) {
-                    let that = this
-                    that.form.division = val;
-                },
-                deep: true
+        computed: {
+            ...mapState({
+                role_detail: state => state.role.role_detail,
+                form: state => state.role.role_detail.item,
+                role_update: state => state.role.role_update,
+            }),
+        },
+        methods:{
+            ...mapActions([
+                "fetchRoleDetail",
+                "fetchRoleUpdate"
+            ]),
+            confirmButton() {
+                let send_data = this.form
+                send_data.division_id = this.form.division.id
+                this.role_update.ConfirmData = {
+                    model : true,
+                    title : "Update Role",
+                    text : "Are you sure want to Update this role?",
+                    urlApi : '/account/v1/role/'+ this.$route.params.id,
+                    nextPage : '/user/role/detail/'+this.$route.params.id,
+                    data : send_data
+                }
             },
+            permissionChecked(d) {
+                if (d.length >0 ) {
+                    this.form.permissions = d
+                }
+            }
         },
     }
 </script>
