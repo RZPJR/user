@@ -149,11 +149,13 @@
                             <div v-if="props.item.status == 1">
                                 <v-chip
                                     :color="statusMaster('active')"
+                                    :data-unq="`user-label-status-${props.index}`"
                                 ><span class="pa-md-2">Active</span></v-chip>
                             </div>
                             <div v-if="props.item.status == 2">
                                 <v-chip
                                     :color="statusMaster('archived')"
+                                    :data-unq="`user-label-status-${props.index}`"
                                 >Archived</v-chip>
                             </div>
                         </td>
@@ -162,7 +164,7 @@
                                 <template v-slot:activator="{ on: menu }">
                                     <template >
                                         <v-btn
-                                            :data-unq="`user-button-actionButton-${props.item.id}`"
+                                            :data-unq="`user-button-actionButton-${props.index}`"
                                             icon
                                             v-on="{ ...menu }"
                                         >  
@@ -172,7 +174,7 @@
                                 </template>
                                 <v-list class="bg-white">
                                     <v-list-item 
-                                        :data-unq="`user-button-detailUser-${props.item.id}`"
+                                        :data-unq="`user-button-detailUser-${props.index}`"
                                         v-privilege="'usr_rdd'"
                                         :to="{ name: 'UserDetail', params: { id: props.item.id } }"
                                     >
@@ -184,7 +186,7 @@
                                         </v-list-item-icon>
                                     </v-list-item>
                                     <v-list-item 
-                                        :data-unq="`user-button-updateUser-${props.item.id}`"
+                                        :data-unq="`user-button-updateUser-${props.index}`"
                                         v-privilege="'usr_upd'" 
                                         :to="{ name: 'UserUpdate', params: { id: props.item.id } }"
                                         v-if="props.item.status == 1"
@@ -200,7 +202,7 @@
                                         <hr/>
                                     </div>
                                     <v-list-item 
-                                        :data-unq="`user-button-archiveUser-${props.item.id}`"
+                                        :data-unq="`user-button-archiveUser-${props.index}`"
                                         @click="changeStatus(props.item.status, props.item.id)"
                                         v-if="props.item.status=='1'"
                                         v-privilege="'usr_arc'"
@@ -210,7 +212,7 @@
                                         </v-list-item-content>
                                     </v-list-item>
                                     <v-list-item 
-                                        :data-unq="`user-button-unarchiveUser-${props.item.id}`"
+                                        :data-unq="`user-button-unarchiveUser-${props.index}`"
                                         @click="changeStatus(props.item.status, props.item.id)"
                                         v-else
                                         v-privilege="'usr_urc'"

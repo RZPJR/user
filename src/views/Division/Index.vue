@@ -90,11 +90,13 @@
                             <div v-if="props.item.status == 1">
                                 <v-chip
                                     :color="statusMaster('active')"
+                                    :data-unq="`division-label-status-${props.index}`"
                                 ><span class="pa-md-2">Active</span></v-chip>
                             </div>
                             <div v-if="props.item.status == 2">
                                 <v-chip
                                     :color="statusMaster('archived')"
+                                    :data-unq="`division-label-status-${props.index}`"
                                 >Archived</v-chip>
                             </div>
                         </td>
@@ -103,7 +105,7 @@
                                 <template v-slot:activator="{ on: menu }">
                                     <template >
                                         <v-btn
-                                            :data-unq="`division-button-actionButton-${props.item.id}`"
+                                            :data-unq="`division-button-actionButton-${props.index}`"
                                             icon
                                             v-on="{ ...menu }"
                                         >  
@@ -113,7 +115,7 @@
                                 </template>
                                 <v-list class="bg-white">
                                     <v-list-item 
-                                        :data-unq="`division-button-updateUser-${props.item.id}`"
+                                        :data-unq="`division-button-updateUser-${props.index}`"
                                         v-privilege="'dvs_upd'"
                                         :to="{ name: 'DivisionUpdate', params: { id: props.item.id } }"
                                         v-if="props.item.status == 1"
@@ -129,7 +131,7 @@
                                         <hr/>
                                     </div>
                                     <v-list-item 
-                                        :data-unq="`division-button-archiveUser-${props.item.id}`"
+                                        :data-unq="`division-button-archiveUser-${props.index}`"
                                         v-privilege="'dvs_arc'"
                                         @click="changeStatus(props.item.status,props.item.id)"
                                         v-if="props.item.status=='1'"

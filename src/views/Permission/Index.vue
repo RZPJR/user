@@ -39,11 +39,13 @@
                             <div v-if="props.item.status == 1">
                                 <v-chip
                                     :color="statusMaster('active')"
+                                    :data-unq="`permission-label-status-${props.index}`"
                                 ><span class="pa-md-2">Active</span></v-chip>
                             </div>
                             <div v-if="props.item.status == 2">
                                 <v-chip
                                     :color="statusMaster('archived')"
+                                    :data-unq="`permission-label-status-${props.index}`"
                                 >Archived</v-chip>
                             </div>
                         </td>
