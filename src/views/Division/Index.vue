@@ -8,7 +8,7 @@
                             <v-text-field
                                 data-unq="division-input-search"
                                 dense
-                                v-model="search"
+                                v-model="division_list.search"
                                 outlined
                                 filled
                                 placeholder="Search..."
@@ -22,33 +22,33 @@
                 </v-col>
             </v-row>
             <v-row class="hr-title"/>
-            <v-row :class="showFilter?'mb24':''">
+            <v-row :class="division_list.showFilter?'mb24':''">
                 <v-col>
                     Filter 
                     <v-btn 
                         data-unq="division-btn-filterExpandLess"
                         depressed
                         x-small
-                        @click="showFilter = !showFilter"
-                        v-if="showFilter"
+                        @click="division_list.showFilter = !division_list.showFilter"
+                        v-if="division_list.showFilter"
                         class="no-caps fs12"
                     >Hide<v-icon right>expand_less</v-icon></v-btn>
                     <v-btn 
                         data-unq="division-btn-filterExpandMore"
                         depressed
                         x-small
-                        @click="showFilter = !showFilter"
+                        @click="division_list.showFilter = !division_list.showFilter"
                         v-else
                         class="no-caps fs12"
                     >Show<v-icon right>expand_more</v-icon></v-btn>
                 </v-col>
             </v-row>
-            <v-row v-if="showFilter">
+            <v-row v-if="division_list.showFilter">
                 <v-col cols="12" md="3">
                     <SelectStatus
                         data-unq="division-select-status"
                         :default="1"
-                        v-model="statuses"
+                        v-model="division_list.statuses"
                         @selected="statusSelected"
                         :dense="true"
                     ></SelectStatus>
@@ -76,14 +76,16 @@
         <div class="box-body-table">
             <v-data-table
                 :mobile-breakpoint="0"
-                :headers="table.fields"
-                :items="items"
+                :headers="division_list.table.fields"
+                :items="division_list.items"
                 :loading="loading"
                 :items-per-page="10"
             >
                 <template v-slot:item="props">
                     <tr style="height:48px">
-                        <td>{{ props.item.name }}</td>
+                        <td>{{ props.item.code ? props.item.code : '-' }}</td>
+                        <td>{{ props.item.name ? props.item.name : '-' }}</td>
+                        <td>{{ props.item.note ? props.item.note : '-' }}</td>
                         <td>
                             <div v-if="props.item.status == 1">
                                 <v-chip
@@ -144,56 +146,38 @@
                 </template>
             </v-data-table>
         </div>
-        <ConfirmationDialogNew :sendData="ConfirmData"/>
+        <ConfirmationDialogNew :sendData="division_list.ConfirmData"/>
     </v-container>
 </template>
-
 <script>
+    import { mapState, mapActions, mapMutations } from "vuex";
     export default {
         name: "Division",
         data() {
             return {
-                search: '',
-                loading: false,
-                statuses:1,
-                filter : false,
-                showFilter : false,
-                table: {
-                    fields: [
-                        {
-                            text:'Name',
-                            class: 'grey--text text--darken-4',
-                            sortable: false
-                        },
-                        {
-                            text:'Status',
-                            class: 'grey--text text--darken-4',
-                            sortable: false
-                        },
-                        {
-                            width: '3%',
-                            class: 'grey--text text--darken-4',
-                            sortable: false
-                        },
-                    ],
-                },
-                items:[],
-                ConfirmData : {},
             }
         },
+        computed: {
+            ...mapState({
+                division_list: state => state.division.division_list,
+            }),
+        },
         mounted() {
-            this.renderData('')
+            this.fetchDivisionList()
             let self = this
             this.$root.$on('event_success', function(res){
                 if (res) {
-                    self.renderData(self.search,self.statuses)
+                    self.fetchDivisionList()
                 }
             });
         },
         methods: {
+            ...mapActions([
+                "fetchDivisionList"
+            ]),
             changeStatus(val,id) {
                 if (val=='1') {
-                    this.ConfirmData = {
+                    this.division_list.ConfirmData = {
                         model : true,
                         status : true,
                         title : "Archive",
@@ -204,49 +188,22 @@
                     }
                 }
             },
-            renderData(search){
-                this.loading = true;
-                this.items = []
-                let statuses = ''
-                if(this.statuses === 999){
-                    statuses = ''
-                }else{
-                    statuses= "|status:"+this.statuses
-                }
-                this.$http.get("/account/v1/division",{params:{
-                        per_page:100,
-                        conditions:'Or.name.icontains:'+search+statuses,
-                    }}).then(response => {
-                    this.loading = false
-                    this.items = response.data.data
-                    if(this.items === null){
-                        this.items = []
-                    }
-                });
-            },
             statusSelected(d) {
-                this.statuses = null;
-                if (d !== ''  && d !== undefined) {
-                    this.statuses = d.value;
+                this.division_list.statuses = null;
+                if (d) {
+                    this.division_list.statuses = d.value;
+                    this.fetchDivisionList()
                 }
             },
         },
         watch: {
-            'search': {
+            'division_list.search': {
                 handler: function (val) {
                     let that = this
                     clearTimeout(this._timerId)
                     this._timerId = setTimeout(function(){ 
-                        that.renderData(val)
+                        that.fetchDivisionList()
                     }, 1000);
-                },
-                deep: true
-            },
-            'statuses': {
-                handler: function (val) {
-                    let that = this
-
-                    that.renderData(this.search)
                 },
                 deep: true
             },
