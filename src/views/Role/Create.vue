@@ -11,7 +11,7 @@
                         maxlength="20"
                         required
                         outlined
-                        :error-messages="error.name"
+                        :error-messages="role_create.error.name"
                         dense
                     >
                         <template v-slot:label>
@@ -23,13 +23,26 @@
                     <SelectDivision
                         data-unq="role-select-division"
                         name="division"
-                        v-model="division"
+                        v-model="role_create.division"
                         @selected="divisionSelected"
-                        :error="error.division_id"
-                        :division="division"
+                        :error="role_create.error.division_id"
+                        :division="role_create.division"
                         :dense="true"
                         required
-                    > </SelectDivision>
+                    ></SelectDivision>
+                </v-col>
+                <v-col cols="12" md="12" class="-mt24">
+                    <v-textarea
+                        name="note"
+                        v-model="form.note"
+                        :counter="250"
+                        outlined
+                        rows="3"
+                    >
+                        <template v-slot:label>
+                            Note
+                        </template>
+                    </v-textarea>
                 </v-col>
             </v-row>
         </div>
@@ -42,8 +55,7 @@
                     data-unq="role-checkbox-permission"
                     name="permission"
                     v-model="form.permissions"
-                    @checked="permissionChecked"
-                    :idPermission="permission" >
+                    @checked="permissionChecked">
                 </PermissionCreate>
             </div>
         </div>
@@ -75,29 +87,38 @@
                 </v-col>
             </v-row>
         </div>
-        <ConfirmationDialogNew :sendData="ConfirmData"/>
+        <ConfirmationDialogNew :sendData="role_create.ConfirmData"/>
     </v-container>
 </template>
 <script>
+    import { mapState, mapActions } from "vuex";
     export default {
         name : 'RoleCreate',
         data () {
             return {
-                ConfirmData:{},
-                permission:[],
-                division:{},
-                form:{
-                    name: '',
-                    division_id: '',
-                    permissions:[],
-                },
-                error:{},
-                putData:{},
             }
         },
+        created () {
+            this.fetchRoleCreate()
+        },
+        mounted () {
+            let self = this
+            this.$root.$on('event_error', function(err){
+                self.role_create.error = err
+            });
+        },
+        computed: {
+            ...mapState({
+                role_create: state => state.role.role_create,
+                form: state => state.role.role_create.form,
+            }),
+        },
         methods:{
+            ...mapActions([
+                "fetchRoleCreate"
+            ]),
             confirmButton() {
-                this.ConfirmData = {
+                this.role_create.ConfirmData = {
                     model : true,
                     title : "Create Role",
                     text : "Are you sure want to create this role?",
@@ -108,10 +129,10 @@
                 }
             },
             divisionSelected(d) {
-                this.division = null;
+                this.role_create.division = null;
                 this.form.division_id = '';
                 if (d !== '' && d !== undefined) {
-                    this.division = d;
+                    this.role_create.division = d;
                     this.form.division_id = d.id;
                 }
             },
@@ -124,12 +145,6 @@
                     }
                 }
             },
-        },
-        mounted () {
-            let self = this
-            this.$root.$on('event_error', function(err){
-                self.error = err
-            });
         },
     }
 </script>

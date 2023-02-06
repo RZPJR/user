@@ -3,7 +3,7 @@
         <div class="box-start">
             <v-row class="mb24">
                 <v-col class="fs24 bold">
-                    {{item.name}}
+                    {{item.name ? item.name : '-'}}
                 </v-col>
                 <v-col class="d-flex justify-end align-end">
                     <div v-if="item.status == 1">
@@ -73,10 +73,13 @@
             </v-row>
             <v-row>
                 <v-col cols="12" md="6" class="mt24">
-                    <DetailRowNew :name="'Name'" :value="item.name"/>
+                    <DetailRowNew :name="'Code'" :value="item.code ? item.code : '-'"/>
                 </v-col>
                 <v-col cols="12" md="6" class="mt24">
-                    <DetailRowNew :name="'Division'" :value="item.division.name"/>
+                    <DetailRowNew :name="'Division'" :value="item.division.name ? item.division.name : '-'"/>
+                </v-col>
+                <v-col cols="12" md="12" class="-mt24">
+                    <DetailRowNew :name="'Notes'" :value="item.note ? item.note : '-'" :left="true"/>
                 </v-col>
             </v-row>
         </div>
@@ -87,7 +90,7 @@
             <div class="-ma16">
                 <v-simple-table>
                     <template>
-                        <ul v-for="item in permission" :key="item.id">
+                        <ul v-for="item in item.permissions" :key="item.id">
                             <li>{{item.name}}</li>
                             <ul v-for="c in item.child" :key="c.id">
                                 <li>{{ c.name }}</li>
@@ -100,36 +103,40 @@
                 </v-simple-table>
             </div>
         </div>
-        <ConfirmationDialogNew :sendData="ConfirmData"/>
+        <ConfirmationDialogNew :sendData="role_detail.ConfirmData"/>
     </v-container>
 </template>
 
 <script>
+    import { mapState, mapActions } from "vuex";
     export default {
         name: "RoleDetail",
         data () {
             return {
-                item:{
-                    division: {},
-                    status_convert : '',
-                },
-                permission:[],
-                ConfirmData:{},
             }
         },
+        computed: {
+            ...mapState({
+                role_detail: state => state.role.role_detail,
+                item: state => state.role.role_detail.item,
+            }),
+        },
+        mounted() {
+            this.fetchRoleDetail({id: this.$route.params.id});
+            let self = this
+            this.$root.$on('event_success', function(res){
+                if (res) {
+                    self.fetchRoleDetail({id: this.$route.params.id});
+                }
+            });
+        },
         methods: {
-            async renderData(){
-                await this.$http.get("/account/v1/role/" + this.$route.params.id).then(response => {
-                    this.item = response.data.data
-                    this.permission=[]
-                    if(response.data.data.permissions){
-                        this.permission = response.data.data.permissions
-                    }
-                });
-            },
+            ...mapActions([
+                "fetchRoleDetail"
+            ]),
             changeStatus(val,id) {
                 if (val=='1') {
-                    this.ConfirmData = {
+                    this.role_detail.ConfirmData = {
                         model : true,
                         status : true,
                         title : "Archive",
@@ -139,7 +146,7 @@
                         data : {}
                     }
                 } else {
-                    this.ConfirmData = {
+                    this.role_detail.ConfirmData = {
                         model : true,
                         status : true,
                         title : "Unarchive",
@@ -150,15 +157,6 @@
                     }
                 }
             },
-        },
-        mounted() {
-            this.renderData()
-            let self = this
-            this.$root.$on('event_success', function(res){
-                if (res) {
-                    self.renderData()
-                }
-            });
         },
     }
 </script>

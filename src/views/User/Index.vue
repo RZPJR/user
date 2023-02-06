@@ -16,7 +16,7 @@
                                 prepend-inner-icon="search"
                             ></v-text-field>
                         </template>
-                        <span>Search by display name</span>
+                        <span>Search by code or name</span>
                     </v-tooltip>
                 </v-col>
             </v-row>
@@ -42,9 +42,8 @@
                     >Show<v-icon right>expand_more</v-icon></v-btn>
                 </v-col>
             </v-row>
-
             <v-row v-if="show_filter">
-                <v-col cols="12" md="3">
+                <v-col cols="12" md="3" class="-mt24">
                     <v-select
                         data-unq="user-select-status"
                         v-model="user_list.filter.status"
@@ -55,16 +54,16 @@
                         dense
                     ></v-select>
                 </v-col>
-                <v-col cols="12" md="3">
+                <v-col cols="12" md="3" class="-mt24">
                    <SelectArea
-                        data-unq="user-select-area"
+                        data-unq="user-select-region"
                         :label="'Region'"
                         :disabled="true"
                         :norequired="true"
                         :dense="true"
                    ></SelectArea>
                 </v-col>
-                <v-col cols="12" md="3">
+                <v-col cols="12" md="3" class="-mt24">
                     <SelectWarehouse
                         data-unq="user-select-warehouse"
                         :label="'Site'"
@@ -73,7 +72,7 @@
                         :dense="true"
                     ></SelectWarehouse>
                 </v-col>
-                <v-col cols="12" md="3">
+                <v-col cols="12" md="3" class="-mt24">
                     <SelectDivision
                         data-unq="user-select-division"
                         :no_required="true"
@@ -82,7 +81,7 @@
                         :dense="true"
                     ></SelectDivision>
                 </v-col>
-                <v-col cols="12" md="3">
+                <v-col cols="12" md="3" class="-mt24">
                     <SelectRole
                         data-unq="user-select-role"
                         :no_required="true"
@@ -125,22 +124,26 @@
                 <template v-slot:item="props">
                     <tr style="height:48px">
                         <td>
-                            {{ props.item.employee_code }}
+                            {{ props.item.employee_code ? props.item.employee_code : '-' }}
                             <br>
                             <label class="text-black40">
-                                {{ props.item.nickname }}
+                                {{ props.item.nickname ? props.item.nickname : '-'}}
                             </label>
                         </td>
                         <td>
-                            {{ props.item.name }}
+                            {{ props.item.name ? props.item.name : '-'}}
                         </td>
                         <td>
-                            {{ props.item.main_role.name }}
-                            <br>
-                            <label class="text-black40">{{ showSubRoles(props.item.sub_roles) }}</label>
+                            {{ props.item.main_role ? (props.item.main_role.name ? props.item.main_role.name : '-') : '-' }}
+                            <br><label class="text-black40">
+                                {{ props.item.main_role ? 
+                                    (props.item.main_role.division.code && props.item.main_role.division.name ? props.item.main_role.division.code - props.item.main_role.division.name : '-')
+                                    : '-' 
+                                }}
+                            </label>
                         </td>
                         <td>
-                            -
+                            {{ props.item.region ? (props.item.region.name ? props.item.region.name : '-') : '-' }}
                         </td>
                         <td>
                             <div v-if="props.item.status == 1">
@@ -229,7 +232,6 @@
 </template>
 <script>
     import { mapState, mapActions, mapMutations } from "vuex";
-
     export default {
         name: "User",
         data() {
@@ -263,9 +265,6 @@
                 "fetchUserList"
             ]),
             ...mapMutations([
-                "setAreaFilterUserList",
-                "setWarehouseFilterUserList",
-                "setDivisionFilterUserList",
                 "setRoleFilterUserList",
             ]),
             changeStatus(val,id) {
@@ -294,23 +293,11 @@
                     }
                 }
             },
-            showSubRoles(items) {
-                let sub_roles = ''
-                if (items !== undefined) {
-                    if (items.length > 0){
-                        items.map((item, idx) => {
-                            sub_roles += (item.name + (idx !== (items.length-1) ? ', ' : ''))
-                        })
-                    }
-                }
-                return sub_roles
-            },
             divisionSelected(d) {
-                this.$store.commit('setDivisionFilterUserList', null)
+                this.user_list.filter.division = ''
                 this.disabled_role = true;
-                if (d) {
-                    this.$store.commit('setDivisionFilterUserList', d)
-                    this.$store.commit('setRoleFilterUserList', null)
+                if(d){
+                    this.user_list.filter.division = d
                     this.disabled_role = false;
                 }
                 this.fetchUserList()

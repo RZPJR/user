@@ -8,7 +8,7 @@
                             <v-text-field
                                 data-unq="user-input-search"
                                 dense
-                                v-model="search"
+                                v-model="role_list.search"
                                 outlined
                                 filled
                                 placeholder="Search..."
@@ -16,7 +16,7 @@
                                 prepend-inner-icon="search"
                             ></v-text-field>
                         </template>
-                        <span>Search by name</span>
+                        <span>Search by code or name</span>
                     </v-tooltip>
                 </v-col>
             </v-row>
@@ -28,25 +28,25 @@
                         data-unq="user-button-filterExpandLess"
                         depressed
                         x-small
-                        @click="showFilter = !showFilter"
-                        v-if="showFilter"
+                        @click="role_list.showFilter = !role_list.showFilter"
+                        v-if="role_list.showFilter"
                         class="no-caps fs12"
                     >Hide<v-icon right>expand_less</v-icon></v-btn>
                     <v-btn 
                         data-unq="user-button-filterExpandMore"
                         depressed
                         x-small
-                        @click="showFilter = !showFilter"
+                        @click="role_list.showFilter = !role_list.showFilter"
                         v-else
                         class="no-caps fs12"
                     >Show<v-icon right>expand_more</v-icon></v-btn>
                 </v-col>
             </v-row>
-            <v-row v-if="showFilter">
+            <v-row v-if="role_list.showFilter">
                 <v-col cols="12" md="3">
                     <v-select
                         data-unq="user-select-status"
-                        v-model="statuses"
+                        v-model="role_list.status"
                         :items="status"
                         item-text="text"
                         item-value="value"
@@ -76,8 +76,8 @@
         </div>
         <div class="box-body-table">
             <v-data-table
-                :headers="table.fields"
-                :items="items"
+                :headers="role_list.table.fields"
+                :items="role_list.items"
                 :loading="loading"
                 :items-per-page="10"
                 :mobile-breakpoint="0"
@@ -85,7 +85,16 @@
                 <template v-slot:item="props">
                     <tr style="height:48px">
                         <td>
-                            {{ props.item.name }}
+                            {{ props.item.code ?  props.item.code : '-' }}
+                            <br><label class="text-black40">
+                                {{ props.item.name ?  props.item.name : '-' }}
+                            </label>
+                        </td>
+                        <td>
+                            {{ props.item.division.name ?  props.item.division.name : '-' }}
+                        </td>
+                        <td>
+                            {{ props.item.note ?  props.item.note : '-' }}
                         </td>
                         <td>
                             <div v-if="props.item.status == 1">
@@ -169,71 +178,40 @@
                 </template>
             </v-data-table>
         </div>
-        <ConfirmationDialogNew :sendData="ConfirmData"/>
+        <ConfirmationDialogNew :sendData="role_list.ConfirmData"/>
     </v-container>
 </template>
 <script>
+    import { mapState, mapActions } from "vuex";
     export default {
         name: "RoleList",
         data() {
             return {
-                search: '',
-                loading: false,
-                area:null,
-                division:null,
-                role:null,
-                filter2 : false,
-                warehouse:null,
-                filter:{
-                    area_id:'',
-                    division_id:'',
-                    role_id:'',
-                    warehouse_id:'',
-                },
-                disabled_warehouse:true,
-                clearWarehouse:false,
-                disabled_role:true,
-                clearRole:false,
-                statuses:1,
-                showFilter: false,
-                table: {
-                    fields: [
-                        {
-                            text:'Name',
-                            class: 'grey--text text--darken-4',
-                            sortable: false,
-                        },
-                        {
-                            text:'Status',
-                            class: 'grey--text text--darken-4',
-                            sortable: false
-                        },
-                        {
-                            text:'',
-                            width: "5%",
-                            sortable: false
-                        },
-                    ],
-                },
-                items:[],
-                ConfirmData : {},
             }
         },
         created() {
-            this.renderData('',this.statuses)
+            this.fetchRoleList()
         },
         mounted() {
             let self = this
             this.$root.$on('event_success', function(res){
                 if (res) {
-                    self.renderData(self.search,self.statuses)
+                    self.fetchRoleList()
                 }
             });
         },
+        computed: {
+            ...mapState({
+                role_list: state => state.role.role_list,
+            }),
+        },
         methods: {
+            ...mapActions([
+                "fetchRoleList"
+            ]),
             changeStatus(val,id) {
                 if (val=='1') {
-                    this.ConfirmData = {
+                    this.role_list.ConfirmData = {
                         model : true,
                         status : true,
                         title : "Archive",
@@ -243,7 +221,7 @@
                         data : {}
                     }
                 } else {
-                    this.ConfirmData = {
+                    this.role_list.ConfirmData = {
                         model : true,
                         status : true,
                         title : "Unarchive",
@@ -254,45 +232,22 @@
                     }
                 }
             },
-            renderData(search, statuses){
-                this.loading = true;
-                this.items = []
-                if(statuses === 999){
-                  statuses = ''
-                }else{
-                  statuses= "|status:"+statuses
-                }
-                this.$http.get("/account/v1/role",{params:{
-                      per_page:100,
-                      conditions:'Or.name.icontains:'+search+statuses,
-                      orderby:'-id',
-                  }}).then(response => {
-                  this.loading = false;
-                  this.items = response.data.data
-                  if(this.items === null){
-                      this.items = []
-                  }
-                })
-                .catch(e => {
-                    this.items = []
-                });
-            },
         },
         watch: {
-            'search': {
-                handler: function (search) {
+            'role_list.search': {
+                handler: function (val) {
                     let that = this
                     clearTimeout(this._timerId)
                     this._timerId = setTimeout(function(){
-                        that.renderData(search,that.statuses)
+                        that.fetchRoleList()
                     }, 1000);
                 },
                 deep: true
             },
-            'statuses': {
-                handler: function (statuses) {
+            'role_list.status': {
+                handler: function () {
                     let that = this;
-                    that.renderData(this.search,statuses)
+                    that.fetchRoleList()
                 },
                 deep: true
             },
