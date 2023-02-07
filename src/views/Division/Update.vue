@@ -2,9 +2,26 @@
     <v-container fill-height class="main-container">
         <div class="box">
             <v-row class="mt24">
-                <v-col cols="12" class="mt24">
+                <v-col cols="12" md="6" class="mt24">
                     <v-text-field
-                        data-unq="division-input-search"
+                        data-unq="division-input-code"
+                        name="code"
+                        v-model="form.code"
+                        maxlength="20"
+                        required
+                        disabled
+                        outlined
+                        :dense="true"
+                        :error-messages="error.code"
+                    >
+                        <template v-slot:label>
+                            Code<span class="text-red">*</span>
+                        </template>
+                    </v-text-field>
+                </v-col>
+                <v-col cols="12" md="6" class="mt24">
+                    <v-text-field
+                        data-unq="division-input-name"
                         name="name"
                         v-model="form.name"
                         maxlength="20"
@@ -17,6 +34,19 @@
                             Name<span class="text-red">*</span>
                         </template>
                     </v-text-field>
+                </v-col>
+                <v-col cols="12" class="-mt24">
+                    <v-textarea
+                        name="note"
+                        v-model="form.note"
+                        :counter="250"
+                        outlined
+                        rows="3"
+                    >
+                        <template v-slot:label>
+                            Note
+                        </template>
+                    </v-textarea>
                 </v-col>
             </v-row>
             <v-row class="hr-title"/>
@@ -59,7 +89,9 @@
                 ConfirmData:[],
                 permission:[],
                 form:{
+                    code: '',
                     name: '',
+                    note: ''
                 },
                 error:{},
             }
@@ -76,7 +108,7 @@
                 this.$http.get("/account/v1/division/" + this.$route.params.id,{params:{
                         per_page:100,
                     }}).then(response => {
-                    this.form.name = response.data.data.name
+                    this.form = response.data.data
                 });
             },
             confirmButton() {

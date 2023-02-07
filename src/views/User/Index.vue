@@ -143,7 +143,11 @@
                             </label>
                         </td>
                         <td>
-                            {{ props.item.region ? (props.item.region.name ? props.item.region.name : '-') : '-' }}
+                            {{ props.item.region ? (props.item.region.description ? props.item.region.description : '-') : '-' }}
+                            <br>
+                            <label class="text-black40">
+                                {{ props.item.site.code ? props.item.site.code : '-'}} -  {{ props.item.site.description ? props.item.site.description : '-'}}
+                            </label>
                         </td>
                         <td>
                             <div v-if="props.item.status == 1">
