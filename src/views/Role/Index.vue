@@ -113,7 +113,7 @@
                                 <template v-slot:activator="{ on: menu }">
                                     <template >
                                         <v-btn
-                                            :data-unq="`role-button-actionButton-${props.item.id}`"
+                                            :data-unq="`role-button-actionButton-${props.index}`"
                                             icon
                                             v-on="{ ...menu }"
                                         >  
@@ -123,7 +123,7 @@
                                 </template>
                                 <v-list class="bg-white">
                                     <v-list-item 
-                                        :data-unq="`role-button-detailRole-${props.item.id}`"
+                                        :data-unq="`role-button-detailRole-${props.index}`"
                                         v-privilege="'rol_rdd'"
                                         :to="{ name: 'RoleDetail', params: { id: props.item.id } }"
                                     >
@@ -135,7 +135,7 @@
                                         </v-list-item-icon>
                                     </v-list-item>
                                     <v-list-item 
-                                        :data-unq="`role-button-updateRole-${props.item.id}`"
+                                        :data-unq="`role-button-updateRole-${props.index}`"
                                         v-privilege="'rol_upd'"
                                         :to="{ name: 'RoleUpdate', params: { id: props.item.id } }"
                                         v-if="props.item.status == 1"
@@ -151,7 +151,7 @@
                                         <hr/>
                                     </div>
                                     <v-list-item 
-                                        :data-unq="`role-button-archiveRole-${props.item.id}`"
+                                        :data-unq="`role-button-archiveRole-${props.index}`"
                                         @click="changeStatus(props.item.status,props.item.id)"
                                         v-if="props.item.status=='1'"
                                         v-privilege="'rol_arc'"
@@ -161,7 +161,7 @@
                                         </v-list-item-content>
                                     </v-list-item>
                                     <v-list-item 
-                                        :data-unq="`role-button-unarchiveRole-${props.item.id}`"
+                                        :data-unq="`role-button-unarchiveRole-${props.index}`"
                                         @click="changeStatus(props.item.status,props.item.id)"
                                         v-else
                                         v-privilege="'rol_urc'"

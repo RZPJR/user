@@ -118,6 +118,7 @@
                 "fetchRoleCreate"
             ]),
             confirmButton() {
+                if(!this.form.division_id) this.form.division_id = 0
                 this.role_create.ConfirmData = {
                     model : true,
                     title : "Create Role",

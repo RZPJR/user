@@ -22,42 +22,8 @@
                     </v-tooltip>
                 </v-col>
             </v-row>
-            <v-row class="hr-title"/>
-            <v-row :class="showFilter?'mb24':''">
-                <v-col>
-                    Filter 
-                    <v-btn 
-                        data-unq="permission-btn-filterExpandLess"
-                        depressed
-                        x-small
-                        @click="showFilter = !showFilter"
-                        v-if="showFilter"
-                        class="no-caps fs12"
-                    >Hide<v-icon right>expand_less</v-icon></v-btn>
-                    <v-btn 
-                        data-unq="permission-btn-filterExpandMore"
-                        depressed
-                        x-small
-                        @click="showFilter = !showFilter"
-                        v-else
-                        class="no-caps fs12"
-                    >Show<v-icon right>expand_more</v-icon></v-btn>
-                </v-col>
-            </v-row>
-            <v-row v-if="showFilter">
-                <v-col cols="12" md="3">
-                    <SelectStatus
-                        data-unq="permission-select-status"
-                        :default="1"
-                        v-model="permissionList.status"
-                        @selected="statusSelected"
-                        v-privilege="'filter_rdl'"
-                        :dense="true"
-                    ></SelectStatus>
-                </v-col>
-            </v-row>
         </div>
-        <div class="box-body-table">
+        <div class="box-table">
             <v-data-table
                 :mobile-breakpoint="0"
                 :headers="permissionList.tableHeaders"
@@ -73,11 +39,13 @@
                             <div v-if="props.item.status == 1">
                                 <v-chip
                                     :color="statusMaster('active')"
+                                    :data-unq="`permission-label-status-${props.index}`"
                                 ><span class="pa-md-2">Active</span></v-chip>
                             </div>
                             <div v-if="props.item.status == 2">
                                 <v-chip
                                     :color="statusMaster('archived')"
+                                    :data-unq="`permission-label-status-${props.index}`"
                                 >Archived</v-chip>
                             </div>
                         </td>
@@ -89,9 +57,9 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations } from "vuex";
+    import { mapState, mapActions, mapMutations } from "vuex";
     export default {
-        name: "Division",
+        name: "Permission",
         data() {
             return {
                 showFilter : false,

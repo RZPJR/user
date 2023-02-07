@@ -6,10 +6,11 @@ const actions = {
         commit("setPermmissionList", [])
         try {
             let search = state.permissionList.search
-            let status = state.permissionList.status === 999 ? '' : "|status:"+state.permissionList.status 
+            let status = state.permissionList.status === 999 ? '' : state.permissionList.status 
             const response = await http.get("/permission", {params: {
                 per_page:100,
-                conditions:'Or.name.icontains:'+search+status,
+                status:status,
+                search:search
             }});
             commit("setPermmissionList", response.data.data)
             if(response.data.data === null){
