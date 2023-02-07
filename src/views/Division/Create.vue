@@ -20,6 +20,7 @@
                 </v-col>
                 <v-col cols="12" class="-mt24">
                     <v-textarea
+                        data-unq="division-input-note"
                         name="note"
                         v-model="form.note"
                         :counter="250"
