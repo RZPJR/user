@@ -79,6 +79,19 @@
                     > </SelectDivision>
                 </v-col>
                 <v-col cols="12" md="6" class="-mt24">
+                    <SelectArea
+                        name="region"
+                        :dense="true"
+                    ></SelectArea>
+                </v-col>
+                <v-col cols="12" md="6" class="-mt24">
+                    <SelectWarehouse
+                        data-unq="user-select-site"
+                        :label="'Site'"
+                        :dense="true"
+                    ></SelectWarehouse>
+                </v-col>
+                <v-col cols="12" md="6" class="-mt24">
                     <SelectRole
                         data-unq="user-select-role"
                         name="role"
@@ -92,6 +105,13 @@
                         :dense="true"
                         required
                     > </SelectRole>
+                </v-col>
+                <v-col cols="12" md="6" class="-mt24">
+                    <SelectSalesGroup
+                        data-unq="user-select-territory"
+                        :norequired="true"
+                        :dense="true"
+                    ></SelectSalesGroup>
                 </v-col>
                 <v-col cols="12" class="-mt24">
                     <MultiSelectRole
@@ -109,6 +129,17 @@
                         :norequired="true"
                         required
                     > </MultiSelectRole>
+                </v-col>
+                <v-col cols="12" md="12" class="-mt24 mb-10">
+                    <v-textarea
+                        data-unq="user-input-note"
+                        name="note"
+                        label="Note"
+                        v-model="form.note"
+                        :counter="100"
+                        outlined
+                        rows="3"
+                    ></v-textarea>
                 </v-col>
                 <v-col cols="12" md="6" class="-mt24">
                     <v-text-field

@@ -64,6 +64,18 @@ const mutations = {
         state.update_user.division_id = payload ? payload.id : ''
         return state;
     },
+    setRegionUpdateUser: function(state, payload) {
+        state.update_user.region = payload;
+        return state;
+    },
+    setSiteUpdateUser: function(state, payload) {
+        state.update_user.site = payload;
+        return state;
+    },
+    setTerritoryUpdateUser: function(state, payload) {
+        state.update_user.territory = payload;
+        return state;
+    },
     setMainRoleUpdateUser: function(state, payload) {
         state.update_user.main_role = payload;
         state.update_user.form.main_role = payload ? payload.id : ''

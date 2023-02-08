@@ -63,11 +63,16 @@ const actions = {
                     sub_roles: selected_sub_roles,
                     phone_number: items.phone_number,
                     email: items.email,
-                    region_id: 1,
-                    site_id: 1,
+                    region_id: items.region.id,
+                    site_id: items.site.id,
+                    territory_id: items.territory.id,
+                    note: items.note,
                 })
                 commit("setDivisionUpdateUser", res.main_role.division)
+                commit("setRegionUpdateUser", res.region)
+                commit("setSiteUpdateUser", res.site)
                 commit("setMainRoleUpdateUser", res.main_role)
+                commit("setTerritoryUpdateUser", res.territory)
                 commit("setRoleUpdateUser", res.sub_roles)
             }
             commit("setPreloadUpdateUserForm", false);            
