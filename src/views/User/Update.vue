@@ -22,7 +22,7 @@
                             </v-text-field>
                             </div>
                         </template>
-                       <span>Employee ID in HR System (Talenta)</span>
+                       <span>Employee ID in HR System</span>
                     </v-tooltip>
                 </v-col>
                 <v-col cols="12" md="6">
@@ -77,7 +77,6 @@
                         @selected="divisionSelected"
                         :error="error.division_id"
                         disabled
-                        required
                         :dense="true"
                     ></SelectDivision>
                 </v-col>
@@ -85,7 +84,7 @@
                     <SelectRole
                         data-unq="user-select-role"
                         name="role"
-                        label="Main Role"
+                        label="Role"
                         v-model="update_user.main_role"
                         :role="update_user.main_role"
                         @selected="mainRoleSelected"
@@ -95,6 +94,17 @@
                         :dense="true"
                         required
                     > </SelectRole>
+                </v-col>
+                <v-col cols="12" md="6" class="-mt24">
+                    <SelectSalesGroup
+                        data-unq="user-select-territory"
+                        v-model="update_user.territory"
+                        @selected="salesGroupSelected"
+                        :salesgroup_id="update_user.territory"
+                        :class="form.main_role!=8 ? 'd-none' : ''"
+                        :norequired="true"
+                        :dense="true"
+                    ></SelectSalesGroup>
                 </v-col>
                 <v-col cols="12" class="-mt24">
                     <MultiSelectRole
@@ -108,6 +118,47 @@
                         :norequired="true"
                         required
                     > </MultiSelectRole>
+                </v-col>
+                <v-col cols="12" md="6" class="-mt24">
+                    <SelectUser
+                        data-unq="user-select-supervisor"
+                        name="Supervisor"
+                        v-model="update_user.supervisor"
+                        @selected="supervisorSelected"
+                        :dense="true"
+                        :user="update_user.supervisor"
+                        :clear="clearUser"
+                    ></SelectUser>
+                </v-col>
+                <v-col cols="12" md="6" class="-mt24">
+                    <SelectArea
+                        data-unq="user-select-region"
+                        v-model="update_user.region"
+                        @selected="areaSelected"
+                        :area="update_user.region"
+                        :clear="clearArea"
+                        :dense="true"
+                        :error="error.region_id"
+                   ></SelectArea>
+                </v-col>
+                <v-col cols="12" md="6" class="-mt24">
+                    <SelectWarehouse
+                        data-unq="user-select-site"
+                        :label="'Site'"
+                        :warehouse="update_user.site"
+                        :dense="true"
+                    ></SelectWarehouse>
+                </v-col>
+                <v-col cols="12" md="12" class="-mt24 mb-10">
+                    <v-textarea
+                        data-unq="user-input-note"
+                        name="note"
+                        label="Note"
+                        v-model="form.note"
+                        :counter="100"
+                        outlined
+                        rows="3"
+                    ></v-textarea>
                 </v-col>
                 <v-col cols="12" md="6" class="-mt24">
                     <v-text-field
@@ -194,6 +245,8 @@
                 ConfirmData:[],
                 clear_role:false,
                 clearUser:false,
+                clearArea:false,
+                clearWarehouse:false,
                 passwordRules: [
                     v => !!v || 'Password is required',
                     v => (v && v.length >= 8) || 'Password at least 8 characters',
@@ -233,7 +286,15 @@
                     nextPage : '/user/user',
                     data : this.form
                 }
-            },            
+            },    
+            areaSelected(d) {
+                this.update_user.region = null;
+                this.form.region_id = '';
+                if (d) {
+                    this.update_user.region = d;
+                    this.form.region_id = d.id
+                }
+            },
             divisionSelected(d) {
                 this.$store.commit('setDivisionUpdateUser', null)
                 this.$store.commit('setMainRoleUpdateUser', null)
@@ -246,6 +307,14 @@
                     this.disabled_main_role = false
                     this.clear_main_role = false
                     this.clear_role = false
+                }
+            },
+            supervisorSelected(d) {
+                this.update_user.supervisor = null;
+                this.form.parent_id = '';
+                if (d !== ''  && d !== undefined) {
+                    this.update_user.supervisor = d;
+                    this.form.parent_id = d.id
                 }
             },
             mainRoleSelected(d) {
@@ -265,6 +334,14 @@
                     })
                     this.$store.commit('setFormRoleUpdateUser', selected_sub_roles)
                     this.$store.commit('setRoleUpdateUser', d)
+                }
+            },
+            salesGroupSelected(d) {
+                this.form.territory_id = ''
+                this.update_user.territory = null
+                if(d){
+                    this.update_user.territory = d
+                    this.form.territory_id = d.id
                 }
             },
         },

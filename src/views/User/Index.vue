@@ -58,7 +58,6 @@
                    <SelectArea
                         data-unq="user-select-region"
                         :label="'Region'"
-                        :disabled="true"
                         :norequired="true"
                         :dense="true"
                    ></SelectArea>

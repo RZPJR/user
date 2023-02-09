@@ -76,8 +76,42 @@
                         :error="error.division_id"
                         required
                         :dense="true"
-                    > </SelectDivision>
+                    ></SelectDivision>
                 </v-col>
+                <v-col cols="12" md="6" class="-mt24">
+                    <SelectUser
+                        data-unq="user-select-supervisor"
+                        name="Supervisor"
+                        v-model="create_user.supervisor"
+                        @selected="supervisorSelected"
+                        :dense="true"
+                        :user="create_user.supervisor"
+                        :clear="clearUser"
+                    ></SelectUser>
+                </v-col>
+                <v-col cols="12" md="6" class="-mt24">
+                    <SelectArea
+                        data-unq="user-select-region"
+                        name="region"
+                        @selected="regionSelected"
+                        :dense="true"
+                        :clear="clearArea"
+                        :error="error.region_id"
+                    ></SelectArea>
+                </v-col>
+                <v-col cols="12" md="6" class="-mt24">
+                    <SelectWarehouse
+                        data-unq="user-select-site"
+                        @selected="siteSelected"
+                        :label="'Site'"
+                        :dense="true"
+                        :area_id="form.region_id"
+                        :disabled="disabled_warehouse"
+                        :clear="clearWarehouse"
+                        :error="error.site_id"
+                    ></SelectWarehouse>
+                </v-col>
+                <v-col cols="12" md="6" class="-mt24"></v-col>
                 <v-col cols="12" md="6" class="-mt24">
                     <SelectRole
                         data-unq="user-select-role"
@@ -92,6 +126,17 @@
                         :dense="true"
                         required
                     > </SelectRole>
+                </v-col>
+                <v-col cols="12" md="6" class="-mt24">
+                    <SelectSalesGroup
+                        data-unq="user-select-territory"
+                        @selected="salesGroupSelected"
+                        :class="form.main_role!=8 ? 'd-none' : ''"
+                        :norequired="true"
+                        :dense="true"
+                        :clear="clearSalesGroup"
+                        :error="error.territory_id"
+                    ></SelectSalesGroup>
                 </v-col>
                 <v-col cols="12" class="-mt24">
                     <MultiSelectRole
@@ -109,6 +154,17 @@
                         :norequired="true"
                         required
                     > </MultiSelectRole>
+                </v-col>
+                <v-col cols="12" md="12" class="-mt24 mb-10">
+                    <v-textarea
+                        data-unq="user-input-note"
+                        name="note"
+                        label="Note"
+                        v-model="form.note"
+                        :counter="100"
+                        outlined
+                        rows="3"
+                    ></v-textarea>
                 </v-col>
                 <v-col cols="12" md="6" class="-mt24">
                     <v-text-field
@@ -231,6 +287,11 @@
                 show_confirm:false,
                 disabled_main_role: true,
                 disabled_role:true,
+                disabled_warehouse:true,
+                clearUser:false,
+                clearArea:false,
+                clearWarehouse:false,
+                clearSalesGroup:false,
                 clear_main_role: false,
                 clear_role:false,
                 error:{}
@@ -242,12 +303,19 @@
                 form: state => state.user.create_user.form,
             }),
         },
+        mounted () {
+            let self = this
+            this.$root.$on('event_error', function(err){
+                self.error = err
+            });
+        },
         methods:{
             ...mapMutations([
                 "setDivisionCreateUser",
-                "setRoleCreateUser",
+                "setMainRoleCreateUser",
             ]),
             confirmButton() {
+                this.form.site_id = 1
                 this.confirm_data = {
                     model : true,
                     title : "Create User",
@@ -261,10 +329,12 @@
             divisionSelected(d) {
                 this.$store.commit('setDivisionCreateUser', null)
                 this.$store.commit('setMainRoleCreateUser', null)
-                this.$store.commit('setRoleCreateUser', null)
+                this.create_user.form.sub_roles = null
+                this.form.region_id = '';
                 this.disabled_main_role = true
                 this.clear_role = true
                 this.clear_main_role = true
+                this.clearArea = true
                 if (d !== '' && d !== undefined) {
                     this.$store.commit('setDivisionCreateUser', d)
                     this.disabled_main_role = false
@@ -272,9 +342,47 @@
                     this.clear_role = false
                 }
             },
+            supervisorSelected(d) {
+                this.create_user.supervisor = null;
+                this.form.parent_id = '';
+                if (d !== ''  && d !== undefined) {
+                    this.supervisor = d;
+                    this.form.parent_id = d.id
+                }
+            },
+            regionSelected(d) {
+                this.create_user.region = null;
+                this.form.region_id = '';
+                this.create_user.site = null;
+                this.form.site_id = '';
+                this.clearWarehouse = true
+                this.disabled_warehouse = true
+                if (d) {
+                    this.create_user.region = d;
+                    this.form.region_id = d.id
+                    this.disabled_warehouse = false
+                    this.clearWarehouse = false
+                }
+            },
+            siteSelected(d) {
+                this.create_user.site = null;
+                this.form.site_id = '';
+                if (d !== ''  && d !== undefined) {
+                    this.create_user.site = d;
+                    this.form.site_id = d.id
+                }
+            },
+            salesGroupSelected(d) {
+                this.form.territory_id = '';
+                if(d){
+                    this.form.territory_id = d.id
+                }
+            },
             mainRoleSelected(d) {
                 this.$store.commit('setMainRoleCreateUser', null)
-                this.$store.commit('setRoleCreateUser', null)
+                this.create_user.form.sub_roles = null
+                this.form.territory_id = '';
+                this.clearSalesGroup = true
                 this.disabled_role = true
                 if (d !== ''  && d !== undefined) {
                     this.$store.commit('setMainRoleCreateUser', d)
@@ -282,20 +390,15 @@
                 }
             },
             async roleSelected(d) {
-                this.$store.commit('setRoleCreateUser', null)
-                if (d !== ''  && d !== undefined) {
+                this.create_user.form.sub_roles = null
+                if (d) {
                     let selected_sub_roles = await d.map((e) => {
                         return e.id
                     })
-                    this.$store.commit('setRoleCreateUser', selected_sub_roles)
+                    this.create_user.form.sub_roles = selected_sub_roles
+                    // this.$store.commit('setRoleCreateUser', selected_sub_roles)
                 }
             },
-        },
-        mounted () {
-            let self = this
-            this.$root.$on('event_error', function(err){
-                self.error = err
-            });
         },
         watch: {
             'form.phone_number': {
