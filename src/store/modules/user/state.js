@@ -67,8 +67,11 @@ const state = {
             parent_id: null, // supervisor
             territory_id: null, // salesperson id
         },
+        supervisor: null,
         division_id: null,
         division: null,
+        region: null,
+        site: null,
         main_role: [],
         role: [],
         email_rules: [
@@ -96,6 +99,7 @@ const state = {
             main_role: '',
             region_id: '',
             site_id: '',
+            parent_id: '',
             territory_id: '',
             sub_roles: [],
             phone_number: '',

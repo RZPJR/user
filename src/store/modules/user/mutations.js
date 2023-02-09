@@ -39,11 +39,6 @@ const mutations = {
         state.create_user.form.main_role = payload ? payload.id : null
         return state;
     },
-    setRoleCreateUser: function(state, payload) {
-        state.create_user.role = payload ? payload : null;
-        state.create_user.form.sub_roles = payload ? payload.id : null
-        return state;
-    },
     setCreateUserForm: function(state, payload) {
         state.create_user.form = payload;
         return state;
@@ -74,6 +69,10 @@ const mutations = {
     },
     setTerritoryUpdateUser: function(state, payload) {
         state.update_user.territory = payload;
+        return state;
+    },
+    setSupervisorUpdateUser: function(state, payload) {
+        state.update_user.supervisor = payload;
         return state;
     },
     setMainRoleUpdateUser: function(state, payload) {

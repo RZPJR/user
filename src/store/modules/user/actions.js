@@ -65,6 +65,7 @@ const actions = {
                     email: items.email,
                     region_id: items.region.id,
                     site_id: items.site.id,
+                    parent_id: 2, // Dummy sementara
                     territory_id: items.territory.id,
                     note: items.note,
                 })
@@ -73,6 +74,7 @@ const actions = {
                 commit("setSiteUpdateUser", res.site)
                 commit("setMainRoleUpdateUser", res.main_role)
                 commit("setTerritoryUpdateUser", res.territory)
+                commit("setSupervisorUpdateUser", {id:2}) // Dummy sementara
                 commit("setRoleUpdateUser", res.sub_roles)
             }
             commit("setPreloadUpdateUserForm", false);            

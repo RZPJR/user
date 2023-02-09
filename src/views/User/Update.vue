@@ -98,17 +98,36 @@
                 <v-col cols="12" md="6" class="-mt24">
                     <SelectSalesGroup
                         data-unq="user-select-territory"
+                        v-model="update_user.territory"
                         @selected="salesGroupSelected"
                         :salesgroup_id="update_user.territory"
+                        :class="form.main_role!=8 ? 'd-none' : ''"
                         :norequired="true"
                         :dense="true"
                     ></SelectSalesGroup>
+                </v-col>
+                <v-col cols="12" class="-mt24">
+                    <MultiSelectRole
+                        data-unq="user-select-multiRole"
+                        :role="update_user.role"
+                        :division_id="update_user.division_id"
+                        :main_role="form.main_role"
+                        @selected="roleSelected"
+                        :label="'Sub Roles'"
+                        :dense="true"
+                        :norequired="true"
+                        required
+                    > </MultiSelectRole>
                 </v-col>
                 <v-col cols="12" md="6" class="-mt24">
                     <SelectUser
                         data-unq="user-select-supervisor"
                         name="Supervisor"
+                        v-model="update_user.supervisor"
+                        @selected="supervisorSelected"
                         :dense="true"
+                        :user="update_user.supervisor"
+                        :clear="clearUser"
                     ></SelectUser>
                 </v-col>
                 <v-col cols="12" md="6" class="-mt24">
@@ -130,19 +149,6 @@
                         :dense="true"
                     ></SelectWarehouse>
                 </v-col>
-                <!-- <v-col cols="12" class="-mt24">
-                    <MultiSelectRole
-                        data-unq="user-select-multiRole"
-                        :role="update_user.role"
-                        :division_id="update_user.division_id"
-                        :main_role="form.main_role"
-                        @selected="roleSelected"
-                        :label="'Sub Roles'"
-                        :dense="true"
-                        :norequired="true"
-                        required
-                    > </MultiSelectRole>
-                </v-col> -->
                 <v-col cols="12" md="12" class="-mt24 mb-10">
                     <v-textarea
                         data-unq="user-input-note"
@@ -303,6 +309,14 @@
                     this.clear_role = false
                 }
             },
+            supervisorSelected(d) {
+                this.update_user.supervisor = null;
+                this.form.parent_id = '';
+                if (d !== ''  && d !== undefined) {
+                    this.update_user.supervisor = d;
+                    this.form.parent_id = d.id
+                }
+            },
             mainRoleSelected(d) {
                 this.$store.commit('setMainRoleUpdateUser', null)
                 this.$store.commit('setRoleUpdateUser', null)
@@ -312,16 +326,16 @@
                     this.disabled_role = false
                 }
             },
-            // async roleSelected(d) {
-            //     this.$store.commit('setRoleUpdateUser', null)
-            //     if (d !== ''  && d !== undefined) {
-            //         let selected_sub_roles = await d.map((e) => {
-            //             return e.id
-            //         })
-            //         this.$store.commit('setFormRoleUpdateUser', selected_sub_roles)
-            //         this.$store.commit('setRoleUpdateUser', d)
-            //     }
-            // },
+            async roleSelected(d) {
+                this.$store.commit('setRoleUpdateUser', null)
+                if (d !== ''  && d !== undefined) {
+                    let selected_sub_roles = await d.map((e) => {
+                        return e.id
+                    })
+                    this.$store.commit('setFormRoleUpdateUser', selected_sub_roles)
+                    this.$store.commit('setRoleUpdateUser', d)
+                }
+            },
             salesGroupSelected(d) {
                 this.form.territory_id = ''
                 this.update_user.territory = null
