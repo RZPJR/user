@@ -135,10 +135,6 @@
                         <td>
                             {{ props.item.main_role ? (props.item.main_role.name ? props.item.main_role.name : '-') : '-' }}
                             <br><label class="text-black40">
-                                <!-- {{ props.item.main_role ? 
-                                    (props.item.main_role.division.code && props.item.main_role.division.name ? props.item.main_role.division.code - props.item.main_role.division.name : '-')
-                                    : '-' 
-                                }} -->
                                 {{ props.item.main_role ? 
                                     props.item.main_role.division ? props.item.main_role.division.code + ' - ' + props.item.main_role.division.name : '-'
                                     : '-' 
