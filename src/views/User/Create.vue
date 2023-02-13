@@ -148,7 +148,7 @@
                         :division_id="create_user.division_id"
                         :main_role="form.main_role"
                         :disabled="disabled_role"
-                        :error="error.role_id"
+                        :error="error.sub_role"
                         :clear="clear_role"
                         :dense="true"
                         :norequired="true"
@@ -315,7 +315,25 @@
                 "setMainRoleCreateUser",
             ]),
             confirmButton() {
-                this.form.site_id = 1
+                let send_data = {}
+                if(this.form.main_role == 8){
+                    send_data = this.form
+                }else{
+                    send_data = {
+                        employee_code : this.form.employee_code,
+                        name : this.form.name,
+                        nickname : this.form.nickname,
+                        region_id : this.form.region_id,
+                        site_id : this.form.site_id,
+                        main_role : this.form.main_role,
+                        sub_roles : this.form.sub_roles,
+                        phone_number : this.form.phone_number,
+                        email : this.form.email,
+                        password : this.form.password,
+                        password_confirm : this.form.password_confirm,
+                        parent_id : this.form.parent_id,
+                    }
+                }
                 this.confirm_data = {
                     model : true,
                     title : "Create User",
@@ -323,7 +341,7 @@
                     urlApi : '/account/v1/user',
                     nextPage : '/user/user',
                     post : true,
-                    data : this.form
+                    data : send_data
                 }
             },
             divisionSelected(d) {

@@ -56,8 +56,8 @@ const state = {
             employee_code: '',
             name: '',
             nickname: '',
-            region_id: 1, // area - sementara
-            site_id: 1, // warehouse - sementara
+            region_id: '',
+            site_id: '',
             main_role: null,
             sub_roles: [],
             phone_number: '',
