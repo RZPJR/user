@@ -104,7 +104,8 @@ const actions = {
                     status: items.status,
                     region: items.region.code+' - '+items.region.description,
                     site: items.site.code+' - '+items.site.description,
-                    territory: items.territory.code+' - '+items.territory.description
+                    territory: items.territory.code+' - '+items.territory.description,
+                    note: items.note
                 })
             }
             commit("setPreloadUserDetail", false);   
