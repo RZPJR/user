@@ -10,21 +10,7 @@ import vuetify from "./plugins/vuetify";
 import VueToast from 'vue-toast-notification';
 import 'vue-toast-notification/dist/theme-sugar.css';
 
-import { 
-  SelectArea, 
-  SelectDivision, 
-  SelectRole, 
-  SelectWarehouse,
-  SelectStatus,
-  SelectUser,
-  SelectSalesGroup,
-  ConfirmationDialogNew,
-  PermissionCreate,
-  PermissionUpdate,
-  MultiSelectRole,
-  DetailRowNew,
-  LoadingBar
-} from "@vue-mf/global";
+import { Components } from "@vue-mf/global";
 import Vuetify from "vuetify/lib";
 
 Vue.config.productionTip = false;
@@ -61,21 +47,7 @@ Vue.directive('privilege', {
 })
 
 Vue.mixin({
-  components: { 
-    SelectArea, 
-    SelectDivision, 
-    SelectRole, 
-    SelectWarehouse,
-    SelectStatus,
-    SelectUser,
-    SelectSalesGroup,
-    ConfirmationDialogNew,
-    PermissionCreate,
-    PermissionUpdate,
-    DetailRowNew,
-    MultiSelectRole,
-    LoadingBar
-  },
+  components: Components,
   data: function() {
     return {
       status: [
