@@ -108,7 +108,7 @@
     </v-container>
 </template>
 <script>
-    import { mapState, mapActions } from "vuex";
+    import { mapState, mapActions, mapMutations } from "vuex";
     export default {
         name: "RoleUpdate",
         data() {
@@ -120,9 +120,8 @@
             this.fetchRoleDetail({id: this.$route.params.id});
         },
         mounted () {
-            let self = this
             this.$root.$on('event_error', function(err){
-                self.role_update.error = err
+                this.$store.commit('setErrorRoleUpdate', err)
             });
         },
         computed: {
@@ -136,6 +135,9 @@
             ...mapActions([
                 "fetchRoleDetail",
                 "fetchRoleUpdate"
+            ]),
+            ...mapMutations([
+                'setErrorRoleUpdate',
             ]),
             confirmButton() {
                 let send_data = this.form
