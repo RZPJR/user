@@ -122,7 +122,7 @@
         mounted () {
             let self = this
             this.$root.$on('event_error', function(err){
-                self.error = err
+                self.role_update.error = err
             });
         },
         computed: {
