@@ -6,7 +6,7 @@
                     <span class="bold">{{user.name}}</span> ({{user.nickname}})
                 </v-col>
                 <v-col class="d-flex justify-end align-end">
-                    <div v-if="user.status ==+ 1">
+                    <div v-if="user.status === 1">
                         <v-btn
                             elevation="0"
                             rounded
