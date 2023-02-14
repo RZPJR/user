@@ -95,10 +95,19 @@
                     <DetailRowNew :name="'Division'" :value="user.division" />
                 </v-col>
                 <v-col cols="12" md="6" class="-mt24">
-                    <DetailRowNew :name="'Main Role'" :value="user.main_role" />
-                </v-col>                
+                    <DetailRowNew :name="'Role'" :value="user.main_role" />
+                </v-col>  
+                <v-col cols="12" md="6" class="-mt24" v-if="user.role_id == 8">
+                    <DetailRowNew :name="'Territory'" :value="user.territory" />
+                </v-col>              
                 <v-col cols="12" class="-mt24">
-                    <DetailRowNew :name="'Role'" :value="showSubRoles(user.sub_roles)"  :align="true" />
+                    <DetailRowNew :name="'Sub Role'" :value="showSubRoles(user.sub_roles)"  :align="true" />
+                </v-col>
+                <v-col cols="12" md="6" class="-mt24">
+                    <DetailRowNew :name="'Region'" :value="user.region" />
+                </v-col>
+                <v-col cols="12" md="6" class="-mt24">
+                    <DetailRowNew :name="'Site'" :value="user.site" />
                 </v-col>
             </v-row>
         </div>
