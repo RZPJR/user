@@ -144,9 +144,11 @@
                 <v-col cols="12" md="6" class="-mt24">
                     <SelectWarehouse
                         data-unq="user-select-site"
+                        @selected="warehouseSelected"
                         :label="'Site'"
                         :warehouse="update_user.site"
                         :dense="true"
+                        :error="error.site_id"
                     ></SelectWarehouse>
                 </v-col>
                 <v-col cols="12" md="12" class="-mt24 mb-10">
@@ -293,6 +295,14 @@
                 if (d) {
                     this.update_user.region = d;
                     this.form.region_id = d.id
+                }
+            },
+            warehouseSelected(d) {
+                this.update_user.site = null;
+                this.form.site_id = '';
+                if (d) {
+                    this.update_user.site = d;
+                    this.form.site_id = d.id
                 }
             },
             divisionSelected(d) {
