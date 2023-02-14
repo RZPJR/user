@@ -97,10 +97,15 @@ const actions = {
                     nickname: items.nickname,
                     division: items.main_role.division.name,
                     main_role: items.main_role.name,
+                    role_id: items.main_role.id,
                     sub_roles: items.sub_roles,
                     phone_number: items.phone_number,
                     email: items.email,
                     status: items.status,
+                    region: items.region.code+' - '+items.region.description,
+                    site: items.site.code+' - '+items.site.description,
+                    territory: items.territory.code+' - '+items.territory.description,
+                    note: items.note
                 })
             }
             commit("setPreloadUserDetail", false);   

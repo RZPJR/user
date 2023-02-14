@@ -6,7 +6,7 @@
                     <span class="bold">{{user.name}}</span> ({{user.nickname}})
                 </v-col>
                 <v-col class="d-flex justify-end align-end">
-                    <div v-if="user.status == 1">
+                    <div v-if="user.status ==+ 1">
                         <v-btn
                             elevation="0"
                             rounded
@@ -15,7 +15,7 @@
                             :color="statusMaster('active')"
                         >Active</v-btn>
                     </div>
-                    <div v-else-if="user.status == 2">
+                    <div v-else-if="user.status === 2">
                         <v-btn
                             elevation="0"
                             rounded
@@ -66,7 +66,7 @@
                             <v-list-item 
                                 data-unq="user-button-archiveUser"
                                 v-privilege="'usr_arc'"
-                                v-if="user.status==1"
+                                v-if="user.status===1"
                                 @click="archive(user.id)"
                             >
                                 <v-list-item-content>
@@ -76,7 +76,7 @@
                             <v-list-item 
                                 data-unq="user-button-unarchiveUser"
                                 v-privilege="'usr_urc'"
-                                v-if="user.status==2"
+                                v-if="user.status===2"
                                 @click="unarchive(user.id)"
                             >
                                 <v-list-item-content>
@@ -95,10 +95,22 @@
                     <DetailRowNew :name="'Division'" :value="user.division" />
                 </v-col>
                 <v-col cols="12" md="6" class="-mt24">
-                    <DetailRowNew :name="'Main Role'" :value="user.main_role" />
-                </v-col>                
+                    <DetailRowNew :name="'Role'" :value="user.main_role" />
+                </v-col>  
+                <v-col cols="12" md="6" class="-mt24" v-if="user.role_id === 8">
+                    <DetailRowNew :name="'Territory'" :value="user.territory" />
+                </v-col>              
                 <v-col cols="12" class="-mt24">
-                    <DetailRowNew :name="'Role'" :value="showSubRoles(user.sub_roles)"  :align="true" />
+                    <DetailRowNew :name="'Sub Role'" :value="showSubRoles(user.sub_roles)"  :align="true" />
+                </v-col>
+                <v-col cols="12" md="6" class="-mt24">
+                    <DetailRowNew :name="'Region'" :value="user.region" />
+                </v-col>
+                <v-col cols="12" md="6" class="-mt24">
+                    <DetailRowNew :name="'Site'" :value="user.site" />
+                </v-col>
+                <v-col cols="12" md="12">
+                    <DetailRowNew :name="'Note'" :value="user.note" :align="true"/>
                 </v-col>
             </v-row>
         </div>
