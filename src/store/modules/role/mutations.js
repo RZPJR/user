@@ -30,6 +30,10 @@ const mutations = {
         state.role_update.ConfirmData = payload;
         return state;
     },
+    setErrorRoleUpdate: function(state, payload) {
+        state.role_update.error = payload;
+        return state;
+    },
 }
 
 export default mutations;
