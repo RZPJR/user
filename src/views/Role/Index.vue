@@ -54,6 +54,14 @@
                         dense
                     ></v-select>
                 </v-col>
+                <v-col cols="12" md="3">
+                    <SelectDivision
+                        data-unq="user-select-division"
+                        :norequired="true"
+                        @selected="divisionSelected"
+                        :dense="true"
+                    ></SelectDivision>
+                </v-col>
             </v-row>
         </div>
         <div class="box-title">
@@ -182,7 +190,7 @@
     </v-container>
 </template>
 <script>
-    import { mapState, mapActions } from "vuex";
+    import { mapState, mapActions, mapMutations } from "vuex";
     export default {
         name: "RoleList",
         data() {
@@ -209,6 +217,9 @@
             ...mapActions([
                 "fetchRoleList"
             ]),
+            ...mapMutations([
+                'setFilterDivisionRoleList',
+            ]),
             changeStatus(val,id) {
                 if (val=='1') {
                     this.role_list.ConfirmData = {
@@ -231,6 +242,13 @@
                         data : {}
                     }
                 }
+            },
+            divisionSelected(d) {
+                this.$store.commit('setFilterDivisionRoleList', '')
+                if(d){
+                    this.$store.commit('setFilterDivisionRoleList', d.id)
+                }
+                this.fetchRoleList()
             },
         },
         watch: {
