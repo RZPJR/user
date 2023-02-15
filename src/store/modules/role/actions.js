@@ -8,11 +8,13 @@ const actions = {
         try {
             let search = state.role_list.search ? state.role_list.search : ''
             let status = state.role_list.status === 999 ? '' : state.role_list.status
+            let division_id = state.role_list.filter.division_id ? state.role_list.filter.division_id : ''
             const response = await http.get("/role", {
                 params: {
                     per_page:100,
                     search:search,
                     status:status,
+                    division_id:division_id,
                 }
             });
             if (response.data.data) commit("setRoleList", response.data.data)

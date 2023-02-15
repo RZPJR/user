@@ -54,6 +54,14 @@
                         dense
                     ></v-select>
                 </v-col>
+                <v-col cols="12" md="3">
+                    <SelectDivision
+                        data-unq="user-select-division"
+                        :norequired="true"
+                        @selected="divisionSelected"
+                        :dense="true"
+                    ></SelectDivision>
+                </v-col>
             </v-row>
         </div>
         <div class="box-title">
@@ -231,6 +239,13 @@
                         data : {}
                     }
                 }
+            },
+            divisionSelected(d) {
+                this.role_list.filter.division_id = ''
+                if(d){
+                    this.role_list.filter.division_id = d.id
+                }
+                this.fetchRoleList()
             },
         },
         watch: {
