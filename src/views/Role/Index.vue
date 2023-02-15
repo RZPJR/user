@@ -190,7 +190,7 @@
     </v-container>
 </template>
 <script>
-    import { mapState, mapActions } from "vuex";
+    import { mapState, mapActions, mapMutations } from "vuex";
     export default {
         name: "RoleList",
         data() {
@@ -217,6 +217,9 @@
             ...mapActions([
                 "fetchRoleList"
             ]),
+            ...mapMutations([
+                'setFilterDivisionRoleList',
+            ]),
             changeStatus(val,id) {
                 if (val=='1') {
                     this.role_list.ConfirmData = {
@@ -241,9 +244,9 @@
                 }
             },
             divisionSelected(d) {
-                this.role_list.filter.division_id = ''
+                this.$store.commit('setFilterDivisionRoleList', '')
                 if(d){
-                    this.role_list.filter.division_id = d.id
+                    this.$store.commit('setFilterDivisionRoleList', d.id)
                 }
                 this.fetchRoleList()
             },
