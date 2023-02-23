@@ -83,6 +83,14 @@
                                     <v-list-item-title>Unarchive</v-list-item-title>
                                 </v-list-item-content>
                             </v-list-item>
+                            <v-list-item 
+                                data-unq="user-button-history"
+                                @click="seeHistory()"
+                            >
+                                <v-list-item-content>
+                                    <v-list-item-title>See History</v-list-item-title>
+                                </v-list-item-content>
+                            </v-list-item>
                         </v-list>
                     </v-menu>
                 </v-col>
@@ -128,6 +136,7 @@
             </v-row>
         </div>
         <ConfirmationDialogNew :sendData="ConfirmData"/>
+        <AuditLogNew :data="dataAuditLog"/>
         <LoadingBar :value="user_detail.is_loading" />
     </v-container>
 </template>
