@@ -147,7 +147,6 @@
         data() {
             return {
                 data_audit_log : {},
-                error:{},
                 confirm_data : {},
             }
         },
@@ -155,7 +154,7 @@
             await this.fetchUserDetail({id: this.$route.params.id})
             let self = this
             this.$root.$on('event_success', function(res){
-                if (res) {
+                if (res && self.$route.params.id !== undefined) {
                     self.fetchUserDetail({id: self.$route.params.id})
                 }
             });
