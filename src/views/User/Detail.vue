@@ -135,8 +135,8 @@
                 </v-col>
             </v-row>
         </div>
-        <ConfirmationDialogNew :sendData="ConfirmData"/>
-        <AuditLogNew :data="dataAuditLog"/>
+        <ConfirmationDialogNew :sendData="confirm_data"/>
+        <AuditLogNew :data="data_audit_log"/>
         <LoadingBar :value="user_detail.is_loading" />
     </v-container>
 </template>
@@ -146,9 +146,9 @@
         name: "UserDetail",
         data() {
             return {
-                dataAuditLog : {},
+                data_audit_log : {},
                 error:{},
-                ConfirmData : {},
+                confirm_data : {},
             }
         },
         async created(){
@@ -186,7 +186,7 @@
                 return sub_roles
             },
             archive(id) {
-                this.ConfirmData = {
+                this.confirm_data = {
                     model : true,
                     status : true,
                     statusMsg : "Success to Archive this User",
@@ -197,7 +197,7 @@
                 }
             },
             unarchive(id) {
-                this.ConfirmData = {
+                this.confirm_data = {
                     model : true,
                     status : true,
                     statusMsg : "Success to Unarchive this User",
@@ -208,7 +208,7 @@
                 }
             },
             deleteUser(id) {
-                this.ConfirmData = {
+                this.confirm_data = {
                     model : true,
                     status : true,
                     statusMsg : "Success to Delete this User",
@@ -222,7 +222,7 @@
                 }
             },
             seeHistory() {
-                this.dataAuditLog = {
+                this.data_audit_log = {
                     model : true,
                     id: this.user.id,
                     type: "user"
