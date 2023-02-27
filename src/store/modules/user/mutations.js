@@ -5,7 +5,7 @@ const mutations = {
         return state;
     },
     setPreloadUserList: function(state, payload) {
-        state.user_list.is_loading = payload;
+        state.user_list.isLoading = payload;
         return state;
     },
     setRegionFilterUserList: function(state, payload) {
@@ -51,7 +51,7 @@ const mutations = {
         return state;
     },
     setPreloadUpdateUserForm: function(state, payload) {
-        state.update_user.is_loading = payload;
+        state.update_user.isLoading = payload;
         return state;
     },
     setDivisionUpdateUser: function(state, payload) {
@@ -92,7 +92,7 @@ const mutations = {
 
     // #region Detail User    
     setPreloadUserDetail: function(state, payload) {
-        state.user_detail.is_loading = payload;
+        state.user_detail.isLoading = payload;
         return state;
     },
     setUserDetail: function(state, payload) {
