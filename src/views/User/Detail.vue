@@ -83,6 +83,14 @@
                                     <v-list-item-title>Unarchive</v-list-item-title>
                                 </v-list-item-content>
                             </v-list-item>
+                            <v-list-item 
+                                data-unq="user-button-history"
+                                @click="seeHistory()"
+                            >
+                                <v-list-item-content>
+                                    <v-list-item-title>History</v-list-item-title>
+                                </v-list-item-content>
+                            </v-list-item>
                         </v-list>
                     </v-menu>
                 </v-col>
@@ -127,7 +135,8 @@
                 </v-col>
             </v-row>
         </div>
-        <ConfirmationDialogNew :sendData="ConfirmData"/>
+        <ConfirmationDialogNew :sendData="confirm_data"/>
+        <AuditLogNew :data="data_audit_log"/>
         <LoadingBar :value="user_detail.is_loading" />
     </v-container>
 </template>
@@ -137,16 +146,15 @@
         name: "UserDetail",
         data() {
             return {
-                dataAuditLog : {},
-                error:{},
-                ConfirmData : {},
+                data_audit_log : {},
+                confirm_data : {},
             }
         },
         async created(){
             await this.fetchUserDetail({id: this.$route.params.id})
             let self = this
             this.$root.$on('event_success', function(res){
-                if (res) {
+                if (res && self.$route.params.id !== undefined) {
                     self.fetchUserDetail({id: self.$route.params.id})
                 }
             });
@@ -177,7 +185,7 @@
                 return sub_roles
             },
             archive(id) {
-                this.ConfirmData = {
+                this.confirm_data = {
                     model : true,
                     status : true,
                     statusMsg : "Success to Archive this User",
@@ -188,7 +196,7 @@
                 }
             },
             unarchive(id) {
-                this.ConfirmData = {
+                this.confirm_data = {
                     model : true,
                     status : true,
                     statusMsg : "Success to Unarchive this User",
@@ -199,7 +207,7 @@
                 }
             },
             deleteUser(id) {
-                this.ConfirmData = {
+                this.confirm_data = {
                     model : true,
                     status : true,
                     statusMsg : "Success to Delete this User",
@@ -213,7 +221,7 @@
                 }
             },
             seeHistory() {
-                this.dataAuditLog = {
+                this.data_audit_log = {
                     model : true,
                     id: this.user.id,
                     type: "user"
