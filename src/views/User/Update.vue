@@ -232,7 +232,7 @@
             </v-row>
         </div>
         <ConfirmationDialogNew :sendData="ConfirmData"/>
-        <LoadingBar :value="update_user.is_loading" />
+        <LoadingBar :value="update_user.isLoading" />
     </v-container>
 </template>
 

@@ -137,11 +137,11 @@
         </div>
         <ConfirmationDialogNew :sendData="confirm_data"/>
         <AuditLogNew :data="data_audit_log"/>
-        <LoadingBar :value="user_detail.is_loading" />
+        <LoadingBar :value="user_detail.isLoading" />
     </v-container>
 </template>
 <script>
-    import { mapState, mapActions, mapMutations } from "vuex";
+    import { mapState, mapActions } from "vuex";
     export default {
         name: "UserDetail",
         data() {

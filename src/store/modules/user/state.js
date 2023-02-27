@@ -2,7 +2,7 @@ const state = {
     // Readlist User
     user_list: {
         data: [],
-        is_loading: [],
+        isLoading: [],
         filter:{
             region: null,
             division: null,
@@ -90,7 +90,7 @@ const state = {
 
     // Update User
     update_user: {
-        is_loading: false,
+        isLoading: false,
         form: {
             idUser:'',
             employee_code: '',
@@ -118,7 +118,7 @@ const state = {
 
     // Detail User
     user_detail: {
-        is_loading: false,
+        isLoading: false,
         user: {
             id: 0,
             employee_code: '-',

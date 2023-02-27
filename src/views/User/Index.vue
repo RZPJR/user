@@ -116,7 +116,7 @@
             <v-data-table
                 :headers="user_list.table_headers"
                 :items="user_list.data"
-                :loading="user_list.is_loading"
+                :loading="user_list.isLoading"
                 :items-per-page="10"
                 :mobile-breakpoint="0"
             >
