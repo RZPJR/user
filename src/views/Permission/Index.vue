@@ -33,8 +33,8 @@
             >
                 <template v-slot:item="props">
                     <tr style="height:48px">
-                        <td>{{ props.item.name }}</td>
-                        <td>{{ props.item.value }}</td>
+                        <td :data-unq="`permission-value-name-${props.index}`">{{ props.item.name }}</td>
+                        <td :data-unq="`permission-value-value-${props.index}`">{{ props.item.value }}</td>
                         <td>
                             <div v-if="props.item.status == 1">
                                 <v-chip

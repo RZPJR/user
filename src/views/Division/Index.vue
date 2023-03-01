@@ -78,14 +78,14 @@
                 :mobile-breakpoint="0"
                 :headers="division_list.table.fields"
                 :items="division_list.items"
-                :loading="loading"
+                :loading="division_list.isLoading"
                 :items-per-page="10"
             >
                 <template v-slot:item="props">
                     <tr style="height:48px">
-                        <td>{{ props.item.code ? props.item.code : '-' }}</td>
-                        <td>{{ props.item.name ? props.item.name : '-' }}</td>
-                        <td>{{ props.item.note ? props.item.note : '-' }}</td>
+                        <td :data-unq="`division-value-code-${props.index}`">{{ props.item.code ? props.item.code : '-' }}</td>
+                        <td :data-unq="`division-value-name-${props.index}`">{{ props.item.name ? props.item.name : '-' }}</td>
+                        <td :data-unq="`division-value-note-${props.index}`">{{ props.item.note ? props.item.note : '-' }}</td>
                         <td>
                             <div v-if="props.item.status == 1">
                                 <v-chip

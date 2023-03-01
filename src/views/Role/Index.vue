@@ -21,7 +21,7 @@
                 </v-col>
             </v-row>
             <v-row class="hr-title"/>
-            <v-row :class="showFilter?'mb24':''">
+            <v-row :class="role_list.showFilter?'mb24':''">
                 <v-col>
                     Filter 
                     <v-btn 
@@ -86,32 +86,35 @@
             <v-data-table
                 :headers="role_list.table.fields"
                 :items="role_list.items"
-                :loading="loading"
+                :loading="role_list.isLoading"
                 :items-per-page="10"
                 :mobile-breakpoint="0"
             >
                 <template v-slot:item="props">
                     <tr style="height:48px">
-                        <td>
+                        <td :data-unq="`role-value-code-${props.index}`">
                             {{ props.item.code ?  props.item.code : '-' }}
-                            <br><label class="text-black40">
+                            <br>
+                            <label class="text-black40" :data-unq="`role-value-name-${props.index}`">
                                 {{ props.item.name ?  props.item.name : '-' }}
                             </label>
                         </td>
-                        <td>
+                        <td :data-unq="`role-value-divisionName-${props.index}`">
                             {{ props.item.division.name ?  props.item.division.name : '-' }}
                         </td>
-                        <td>
+                        <td :data-unq="`role-value-note-${props.index}`">
                             {{ props.item.note ?  props.item.note : '-' }}
                         </td>
                         <td>
                             <div v-if="props.item.status == 1">
-                                <v-chip
+                                <v-chip 
+                                    :data-unq="`role-value-status-${props.index}`"
                                     :color="statusMaster('active')"
                                 ><span class="pa-md-2">Active</span></v-chip>
                             </div>
                             <div v-if="props.item.status == 2">
                                 <v-chip
+                                    :data-unq="`role-value-status-${props.index}`"
                                     :color="statusMaster('archived')"
                                 >Archived</v-chip>
                             </div>

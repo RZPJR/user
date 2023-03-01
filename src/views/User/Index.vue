@@ -122,29 +122,30 @@
             >
                 <template v-slot:item="props">
                     <tr style="height:48px">
-                        <td>
+                        <td :data-unq="`user-value-employeeCode-${props.index}`">
                             {{ props.item.employee_code ? props.item.employee_code : '-' }}
                             <br>
-                            <label class="text-black40">
+                            <label class="text-black40" :data-unq="`user-value-nickname-${props.index}`">
                                 {{ props.item.nickname ? props.item.nickname : '-'}}
                             </label>
                         </td>
-                        <td>
+                        <td :data-unq="`user-value-name-${props.index}`">
                             {{ props.item.name ? props.item.name : '-'}}
                         </td>
-                        <td>
+                        <td :data-unq="`user-value-roleName-${props.index}`">
                             {{ props.item.main_role ? (props.item.main_role.name ? props.item.main_role.name : '-') : '-' }}
-                            <br><label class="text-black40">
+                            <br>
+                            <label class="text-black40" :data-unq="`user-value-divisionName-${props.index}`">
                                 {{ props.item.main_role ? 
                                     props.item.main_role.division ? props.item.main_role.division.code + ' - ' + props.item.main_role.division.name : '-'
                                     : '-' 
                                 }}
                             </label>
                         </td>
-                        <td>
+                        <td :data-unq="`user-value-regionDescription-${props.index}`">
                             {{ props.item.region ? (props.item.region.description ? props.item.region.description : '-') : '-' }}
                             <br>
-                            <label class="text-black40">
+                            <label class="text-black40" :data-unq="`user-value-siteDescription-${props.index}`">
                                 {{ props.item.site.code ? props.item.site.code : '-'}} -  {{ props.item.site.description ? props.item.site.description : '-'}}
                             </label>
                         </td>
