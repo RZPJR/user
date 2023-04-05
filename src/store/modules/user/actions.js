@@ -13,7 +13,7 @@ const actions = {
             let region = state.user_list.filter.region
             const response = await http.get("/user", {
                 params: {
-                    per_page:1000,
+                    per_page:10,
                     orderby:'-id',
                     search:search,
                     status:status,
@@ -102,7 +102,7 @@ const actions = {
                     phone_number: items.phone_number,
                     email: items.email,
                     status: items.status,
-                    region: items.region.code+' - '+items.region.description,
+                    region: items.adm_division.region,
                     site: items.site.code+' - '+items.site.description,
                     territory: items.territory.code+' - '+items.territory.description,
                     note: items.note
