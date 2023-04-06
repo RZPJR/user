@@ -252,7 +252,6 @@
                 this.fetchRoleList()
             },
             divisionSelected(d) {
-                console.log(d)
                 this.$store.commit('setFilterDivisionRoleList', '')
                 if(d){
                     this.$store.commit('setFilterDivisionRoleList', d.id)
