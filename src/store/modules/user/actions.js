@@ -13,7 +13,7 @@ const actions = {
             let region = state.user_list.filter.region
             const response = await http.get("/user", {
                 params: {
-                    per_page:10,
+                    per_page:100,
                     orderby:'-id',
                     search:search,
                     status:status,
@@ -63,10 +63,13 @@ const actions = {
                     sub_roles: selected_sub_roles,
                     phone_number: items.phone_number,
                     email: items.email,
-                    region_id: items.region.id,
+                    region_id: '',
+                    adm_division_id: '',
+                    parent_id: 2,
                     site_id: items.site.id,
-                    parent_id: 2, // Dummy sementara
+                    site_id_gp: '',
                     territory_id: items.territory.id,
+                    territory_id_gp: '',
                     note: items.note,
                 })
                 commit("setDivisionUpdateUser", res.main_role.division)
@@ -74,7 +77,7 @@ const actions = {
                 commit("setSiteUpdateUser", res.site)
                 commit("setMainRoleUpdateUser", res.main_role)
                 commit("setTerritoryUpdateUser", res.territory)
-                commit("setSupervisorUpdateUser", {id:2}) // Dummy sementara
+                commit("setSupervisorUpdateUser", {id:2})
                 commit("setRoleUpdateUser", res.sub_roles)
             }
             commit("setPreloadUpdateUserForm", false);            

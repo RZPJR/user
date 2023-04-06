@@ -127,7 +127,7 @@
                                             <v-icon>open_in_new</v-icon>
                                         </v-list-item-icon>
                                     </v-list-item>
-                                    <div>
+                                    <div v-if="props.item.status=='1'">
                                         <hr/>
                                     </div>
                                     <v-list-item 

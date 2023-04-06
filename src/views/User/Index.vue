@@ -143,7 +143,7 @@
                             </label>
                         </td>
                         <td :data-unq="`user-value-regionDescription-${props.index}`">
-                            {{ props.item.region ? (props.item.region.description ? props.item.region.description : '-') : '-' }}
+                            {{ props.item.adm_division ? (props.item.adm_division.region ? props.item.adm_division.region : '-') : '-' }}
                             <br>
                             <label class="text-black40" :data-unq="`user-value-siteDescription-${props.index}`">
                                 {{ props.item.site.code ? props.item.site.code : '-'}} -  {{ props.item.site.description ? props.item.site.description : '-'}}

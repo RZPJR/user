@@ -44,15 +44,13 @@
             </v-row>
             <v-row v-if="role_list.showFilter">
                 <v-col cols="12" md="3">
-                    <v-select
-                        data-unq="user-select-status"
+                    <SelectStatus
+                        data-unq="role-select-status"
+                        :default="1"
                         v-model="role_list.status"
-                        :items="status"
-                        item-text="text"
-                        item-value="value"
-                        outlined
-                        dense
-                    ></v-select>
+                        @selected="statusSelected"
+                        :dense="true"
+                    ></SelectStatus>
                 </v-col>
                 <v-col cols="12" md="3">
                     <SelectDivision
@@ -246,7 +244,15 @@
                     }
                 }
             },
+            statusSelected(d) {
+                this.$store.commit('setFilterStatusRoleList', '')
+                if (d) {
+                    this.$store.commit('setFilterStatusRoleList', d.value)
+                }
+                this.fetchRoleList()
+            },
             divisionSelected(d) {
+                console.log(d)
                 this.$store.commit('setFilterDivisionRoleList', '')
                 if(d){
                     this.$store.commit('setFilterDivisionRoleList', d.id)
@@ -264,14 +270,7 @@
                     }, 1000);
                 },
                 deep: true
-            },
-            'role_list.status': {
-                handler: function () {
-                    let that = this;
-                    that.fetchRoleList()
-                },
-                deep: true
-            },
+            }
         },
     }
 </script>
