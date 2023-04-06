@@ -65,7 +65,7 @@ const actions = {
                     email: items.email,
                     region_id: '',
                     adm_division_id: '',
-                    parent_id: 2,
+                    parent_id: items.parent_id,
                     site_id: items.site.id,
                     site_id_gp: '',
                     territory_id: items.territory.id,
@@ -77,7 +77,7 @@ const actions = {
                 commit("setSiteUpdateUser", res.site)
                 commit("setMainRoleUpdateUser", res.main_role)
                 commit("setTerritoryUpdateUser", res.territory)
-                commit("setSupervisorUpdateUser", {id:2})
+                commit("setSupervisorUpdateUser", {id:res.parent_id})
                 commit("setRoleUpdateUser", res.sub_roles)
             }
             commit("setPreloadUpdateUserForm", false);            
