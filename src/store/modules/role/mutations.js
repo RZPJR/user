@@ -12,6 +12,10 @@ const mutations = {
         state.role_list.filter.division_id = payload;
         return state;
     },
+    setFilterStatusRoleList: function(state, payload) {
+        state.role_list.status = payload;
+        return state;
+    },
 
     // Role Create
     setRoleCreate: function(state, payload) {
