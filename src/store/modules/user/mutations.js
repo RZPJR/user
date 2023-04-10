@@ -1,5 +1,5 @@
 const mutations = {
-    // #region Readlist User
+    // Readlist User
     setUserList: function(state, payload) {
         state.user_list.data = payload;
         return state;
@@ -24,9 +24,9 @@ const mutations = {
         state.user_list.filter.warehouse = payload;
         return state;
     },
-    // #endregion
+    // Readlist User
 
-    // #region Create User
+    // Create User
     setDivisionCreateUser: function(state, payload) {
         state.create_user.division = payload;
         if (payload) {
@@ -43,9 +43,9 @@ const mutations = {
         state.create_user.form = payload;
         return state;
     },
-    // #endregion
+    // Create User
 
-    // #region Update User
+    // Update User
     setUpdateUserForm: function(state, payload) {
         state.update_user.form = payload;
         return state;
@@ -88,9 +88,9 @@ const mutations = {
         state.update_user.role = payload;
         return state;
     },
-    // #endregion Update User
+    // Update User
 
-    // #region Detail User    
+    // Detail User    
     setPreloadUserDetail: function(state, payload) {
         state.user_detail.isLoading = payload;
         return state;
@@ -99,7 +99,7 @@ const mutations = {
         state.user_detail.user = payload;
         return state;
     },
-    // #endregion Detail User
+    // Detail User
 };
 
 export default mutations;
