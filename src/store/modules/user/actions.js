@@ -43,6 +43,23 @@ const actions = {
             commit("setPreloadUserList", false);
         }
     },
+    fetchUserCreate: async ({ state, commit, dispatch }, payload) => {
+        commit("setCreateUserForm", {
+            employee_code: '',
+            name: '',
+            nickname: '',
+            region_id: '', 
+            site_id: '', 
+            main_role: null,
+            sub_roles: [],
+            phone_number: '',
+            email: '',
+            password:'',
+            password_confirm:'',
+            parent_id: null, 
+            territory_id: null, 
+        })
+    },
     fetchUpdateUserDetail: async ({ commit, dispatch }, payload) => {
         commit("setPreloadUpdateUserForm", true);
         try {

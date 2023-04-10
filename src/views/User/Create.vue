@@ -276,7 +276,7 @@
     </v-container>
 </template>
 <script>
-    import { mapState, mapMutations } from "vuex";
+    import { mapState, mapMutations, mapActions } from "vuex";
 
     export default {
         name: "UserCreate",
@@ -303,6 +303,9 @@
                 form: state => state.user.create_user.form,
             }),
         },
+        created () {
+            this.fetchUserCreate()
+        },
         mounted () {
             let self = this
             this.$root.$on('event_error', function(err){
@@ -313,6 +316,9 @@
             ...mapMutations([
                 "setDivisionCreateUser",
                 "setMainRoleCreateUser",
+            ]),
+            ...mapActions([
+                "fetchUserCreate"
             ]),
             confirmButton() {
                 let send_data = {}
@@ -334,6 +340,7 @@
                         parent_id : this.form.parent_id,
                     }
                 }
+                send_data.site_id = 'NORTH'// Dummy until site service ready
                 this.confirm_data = {
                     model : true,
                     title : "Create User",
@@ -414,7 +421,6 @@
                         return e.id
                     })
                     this.create_user.form.sub_roles = selected_sub_roles
-                    // this.$store.commit('setRoleCreateUser', selected_sub_roles)
                 }
             },
         },
