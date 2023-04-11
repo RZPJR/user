@@ -308,7 +308,7 @@
                 if (d) {
                     this.$store.commit('setStatusFilterUserList', d.value)
                 }
-                this.fetchRoleList()
+                this.fetchUserList()
             },
             // For get data filtered by region
             areaSelected(d){
@@ -349,11 +349,13 @@
             // For get data filtered by type search
             'user_list.filter.search': {
                 handler: function (val) {
-                    let that = this
-                    clearTimeout(this._timerId)
-                    this._timerId = setTimeout(function(){
-                        that.fetchUserList()
-                    }, 1000);
+                    if(val){
+                        let that = this
+                        clearTimeout(this._timerId)
+                        this._timerId = setTimeout(function(){
+                            that.fetchUserList()
+                        }, 1000);
+                    }
                 },
                 deep: true
             }
