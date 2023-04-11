@@ -275,6 +275,7 @@
                 "setDivisionFilterUserList",
                 "setRoleFilterUserList",
             ]),
+            // For changes data status
             changeStatus(val,id) {
                 if (val=='1') {
                     this.confirm_data = {
@@ -301,6 +302,7 @@
                     }
                 }
             },
+            // For get data filtered by status
             statusSelected(d) {
                 this.$store.commit('setStatusFilterUserList', '')
                 if (d) {
@@ -308,6 +310,7 @@
                 }
                 this.fetchRoleList()
             },
+            // For get data filtered by region
             areaSelected(d){
                 this.$store.commit('setRegionFilterUserList', null)
                 if(d){
@@ -315,6 +318,7 @@
                 }
                 this.fetchUserList()
             },
+            // For get data filtered by site
             warehouseSelected(d) {
                 this.$store.commit('setSiteFilterUserList', null)
                 if (d) {
@@ -322,6 +326,7 @@
                 }
                 this.fetchUserList()
             },
+            // For get data filtered by division
             divisionSelected(d) {
                 this.$store.commit('setDivisionFilterUserList', null)
                 this.disabled_role = true;
@@ -331,6 +336,7 @@
                 }
                 this.fetchUserList()
             },
+            // For get data filtered by role
             roleSelected(d) {
                 this.$store.commit('setRoleFilterUserList', null)
                 if (d) {
@@ -340,6 +346,7 @@
             },
         },
         watch: {
+            // For get data filtered by type search
             'user_list.filter.search': {
                 handler: function (val) {
                     let that = this
