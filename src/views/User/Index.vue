@@ -66,7 +66,6 @@
                         data-unq="user-select-warehouse"
                         @selected="warehouseSelected"
                         :label="'Site'"
-                        :clear="clear_warehouse"
                         :norequired="true"
                         :dense="true"
                     ></SelectWarehouse>
