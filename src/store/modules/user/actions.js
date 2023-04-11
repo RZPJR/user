@@ -82,7 +82,7 @@ const actions = {
                     sub_roles: selected_sub_roles,
                     phone_number: items.phone_number,
                     email: items.email,
-                    region_id: '',
+                    region_id: items.region.id,
                     adm_division_id: '',
                     parent_id: items.parent_id,
                     site_id: items.site.id,
