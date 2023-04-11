@@ -116,6 +116,7 @@
                         :label="'Sub Roles'"
                         :dense="true"
                         :norequired="true"
+                        :error="error.sub_role"
                         required
                     > </MultiSelectRole>
                 </v-col>
@@ -279,6 +280,7 @@
                 "setRoleUpdateUser",
                 "setFormRoleUpdateUser",
             ]),
+            // For confirm submit data
             confirmButton() {
                 this.ConfirmData = {
                     model : true,
@@ -288,7 +290,8 @@
                     nextPage : '/user/user',
                     data : this.form
                 }
-            },    
+            },  
+            // For get selected region  
             areaSelected(d) {
                 this.update_user.region = null;
                 this.form.region_id = '';
@@ -297,6 +300,7 @@
                     this.form.region_id = d.id
                 }
             },
+            // For get selected site
             warehouseSelected(d) {
                 this.update_user.site = null;
                 this.form.site_id = '';
@@ -305,6 +309,7 @@
                     this.form.site_id = d.id
                 }
             },
+            // For get selected division
             divisionSelected(d) {
                 this.$store.commit('setDivisionUpdateUser', null)
                 this.$store.commit('setMainRoleUpdateUser', null)
@@ -319,6 +324,7 @@
                     this.clear_role = false
                 }
             },
+            // For get selected supervisor
             supervisorSelected(d) {
                 this.update_user.supervisor = null;
                 this.form.parent_id = '';
@@ -327,6 +333,7 @@
                     this.form.parent_id = d.id
                 }
             },
+            // For get selected main role
             mainRoleSelected(d) {
                 this.$store.commit('setMainRoleUpdateUser', null)
                 this.$store.commit('setRoleUpdateUser', null)
@@ -336,6 +343,7 @@
                     this.disabled_role = false
                 }
             },
+            // For get selected multiple role
             async roleSelected(d) {
                 this.$store.commit('setRoleUpdateUser', null)
                 if (d !== ''  && d !== undefined) {
@@ -346,6 +354,7 @@
                     this.$store.commit('setRoleUpdateUser', d)
                 }
             },
+            // For get selected sales group
             salesGroupSelected(d) {
                 this.form.territory_id = ''
                 this.update_user.territory = null

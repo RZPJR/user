@@ -17,6 +17,8 @@ const actions = {
                     orderby:'-id',
                     search:search,
                     status:status,
+                    region_id:region,
+                    site_id:warehouse,
                     division_id: division,
                     role_id: role
                 }
@@ -80,13 +82,10 @@ const actions = {
                     sub_roles: selected_sub_roles,
                     phone_number: items.phone_number,
                     email: items.email,
-                    region_id: '',
-                    adm_division_id: '',
+                    region_id: items.region.id,
                     parent_id: items.parent_id,
                     site_id: items.site.id,
-                    site_id_gp: '',
                     territory_id: items.territory.id,
-                    territory_id_gp: '',
                     note: items.note,
                 })
                 commit("setDivisionUpdateUser", res.main_role.division)
@@ -122,7 +121,7 @@ const actions = {
                     phone_number: items.phone_number,
                     email: items.email,
                     status: items.status,
-                    region: items.adm_division.region,
+                    region: items.region.description,
                     site: items.site.code+' - '+items.site.description,
                     territory: items.territory.code+' - '+items.territory.description,
                     note: items.note

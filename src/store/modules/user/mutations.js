@@ -8,8 +8,16 @@ const mutations = {
         state.user_list.isLoading = payload;
         return state;
     },
+    setStatusFilterUserList: function(state, payload) {
+        state.user_list.filter.status = payload;
+        return state;
+    },
     setRegionFilterUserList: function(state, payload) {
         state.user_list.filter.region = payload;
+        return state;
+    },
+    setSiteFilterUserList: function(state, payload) {
+        state.user_list.filter.warehouse = payload;
         return state;
     },
     setDivisionFilterUserList: function(state, payload) {
@@ -18,10 +26,6 @@ const mutations = {
     },
     setRoleFilterUserList: function(state, payload) {
         state.user_list.filter.role = payload;
-        return state;
-    },
-    setWarehouseFilterUserList: function(state, payload) {
-        state.user_list.filter.warehouse = payload;
         return state;
     },
     // Readlist User
