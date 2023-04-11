@@ -83,12 +83,9 @@ const actions = {
                     phone_number: items.phone_number,
                     email: items.email,
                     region_id: items.region.id,
-                    adm_division_id: '',
                     parent_id: items.parent_id,
                     site_id: items.site.id,
-                    site_id_gp: '',
                     territory_id: items.territory.id,
-                    territory_id_gp: '',
                     note: items.note,
                 })
                 commit("setDivisionUpdateUser", res.main_role.division)
