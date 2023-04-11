@@ -124,7 +124,7 @@ const actions = {
                     phone_number: items.phone_number,
                     email: items.email,
                     status: items.status,
-                    region: items.adm_division.region,
+                    region: items.region.description,
                     site: items.site.code+' - '+items.site.description,
                     territory: items.territory.code+' - '+items.territory.description,
                     note: items.note

@@ -116,6 +116,7 @@
                         :label="'Sub Roles'"
                         :dense="true"
                         :norequired="true"
+                        :error="error.sub_role"
                         required
                     > </MultiSelectRole>
                 </v-col>
