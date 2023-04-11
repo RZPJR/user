@@ -17,6 +17,8 @@ const actions = {
                     orderby:'-id',
                     search:search,
                     status:status,
+                    region_id:region,
+                    site_id:warehouse,
                     division_id: division,
                     role_id: role
                 }

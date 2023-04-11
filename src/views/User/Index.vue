@@ -44,19 +44,18 @@
             </v-row>
             <v-row v-if="show_filter">
                 <v-col cols="12" md="3" class="-mt24">
-                    <v-select
+                    <SelectStatus
                         data-unq="user-select-status"
+                        :default="1"
                         v-model="user_list.filter.status"
-                        :items="status"
-                        item-text="text"
-                        item-value="value"
-                        outlined
-                        dense
-                    ></v-select>
+                        @selected="statusSelected"
+                        :dense="true"
+                    ></SelectStatus>
                 </v-col>
                 <v-col cols="12" md="3" class="-mt24">
                    <SelectArea
                         data-unq="user-select-region"
+                        @selected="areaSelected"
                         :label="'Region'"
                         :norequired="true"
                         :dense="true"
@@ -65,8 +64,9 @@
                 <v-col cols="12" md="3" class="-mt24">
                     <SelectWarehouse
                         data-unq="user-select-warehouse"
+                        @selected="warehouseSelected"
                         :label="'Site'"
-                        :disabled="true"
+                        :clear="clear_warehouse"
                         :norequired="true"
                         :dense="true"
                     ></SelectWarehouse>
@@ -74,7 +74,7 @@
                 <v-col cols="12" md="3" class="-mt24">
                     <SelectDivision
                         data-unq="user-select-division"
-                        :no_required="true"
+                        :norequired="true"
                         v-model="user_list.filter.division"
                         @selected="divisionSelected"
                         :dense="true"
@@ -143,7 +143,7 @@
                             </label>
                         </td>
                         <td :data-unq="`user-value-regionDescription-${props.index}`">
-                            {{ props.item.adm_division ? (props.item.adm_division.region ? props.item.adm_division.region : '-') : '-' }}
+                            {{ props.item.region ? (props.item.region.description ? props.item.region.description : '-') : '-' }}
                             <br>
                             <label class="text-black40" :data-unq="`user-value-siteDescription-${props.index}`">
                                 {{ props.item.site.code ? props.item.site.code : '-'}} -  {{ props.item.site.description ? props.item.site.description : '-'}}
@@ -271,6 +271,9 @@
                 "fetchUserList"
             ]),
             ...mapMutations([
+                "setRegionFilterUserList",
+                "setSiteFilterUserList",
+                "setDivisionFilterUserList",
                 "setRoleFilterUserList",
             ]),
             changeStatus(val,id) {
@@ -299,11 +302,32 @@
                     }
                 }
             },
+            statusSelected(d) {
+                this.$store.commit('setStatusFilterUserList', '')
+                if (d) {
+                    this.$store.commit('setStatusFilterUserList', d.value)
+                }
+                this.fetchRoleList()
+            },
+            areaSelected(d){
+                this.$store.commit('setRegionFilterUserList', null)
+                if(d){
+                    this.$store.commit('setRegionFilterUserList', d.id)
+                }
+                this.fetchUserList()
+            },
+            warehouseSelected(d) {
+                this.$store.commit('setSiteFilterUserList', null)
+                if (d) {
+                    this.$store.commit('setSiteFilterUserList', d.id)
+                }
+                this.fetchUserList()
+            },
             divisionSelected(d) {
-                this.user_list.filter.division = ''
+                this.$store.commit('setDivisionFilterUserList', null)
                 this.disabled_role = true;
                 if(d){
-                    this.user_list.filter.division = d
+                    this.$store.commit('setDivisionFilterUserList', d)
                     this.disabled_role = false;
                 }
                 this.fetchUserList()
@@ -326,15 +350,7 @@
                     }, 1000);
                 },
                 deep: true
-            },
-            'user_list.filter.status': {
-                handler: function (val) {
-                    if (val) {
-                        this.fetchUserList()
-                    }
-                },
-                deep: true
-            },
+            }
         },
     }
 </script>
