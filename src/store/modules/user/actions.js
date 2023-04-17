@@ -1,4 +1,5 @@
 import http from "../../../services/http";
+import Pagination from "../pagination";
 
 const actions = {
     fetchUserList: async ({ state, commit, dispatch }, payload) => {
@@ -11,9 +12,11 @@ const actions = {
             let role = !state.user_list.filter.role ? '' : state.user_list.filter.role.id
             let warehouse = state.user_list.filter.warehouse
             let region = state.user_list.filter.region
+            let pagination = Pagination.state.pagination
             const response = await http.get("/user", {
                 params: {
-                    per_page:100,
+                    page: pagination.page,
+                    per_page : pagination.rows_per_page,
                     orderby:'-id',
                     search:search,
                     status:status,
@@ -38,8 +41,15 @@ const actions = {
                 parent_id: null, 
                 territory_id: null, 
             })
-            if (response.data.data) commit("setUserList", response.data.data)
-            commit("setPreloadUserList", false);            
+            if (response.data.data){
+                commit("setUserList", response.data.data)
+                commit('setPagination', {
+                    ...pagination,
+                    total_items: response.data.total !== null ? response.data.total : 0
+                })
+            }
+            console.log(response.data.total ,'lllllllllllll')
+            commit("setPreloadUserList", false);    
         } catch (error) {
             console.log(error)
             commit("setPreloadUserList", false);
