@@ -105,13 +105,6 @@
             }),
         },
         methods:{
-            // renderData(){
-            //     this.$http.get("/account/v1/division/" + this.$route.params.id,{params:{
-            //             per_page:100,
-            //         }}).then(response => {
-            //         this.form = response.data.data
-            //     });
-            // },
             ...mapActions([
                 "fetchUserUpdate"
             ]),
