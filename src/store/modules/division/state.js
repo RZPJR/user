@@ -41,6 +41,20 @@ const state = {
         },
         items:[],
         ConfirmData : {},
+    },
+    create_division: {
+        form:{
+            code: '',
+            name: '',
+            note: '',
+        },
+    },
+    update_division: {
+        form:{
+            code: '',
+            name: '',
+            note: '',
+        },
     }
 }
 

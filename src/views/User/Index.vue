@@ -116,8 +116,12 @@
                 :headers="user_list.table_headers"
                 :items="user_list.data"
                 :loading="user_list.isLoading"
-                :items-per-page="10"
                 :mobile-breakpoint="0"
+                :items-per-page="pagination.rows_per_page"
+                :server-items-length="pagination.total_items"
+                @update:items-per-page="getItemPerPage"
+                @update:page="getPagination"
+                :footer-props="footerProps"
             >
                 <template v-slot:item="props">
                     <tr style="height:48px">
@@ -251,6 +255,7 @@
         },
         created() {
             this.fetchUserList()
+            this.$store.commit("resetPagination")
         },
         mounted() {
             let self = this
@@ -263,7 +268,16 @@
         computed: {
             ...mapState({
                 user_list: state => state.user.user_list,
+                pagination: state => state.pagination.pagination,
             }),
+            footerProps() {
+                return {
+                    'items-per-page-options':[10,15,20,25],
+                    'page-text': `${(this.pagination.page-1)*this.pagination.rows_per_page+1}
+                                    - ${Math.min(this.pagination.page*this.pagination.rows_per_page,this.pagination.total_items)} 
+                                    of ${this.pagination.total_items}`,
+                };
+            },
         },
         methods: {
             ...mapActions([
@@ -308,6 +322,7 @@
                 if (d) {
                     this.$store.commit('setStatusFilterUserList', d.value)
                 }
+                this.getPagination(1)
                 this.fetchUserList()
             },
             // For get data filtered by region
@@ -316,6 +331,7 @@
                 if(d){
                     this.$store.commit('setRegionFilterUserList', d.id)
                 }
+                this.getPagination(1)
                 this.fetchUserList()
             },
             // For get data filtered by site
@@ -324,6 +340,7 @@
                 if (d) {
                     this.$store.commit('setSiteFilterUserList', d.id)
                 }
+                this.getPagination(1)
                 this.fetchUserList()
             },
             // For get data filtered by division
@@ -334,6 +351,7 @@
                     this.$store.commit('setDivisionFilterUserList', d)
                     this.disabled_role = false;
                 }
+                this.getPagination(1)
                 this.fetchUserList()
             },
             // For get data filtered by role
@@ -342,6 +360,23 @@
                 if (d) {
                     this.$store.commit('setRoleFilterUserList', d)
                 }
+                this.getPagination(1)
+                this.fetchUserList()
+            },
+            // Count all data for paggination
+            getItemPerPage(val) {
+                this.$store.commit('setPagination', {
+                    ...this.pagination,
+                    rows_per_page: val,
+                })
+                this.fetchUserList()
+            },
+            // For paggination
+            getPagination(val) {
+                this.$store.commit('setPagination', {
+                    ...this.pagination,
+                    page: val,
+                })
                 this.fetchUserList()
             },
         },
