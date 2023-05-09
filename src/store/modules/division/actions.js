@@ -24,6 +24,28 @@ const actions = {
         }
         
     },
+    fetchUserCreate: async ({ state, commit, dispatch }, payload) => {
+        commit("setCreateDivisionForm", {
+            code: '',
+            name: '',
+            note: '',
+        })
+    },
+    fetchUserUpdate: async ({ commit }, payload) => {
+        try {
+            const response = await http.get("/division/"+payload.id);
+            if (response.data.data) {
+                let items = response.data.data
+                commit("setUpdateDivisionForm", {
+                    code: items.code,
+                    name: items.name,
+                    note: items.note,
+                })
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    },
 }
 
 export default actions;

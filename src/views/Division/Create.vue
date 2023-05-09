@@ -81,19 +81,17 @@
     </v-container>
 </template>
 <script>
+    import { mapState, mapMutations, mapActions } from "vuex";
     export default {
         name: "DivisionCreate",
         data () {
             return {
                 ConfirmData:[],
-                permission:[],
-                form:{
-                    code: '',
-                    name: '',
-                    note: '',
-                },
                 error:{},
             }
+        },
+        created () {
+            this.fetchUserCreate()
         },
         mounted () {
             let self = this
@@ -101,7 +99,15 @@
                 self.error = err
             });
         },
+        computed: {
+            ...mapState({
+                form: state => state.division.create_division.form,
+            }),
+        },
         methods:{
+            ...mapActions([
+                "fetchUserCreate"
+            ]),
             confirmButton() {
                 this.ConfirmData = {
                     model : true,

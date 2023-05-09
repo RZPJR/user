@@ -48,7 +48,6 @@ const actions = {
                     total_items: response.data.total !== null ? response.data.total : 0
                 })
             }
-            console.log(response.data.total ,'lllllllllllll')
             commit("setPreloadUserList", false);    
         } catch (error) {
             console.log(error)
