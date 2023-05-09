@@ -9,7 +9,6 @@
                         v-model="form.code"
                         maxlength="20"
                         required
-                        disabled
                         outlined
                         :dense="true"
                         :error-messages="error.code"

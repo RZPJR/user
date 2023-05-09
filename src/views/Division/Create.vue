@@ -2,7 +2,23 @@
     <v-container fill-height class="main-container">
         <div class="box">
             <v-row class="mt24">
-                <v-col cols="12" class="mt24">
+                <v-col cols="12" md="6">
+                    <v-text-field
+                        data-unq="division-input-code"
+                        name="code"
+                        v-model="form.code"
+                        maxlength="20"
+                        required
+                        outlined
+                        :dense="true"
+                        :error-messages="error.code"
+                    >
+                        <template v-slot:label>
+                            Code<span class="text-red">*</span>
+                        </template>
+                    </v-text-field>
+                </v-col>
+                <v-col cols="12" md="6">
                     <v-text-field
                         data-unq="division-input-name"
                         name="name"
@@ -64,7 +80,6 @@
         <ConfirmationDialogNew :sendData="ConfirmData"/>
     </v-container>
 </template>
-
 <script>
     export default {
         name: "DivisionCreate",
@@ -73,6 +88,7 @@
                 ConfirmData:[],
                 permission:[],
                 form:{
+                    code: '',
                     name: '',
                     note: '',
                 },
