@@ -10,6 +10,7 @@ const actions = {
             const response = await http.get("/division", {params: {
                 per_page:100,
                 status:status,
+                order_by:'-id',
                 search:search
             }});
             commit("setDivisionList", response.data.data)
