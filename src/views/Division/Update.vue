@@ -7,7 +7,7 @@
                         data-unq="division-input-code"
                         name="code"
                         v-model="form.code"
-                        maxlength="20"
+                        maxlength="4"
                         required
                         outlined
                         :dense="true"
