@@ -10,6 +10,7 @@ const actions = {
             const response = await http.get("/division", {params: {
                 per_page:100,
                 status:status,
+                order_by:'-id',
                 search:search
             }});
             commit("setDivisionList", response.data.data)
@@ -23,6 +24,28 @@ const actions = {
             commit("setPreloadDivisionList", false)
         }
         
+    },
+    fetchUserCreate: async ({ state, commit, dispatch }, payload) => {
+        commit("setCreateDivisionForm", {
+            code: '',
+            name: '',
+            note: '',
+        })
+    },
+    fetchUserUpdate: async ({ commit }, payload) => {
+        try {
+            const response = await http.get("/division/"+payload.id);
+            if (response.data.data) {
+                let items = response.data.data
+                commit("setUpdateDivisionForm", {
+                    code: items.code,
+                    name: items.name,
+                    note: items.note,
+                })
+            }
+        } catch (error) {
+            console.log(error)
+        }
     },
 }
 

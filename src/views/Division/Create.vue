@@ -2,7 +2,23 @@
     <v-container fill-height class="main-container">
         <div class="box">
             <v-row class="mt24">
-                <v-col cols="12" class="mt24">
+                <v-col cols="12" md="6">
+                    <v-text-field
+                        data-unq="division-input-code"
+                        name="code"
+                        v-model="form.code"
+                        maxlength="4"
+                        required
+                        outlined
+                        :dense="true"
+                        :error-messages="error.code"
+                    >
+                        <template v-slot:label>
+                            Code<span class="text-red">*</span>
+                        </template>
+                    </v-text-field>
+                </v-col>
+                <v-col cols="12" md="6">
                     <v-text-field
                         data-unq="division-input-name"
                         name="name"
@@ -64,20 +80,18 @@
         <ConfirmationDialogNew :sendData="ConfirmData"/>
     </v-container>
 </template>
-
 <script>
+    import { mapState, mapMutations, mapActions } from "vuex";
     export default {
         name: "DivisionCreate",
         data () {
             return {
                 ConfirmData:[],
-                permission:[],
-                form:{
-                    name: '',
-                    note: '',
-                },
                 error:{},
             }
+        },
+        created () {
+            this.fetchUserCreate()
         },
         mounted () {
             let self = this
@@ -85,7 +99,15 @@
                 self.error = err
             });
         },
+        computed: {
+            ...mapState({
+                form: state => state.division.create_division.form,
+            }),
+        },
         methods:{
+            ...mapActions([
+                "fetchUserCreate"
+            ]),
             confirmButton() {
                 this.ConfirmData = {
                     model : true,

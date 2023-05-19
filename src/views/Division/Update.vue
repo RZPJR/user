@@ -7,9 +7,8 @@
                         data-unq="division-input-code"
                         name="code"
                         v-model="form.code"
-                        maxlength="20"
+                        maxlength="4"
                         required
-                        disabled
                         outlined
                         :dense="true"
                         :error-messages="error.code"
@@ -82,35 +81,33 @@
 </template>
 
 <script>
+    import { mapState, mapActions, mapMutations } from "vuex";
     export default {
         name: "DivisionUpdate",
         data () {
             return {
                 ConfirmData:[],
-                permission:[],
-                form:{
-                    code: '',
-                    name: '',
-                    note: ''
-                },
                 error:{},
             }
         },
+        async created(){
+            await this.fetchUserUpdate({id: this.$route.params.id})
+        },
         mounted () {
-            this.renderData()
             let self = this
             this.$root.$on('event_error', function(err){
                 self.error = err
             });
         },
+        computed: {
+            ...mapState({
+                form: state => state.division.update_division.form,
+            }),
+        },
         methods:{
-            renderData(){
-                this.$http.get("/account/v1/division/" + this.$route.params.id,{params:{
-                        per_page:100,
-                    }}).then(response => {
-                    this.form = response.data.data
-                });
-            },
+            ...mapActions([
+                "fetchUserUpdate"
+            ]),
             confirmButton() {
                 this.ConfirmData = {
                     model : true,
