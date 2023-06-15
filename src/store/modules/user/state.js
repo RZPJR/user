@@ -130,6 +130,7 @@ const state = {
             division: '-',
             main_role: '-',
             sub_roles: [],
+            supervisor: '-',
             phone_number: '-',
             email: '-',
             status: 0,
