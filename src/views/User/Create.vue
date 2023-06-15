@@ -86,6 +86,7 @@
                         @selected="supervisorSelected"
                         :dense="true"
                         :user="create_user.supervisor"
+                        :norequired="true"
                         :clear="clearUser"
                     ></SelectUser>
                 </v-col>
