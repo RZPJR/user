@@ -341,7 +341,6 @@
                         parent_id : this.form.parent_id,
                     }
                 }
-                send_data.site_id = 'NORTH'// Dummy until site service ready
                 this.confirm_data = {
                     model : true,
                     title : "Create User",
