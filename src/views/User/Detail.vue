@@ -105,6 +105,9 @@
                 <v-col cols="12" md="6" class="-mt24">
                     <DetailRowNew :name="'Role'" :value="user.main_role" />
                 </v-col>  
+                <v-col cols="12" md="6" class="-mt24">
+                    <DetailRowNew :name="'Supervisor'" :value="user.supervisor" />
+                </v-col>  
                 <v-col cols="12" md="6" class="-mt24" v-if="user.role_id === 8">
                     <DetailRowNew :name="'Territory'" :value="user.territory" />
                 </v-col>              
