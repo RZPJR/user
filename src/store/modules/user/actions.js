@@ -94,7 +94,7 @@ const actions = {
                     region_id: items.region.id,
                     parent_id: items.parent_id,
                     site_id: items.site.id,
-                    territory_id: items.territory.id,
+                    territory_id: items.territory !== null ? items.territory.id : '',
                     note: items.note,
                 })
                 commit("setDivisionUpdateUser", res.main_role.division)
