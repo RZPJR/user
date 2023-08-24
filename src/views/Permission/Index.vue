@@ -18,7 +18,7 @@
                             >
                             </v-text-field>
                         </template>
-                       <span>Search by name</span>
+                       <span>Search name</span>
                     </v-tooltip>
                 </v-col>
             </v-row>

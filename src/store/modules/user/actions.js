@@ -94,7 +94,7 @@ const actions = {
                     region_id: items.region.id,
                     parent_id: items.parent_id,
                     site_id: items.site.id,
-                    territory_id: items.territory.id,
+                    territory_id: items.territory !== null ? items.territory.id : '',
                     note: items.note,
                 })
                 commit("setDivisionUpdateUser", res.main_role.division)
@@ -132,9 +132,11 @@ const actions = {
                     status: items.status,
                     region: items.region.description,
                     site: items.site.code+' - '+items.site.description,
-                    territory: items.territory.code+' - '+items.territory.description,
+                    territory: items.territory !== null ? items.territory.code+' - '+items.territory.description : '-',
+                    supervisor: items.supervisor !== null ? items.supervisor.employee_code+' - '+items.supervisor.name : '-',
                     note: items.note
                 })
+                
             }
             commit("setPreloadUserDetail", false);   
         } catch (error) {

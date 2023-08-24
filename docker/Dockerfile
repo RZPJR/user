@@ -3,6 +3,7 @@ FROM node:16 AS builder
 WORKDIR /app
 COPY . .
 
+RUN cat .env
 RUN npm cache clean --force
 RUN npm install --force
 RUN npm i @vue/cli@5.0.5 --force
