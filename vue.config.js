@@ -1,7 +1,12 @@
+var webpack = require('webpack')
 module.exports = {
   productionSourceMap: true,
-  mode: 'production',
   lintOnSave: false,
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify('production')
+    })
+  ],
   configureWebpack: {
     devServer: {
       headers: {
