@@ -1,4 +1,6 @@
 module.exports = {
+  productionSourceMap: true,
+  mode: 'production',
   lintOnSave: false,
   configureWebpack: {
     devServer: {
@@ -13,5 +15,5 @@ module.exports = {
     },
     externals: ["vue", "vue-router", /^@vue-mf\/.+/]
   },
-  filenameHashing: false
+  filenameHashing: false,
 };
