@@ -3,11 +3,14 @@ FROM node:16 AS builder
 WORKDIR /app
 COPY . .
 
-RUN cat .env
-RUN npm cache clean --force
-RUN npm install --force
-RUN npm i @vue/cli@5.0.5 --force
-RUN npm run build
+RUN cat .env && \
+    npm cache clean --force && \
+    npm install --force && \
+    npm i @vue/cli@5.0.5 --force && \
+    npm run build && \
+    rm -rf node_modules && \
+    npm prune --production && \
+    npm cache clean --force
 
 FROM nginx:1.23
 
