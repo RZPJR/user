@@ -1,4 +1,4 @@
-FROM node:16 AS builder
+FROM node:16-alpine AS builder
 
 WORKDIR /app
 COPY . .
@@ -7,7 +7,7 @@ RUN cat .env
 RUN npm cache clean --force
 RUN npm install --force
 RUN npm i @vue/cli@5.0.5 --force
-RUN npm run build -- --mode development
+RUN npm run build
 
 FROM nginx:1.23
 
