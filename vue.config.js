@@ -1,4 +1,5 @@
 module.exports = {
+  chainWebpack: config => config.optimization.minimize(false),
   productionSourceMap: true,
   lintOnSave: false,
   configureWebpack: {
