@@ -1,9 +1,7 @@
 module.exports = {
   chainWebpack: config => config.optimization.minimize(false),
-  productionSourceMap: true,
   lintOnSave: false,
   configureWebpack: {
-    mode: 'production',
     devServer: {
       headers: {
         "Access-Control-Allow-Origin": "*"
